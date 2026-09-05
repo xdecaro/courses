@@ -70,6 +70,22 @@ $stateMeta = [
         <span>Modifica i filtri oppure crea un nuovo corso.</span>
       </div>
     <?php else : ?>
+      <?php if ($this->canEditState || ($filterState === '-2' && $this->canDelete)) : ?>
+        <div class="dc-bulk-actions" aria-label="Azioni sui corsi selezionati">
+          <span class="dc-bulk-label">Selezionati</span>
+          <?php if ($this->canEditState) : ?>
+            <button class="btn btn-sm btn-outline-success" type="button" onclick="Joomla.submitbutton('courses.publish')">Pubblica</button>
+            <?php if ($filterState !== '-2') : ?>
+              <button class="btn btn-sm btn-outline-secondary" type="button" onclick="Joomla.submitbutton('courses.unpublish')">Sospendi</button>
+              <button class="btn btn-sm btn-outline-danger" type="button" onclick="Joomla.submitbutton('courses.trash')">Cestino</button>
+            <?php endif; ?>
+          <?php endif; ?>
+          <?php if ($filterState === '-2' && $this->canDelete) : ?>
+            <button class="btn btn-sm btn-danger" type="button" onclick="Joomla.submitbutton('courses.delete')">Elimina definitivamente</button>
+          <?php endif; ?>
+        </div>
+      <?php endif; ?>
+
       <div class="dc-table-wrap">
         <table class="dc-table dc-responsive-table">
           <thead>
