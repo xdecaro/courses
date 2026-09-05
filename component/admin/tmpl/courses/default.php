@@ -86,7 +86,7 @@ $stateMeta = [
         </div>
       <?php endif; ?>
 
-      <div class="dc-table-wrap">
+      <div class="dc-table-wrap dc-courses-table-wrap">
         <table class="dc-table dc-responsive-table dc-courses-table">
           <thead>
             <tr>
