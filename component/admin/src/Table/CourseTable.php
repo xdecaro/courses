@@ -34,6 +34,10 @@ class CourseTable extends Table
             return false;
         }
 
+        if ($this->code === '') {
+            $this->code = $this->generateCourseCode($this->title);
+        }
+
         if (mb_strlen($this->code) > 80) {
             $this->setError('Il codice del corso è troppo lungo.');
             return false;
@@ -53,6 +57,44 @@ class CourseTable extends Table
         $this->alias = $this->getUniqueAlias($baseAlias);
 
         return true;
+    }
+
+    private function generateCourseCode(string $title): string
+    {
+        $slug = ApplicationHelper::stringURLSafe($title);
+
+        if ($slug === '') {
+            return 'CORSO';
+        }
+
+        $skip = [
+            'corso', 'course', 'livello', 'level',
+            'di', 'del', 'della', 'dei', 'degli', 'delle',
+            'the', 'of',
+        ];
+        $roman = [
+            'i' => '1', 'ii' => '2', 'iii' => '3', 'iv' => '4', 'v' => '5',
+            'vi' => '6', 'vii' => '7', 'viii' => '8', 'ix' => '9', 'x' => '10',
+        ];
+        $parts = [];
+
+        foreach (array_filter(explode('-', $slug)) as $part) {
+            $part = strtolower($part);
+
+            if (in_array($part, $skip, true)) {
+                continue;
+            }
+
+            $parts[] = strtoupper($roman[$part] ?? $part);
+
+            if (count($parts) >= 4) {
+                break;
+            }
+        }
+
+        $code = implode('', $parts);
+
+        return $code !== '' ? mb_substr($code, 0, 80) : 'CORSO';
     }
 
     private function getUniqueAlias(string $baseAlias): string
