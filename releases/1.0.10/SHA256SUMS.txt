@@ -1,0 +1,2 @@
+d210660ddc59be5e08b2ea4a251d21d083d7c546d952286eda4b9f948145d200  com_decarocourses_1.0.10.zip
+ad4021bd7aaed0a6e1d2d54e5ac24c90a6c528a2f9d2930f35b02ab1f84c42dc  pkg_decarocourses_1.0.10.zip
