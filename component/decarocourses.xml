@@ -9,6 +9,7 @@
   <authorUrl>https://github.com/xdecaro/courses</authorUrl>
   <version>1.0.0</version>
   <description>COM_DECAROCOURSES_XML_DESCRIPTION</description>
+  <targetplatform name="joomla" version="6.*" />
   <namespace path="src">Xdecaro\Component\Decarocourses</namespace>
 
   <files folder="site">
