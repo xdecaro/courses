@@ -15,5 +15,6 @@
     <maintainerurl>https://github.com/xdecaro/courses</maintainerurl>
     <targetplatform name="joomla" version="6\.[0-9]+" />
     <php_minimum>8.3.0</php_minimum>
+    <sha256>4a13010ef272d14180c2961eccb3f59950a454c84bd9db7424839db75ca6c88b</sha256>
   </update>
 </updates>
