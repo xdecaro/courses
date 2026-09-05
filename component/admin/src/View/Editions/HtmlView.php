@@ -5,9 +5,7 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
-use Joomla\CMS\Toolbar\ToolbarHelper;
 use Xdecaro\Component\Decarocourses\Administrator\Helper\UiHelper;
 
 class HtmlView extends BaseHtmlView
@@ -15,6 +13,10 @@ class HtmlView extends BaseHtmlView
     public $items;
     public $pagination;
     public $state;
+    public bool $canCreate = false;
+    public bool $canEdit = false;
+    public bool $canEditState = false;
+    public bool $canDelete = false;
 
     public function display($tpl = null): void
     {
@@ -26,26 +28,10 @@ class HtmlView extends BaseHtmlView
         $this->state = $this->get('State');
 
         $identity = Factory::getApplication()->getIdentity();
-        $canCreate = $identity->authorise('core.create', 'com_decarocourses');
-        $canEdit = $identity->authorise('core.edit', 'com_decarocourses');
-        $canEditState = $identity->authorise('core.edit.state', 'com_decarocourses');
-        $hasItems = !empty($this->items);
-
-        ToolbarHelper::title(Text::_('COM_DECAROCOURSES_EDITIONS'), 'calendar');
-
-        if ($canCreate) {
-            ToolbarHelper::addNew('edition.add');
-        }
-
-        if ($hasItems && $canEdit) {
-            ToolbarHelper::editList('edition.edit');
-        }
-
-        if ($hasItems && $canEditState) {
-            ToolbarHelper::publish('editions.publish');
-            ToolbarHelper::unpublish('editions.unpublish');
-            ToolbarHelper::trash('editions.trash');
-        }
+        $this->canCreate = $identity->authorise('core.create', 'com_decarocourses');
+        $this->canEdit = $identity->authorise('core.edit', 'com_decarocourses');
+        $this->canEditState = $identity->authorise('core.edit.state', 'com_decarocourses');
+        $this->canDelete = $identity->authorise('core.delete', 'com_decarocourses');
 
         parent::display($tpl);
     }
