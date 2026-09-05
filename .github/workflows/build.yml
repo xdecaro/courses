@@ -29,7 +29,7 @@ jobs:
           test -n "$VERSION"
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
-      - name: Validate PHP and XML sources
+      - name: Validate PHP XML and JSON sources
         shell: bash
         run: |
           set -euo pipefail
@@ -37,6 +37,7 @@ jobs:
           while IFS= read -r -d '' FILE; do
             php -r 'libxml_use_internal_errors(true); if (simplexml_load_file($argv[1]) === false) { fwrite(STDERR, "XML non valido: {$argv[1]}\n"); exit(1); }' "$FILE"
           done < <(find component package -type f -name '*.xml' -print0)
+          php -r '$data=json_decode(file_get_contents("component/media/joomla.asset.json"), true); if (!is_array($data) || json_last_error() !== JSON_ERROR_NONE) { fwrite(STDERR, "joomla.asset.json non valido\n"); exit(1); }'
 
       - name: Build ZIP
         run: php tools/build.php
@@ -52,6 +53,9 @@ jobs:
           unzip -t "dist/pkg_decarocourses_${VERSION}.zip"
           unzip -p "dist/com_decarocourses_${VERSION}.zip" decarocourses.xml | grep -F "<version>${VERSION}</version>"
           unzip -p "dist/pkg_decarocourses_${VERSION}.zip" pkg_decarocourses.xml | grep -F "<version>${VERSION}</version>"
+          unzip -l "dist/com_decarocourses_${VERSION}.zip" | grep -F "media/joomla.asset.json"
+          unzip -l "dist/com_decarocourses_${VERSION}.zip" | grep -F "media/css/design-system.css"
+          unzip -p "dist/com_decarocourses_${VERSION}.zip" media/joomla.asset.json | grep -F '"com_decarocourses.design"'
 
       - name: Publish update channel files
         run: php tools/publish-update.php
