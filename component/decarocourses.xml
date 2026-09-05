@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" method="upgrade">
+  <name>COM_DECAROCOURSES</name>
+  <author>Luca De Caro</author>
+  <creationDate>2026-09</creationDate>
+  <copyright>Copyright (C) 2026 Luca De Caro. All rights reserved.</copyright>
+  <license>GNU General Public License version 2 or later</license>
+  <authorEmail></authorEmail>
+  <authorUrl>https://github.com/xdecaro/courses</authorUrl>
+  <version>1.0.0</version>
+  <description>COM_DECAROCOURSES_XML_DESCRIPTION</description>
+  <namespace path="src">Xdecaro\Component\Decarocourses</namespace>
+
+  <files folder="site">
+    <folder>src</folder>
+    <folder>tmpl</folder>
+  </files>
+
+  <administration>
+    <menu>COM_DECAROCOURSES</menu>
+    <submenu>
+      <menu view="dashboard">COM_DECAROCOURSES_DASHBOARD</menu>
+      <menu view="courses">COM_DECAROCOURSES_COURSES</menu>
+      <menu view="editions">COM_DECAROCOURSES_EDITIONS</menu>
+    </submenu>
+    <files folder="admin">
+      <filename>access.xml</filename>
+      <filename>config.xml</filename>
+      <folder>forms</folder>
+      <folder>services</folder>
+      <folder>sql</folder>
+      <folder>src</folder>
+      <folder>tmpl</folder>
+    </files>
+    <languages folder="admin/language">
+      <language tag="en-GB">en-GB/com_decarocourses.ini</language>
+      <language tag="en-GB">en-GB/com_decarocourses.sys.ini</language>
+      <language tag="it-IT">it-IT/com_decarocourses.ini</language>
+      <language tag="it-IT">it-IT/com_decarocourses.sys.ini</language>
+    </languages>
+  </administration>
+
+  <media destination="com_decarocourses" folder="media">
+    <folder>css</folder>
+  </media>
+
+  <install>
+    <sql>
+      <file driver="mysql" charset="utf8mb4">admin/sql/install.mysql.utf8mb4.sql</file>
+    </sql>
+  </install>
+  <uninstall>
+    <sql>
+      <file driver="mysql" charset="utf8mb4">admin/sql/uninstall.mysql.utf8mb4.sql</file>
+    </sql>
+  </uninstall>
+
+  <updateservers>
+    <server type="extension" priority="1" name="Courses by xdecaro">https://raw.githubusercontent.com/xdecaro/courses/main/updates/decarocourses.xml</server>
+  </updateservers>
+</extension>
