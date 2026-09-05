@@ -20,7 +20,7 @@ final class UiHelper
             $wa->registerStyle(
                 'com_decarocourses.design',
                 'com_decarocourses/design-system.css',
-                ['version' => '1.0.8']
+                ['version' => '1.0.9']
             );
         }
 
