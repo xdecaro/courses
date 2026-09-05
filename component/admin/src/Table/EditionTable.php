@@ -29,6 +29,12 @@ class EditionTable extends Table
             return false;
         }
 
+        foreach (['start_date', 'end_date', 'registration_start', 'registration_end'] as $field) {
+            if (isset($this->$field) && trim((string) $this->$field) === '') {
+                $this->$field = null;
+            }
+        }
+
         return true;
     }
 
