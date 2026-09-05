@@ -36,6 +36,7 @@ class HtmlView extends BaseHtmlView
         $this->canEdit = $identity->authorise('core.edit', 'com_decarocourses');
         $this->canEditState = $identity->authorise('core.edit.state', 'com_decarocourses');
         $this->canDelete = $identity->authorise('core.delete', 'com_decarocourses');
+        $hasItems = !empty($this->items);
 
         ToolbarHelper::title(Text::_('COM_DECAROCOURSES_COURSES'), 'stack');
 
@@ -43,11 +44,11 @@ class HtmlView extends BaseHtmlView
             ToolbarHelper::addNew('course.add');
         }
 
-        if ($this->canEdit) {
+        if ($hasItems && $this->canEdit) {
             ToolbarHelper::editList('course.edit');
         }
 
-        if ($this->canEditState) {
+        if ($hasItems && $this->canEditState) {
             ToolbarHelper::publish('courses.publish');
             ToolbarHelper::unpublish('courses.unpublish');
 
@@ -56,7 +57,7 @@ class HtmlView extends BaseHtmlView
             }
         }
 
-        if ($this->canDelete && (string) $this->state->get('filter.state') === '-2') {
+        if ($hasItems && $this->canDelete && (string) $this->state->get('filter.state') === '-2') {
             ToolbarHelper::deleteList('', 'courses.delete');
         }
 
