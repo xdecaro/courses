@@ -29,6 +29,15 @@ jobs:
           test -n "$VERSION"
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
+      - name: Validate PHP and XML sources
+        shell: bash
+        run: |
+          set -euo pipefail
+          find component tools -type f -name '*.php' -print0 | xargs -0 -n1 php -l
+          while IFS= read -r -d '' FILE; do
+            php -r 'libxml_use_internal_errors(true); if (simplexml_load_file($argv[1]) === false) { fwrite(STDERR, "XML non valido: {$argv[1]}\n"); exit(1); }' "$FILE"
+          done < <(find component package -type f -name '*.xml' -print0)
+
       - name: Build ZIP
         run: php tools/build.php
 
