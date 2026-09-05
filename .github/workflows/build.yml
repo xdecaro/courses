@@ -22,14 +22,14 @@ jobs:
         run: php tools/build.php
       - name: Verify package names
         run: |
-          test -f dist/com_decarocourses_1.0.0.zip
-          test -f dist/pkg_decarocourses_1.0.0.zip
-          unzip -t dist/com_decarocourses_1.0.0.zip
-          unzip -t dist/pkg_decarocourses_1.0.0.zip
+          test -f dist/com_decarocourses_1.0.1.zip
+          test -f dist/pkg_decarocourses_1.0.1.zip
+          unzip -t dist/com_decarocourses_1.0.1.zip
+          unzip -t dist/pkg_decarocourses_1.0.1.zip
       - name: Upload Joomla packages
         uses: actions/upload-artifact@v4
         with:
-          name: decarocourses-1.0.0
+          name: decarocourses-1.0.1
           path: |
-            dist/com_decarocourses_1.0.0.zip
-            dist/pkg_decarocourses_1.0.0.zip
+            dist/com_decarocourses_1.0.1.zip
+            dist/pkg_decarocourses_1.0.1.zip

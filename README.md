@@ -7,8 +7,9 @@
 - Pacchetto Joomla: `pkg_decarocourses`
 - Repository GitHub: `xdecaro/courses`
 - Versione iniziale: `1.0.0`
-- ZIP componente: `com_decarocourses_1.0.0.zip`
-- ZIP completo: `pkg_decarocourses_1.0.0.zip`
+- Versione corrente: `1.0.1`
+- ZIP componente: `com_decarocourses_1.0.1.zip`
+- ZIP completo: `pkg_decarocourses_1.0.1.zip`
 
 ## Obiettivo
 
@@ -30,3 +31,7 @@ La UI adotta un design system unico per font, titoli, pulsanti, campi, card, bad
 ## Integrazione Forms by xdecaro
 
 L'integrazione è opzionale. Ogni edizione può memorizzare l'ID di un modulo di `com_decaroforms`; in assenza di Forms, Courses continua a funzionare normalmente.
+
+## 1.0.1
+
+Correzione installazione database: i percorsi SQL del manifest sono stati corretti e aggiunto lo schema di aggiornamento Joomla per creare automaticamente le tabelle mancanti nelle installazioni 1.0.0.

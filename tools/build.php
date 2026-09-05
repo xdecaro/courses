@@ -1,7 +1,7 @@
 <?php
-/** Build com_decarocourses_1.0.0.zip and pkg_decarocourses_1.0.0.zip. */
+/** Build com_decarocourses_1.0.1.zip and pkg_decarocourses_1.0.1.zip. */
 $root = dirname(__DIR__);
-$version = '1.0.0';
+$version = '1.0.1';
 $dist = $root . '/dist';
 $componentDir = $root . '/component';
 $packageDir = $root . '/package';
