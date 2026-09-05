@@ -3,8 +3,8 @@
   <fieldset name="details" label="COM_DECAROCOURSES_FIELDSET_DETAILS">
     <field name="id" type="hidden" filter="integer" />
     <field name="title" type="text" label="COM_DECAROCOURSES_FIELD_TITLE" required="true" maxlength="255" filter="string" />
-    <field name="alias" type="text" label="JFIELD_ALIAS_LABEL" maxlength="255" filter="string" />
-    <field name="code" type="text" label="COM_DECAROCOURSES_FIELD_CODE" maxlength="80" filter="string" />
+    <field name="alias" type="text" label="JFIELD_ALIAS_LABEL" description="COM_DECAROCOURSES_FIELD_ALIAS_DESC" hint="COM_DECAROCOURSES_FIELD_AUTO_HINT" maxlength="255" filter="string" />
+    <field name="code" type="text" label="COM_DECAROCOURSES_FIELD_CODE" description="COM_DECAROCOURSES_FIELD_CODE_DESC" hint="COM_DECAROCOURSES_FIELD_AUTO_HINT" maxlength="80" filter="string" />
     <field name="description" type="textarea" label="COM_DECAROCOURSES_FIELD_DESCRIPTION" rows="6" filter="safehtml" />
     <field name="state" type="list" label="JSTATUS" default="1" filter="integer">
       <option value="1">JPUBLISHED</option>
