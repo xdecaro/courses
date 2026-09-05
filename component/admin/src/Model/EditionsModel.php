@@ -9,6 +9,15 @@ use Joomla\Database\QueryInterface;
 
 class EditionsModel extends ListModel
 {
+    private const ALLOWED_STATUSES = [
+        'draft',
+        'registrations_open',
+        'scheduled',
+        'active',
+        'completed',
+        'archived',
+    ];
+
     public function __construct($config = [])
     {
         $config['filter_fields'] ??= [
@@ -52,9 +61,34 @@ class EditionsModel extends ListModel
                 ->bind(':courseId', $courseId, ParameterType::INTEGER);
         }
 
+        $status = trim((string) $this->getState('filter.status', ''));
+
+        if (in_array($status, self::ALLOWED_STATUSES, true)) {
+            $query->where($db->quoteName('e.status') . ' = :status')
+                ->bind(':status', $status);
+        }
+
         $query->order($db->quoteName('e.id') . ' DESC');
 
         return $query;
+    }
+
+    public function getSelectedCourseTitle(): string
+    {
+        $courseId = (int) $this->getState('filter.course_id', 0);
+
+        if ($courseId <= 0) {
+            return '';
+        }
+
+        $db = $this->getDatabase();
+        $query = $db->getQuery(true)
+            ->select($db->quoteName('title'))
+            ->from($db->quoteName('#__decarocourses_courses'))
+            ->where($db->quoteName('id') . ' = :courseId')
+            ->bind(':courseId', $courseId, ParameterType::INTEGER);
+
+        return (string) ($db->setQuery($query)->loadResult() ?? '');
     }
 
     protected function populateState($ordering = 'e.id', $direction = 'DESC'): void
@@ -66,6 +100,10 @@ class EditionsModel extends ListModel
         $this->setState(
             'filter.course_id',
             (int) $this->getUserStateFromRequest($this->context . '.filter.course_id', 'filter_course_id', 0, 'int')
+        );
+        $this->setState(
+            'filter.status',
+            $this->getUserStateFromRequest($this->context . '.filter.status', 'filter_status', '', 'cmd')
         );
 
         parent::populateState($ordering, $direction);
