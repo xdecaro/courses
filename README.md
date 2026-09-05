@@ -7,9 +7,9 @@
 - Pacchetto Joomla: `pkg_decarocourses`
 - Repository GitHub: `xdecaro/courses`
 - Versione iniziale: `1.0.0`
-- Versione corrente: `1.0.8`
-- ZIP componente: `com_decarocourses_1.0.8.zip`
-- ZIP completo: `pkg_decarocourses_1.0.8.zip`
+- Versione corrente: `1.0.9`
+- ZIP componente: `com_decarocourses_1.0.9.zip`
+- ZIP completo: `pkg_decarocourses_1.0.9.zip`
 
 ## Obiettivo
 
@@ -31,6 +31,10 @@ La UI adotta un design system unico per font, titoli, pulsanti, campi, card, bad
 ## Integrazione Forms by xdecaro
 
 L'integrazione è opzionale. Ogni edizione può memorizzare l'ID di un modulo di `com_decaroforms`; in assenza di Forms, Courses continua a funzionare normalmente.
+
+## 1.0.9
+
+Ottimizzato Gestione Corsi per tablet, con riferimento iPad Air: eliminato l'overflow orizzontale della tabella, nascosta la colonna Aggiornato su tablet riportando la data sotto il titolo, ridotte e stabilizzate le colonne secondarie e mantenute le azioni sempre leggibili. La barra filtri ora usa tutta la larghezza disponibile senza lasciare spazio vuoto a destra e resta coerente tra desktop, tablet e smartphone. Differenziate inoltre le azioni Modifica ed Edizioni con una gerarchia visiva più chiara.
 
 ## 1.0.8
 
