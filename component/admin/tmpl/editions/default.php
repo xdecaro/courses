@@ -7,6 +7,11 @@ use Xdecaro\Component\Decarocourses\Administrator\Helper\UiHelper;
 
 $escape = static fn ($value): string => htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
 $courseId = (int) $this->state->get('filter.course_id', 0);
+$statusFilter = (string) $this->state->get('filter.status', '');
+$courseLabel = trim((string) $this->selectedCourseTitle);
+$resetUrl = Route::_(
+    'index.php?option=com_decarocourses&view=editions&filter_search=&filter_status=&filter_course_id=' . $courseId
+);
 ?>
 <form action="<?php echo Route::_('index.php?option=com_decarocourses&view=editions'); ?>" method="post" name="adminForm" id="adminForm">
 <div class="dc-app">
@@ -26,16 +31,35 @@ $courseId = (int) $this->state->get('filter.course_id', 0);
 
   <?php if ($courseId > 0) : ?>
     <div class="dc-filter-notice">
-      <span>Stai visualizzando solo le edizioni del corso <strong>#<?php echo $courseId; ?></strong>.</span>
-      <a href="<?php echo Route::_('index.php?option=com_decarocourses&view=editions&filter_search=&filter_course_id=0'); ?>">Mostra tutte</a>
+      <span>
+        Stai visualizzando le edizioni di
+        <strong>“<?php echo $escape($courseLabel !== '' ? $courseLabel : 'Corso #' . $courseId); ?>”</strong>.
+      </span>
+      <a href="<?php echo Route::_('index.php?option=com_decarocourses&view=editions&filter_search=&filter_status=&filter_course_id=0'); ?>">Mostra tutte</a>
     </div>
   <?php endif; ?>
 
   <section class="dc-card">
     <div class="dc-toolbar" role="search">
-      <input class="form-control" type="search" name="filter_search" value="<?php echo $escape($this->state->get('filter.search')); ?>" placeholder="Cerca corso, edizione o anno…" aria-label="Cerca edizioni">
+      <input
+        class="form-control"
+        type="search"
+        name="filter_search"
+        value="<?php echo $escape($this->state->get('filter.search')); ?>"
+        placeholder="Cerca corso, edizione o anno…"
+        aria-label="Cerca edizioni"
+      >
+      <select class="form-select" name="filter_status" aria-label="Filtra edizioni per stato operativo">
+        <option value=""<?php echo $statusFilter === '' ? ' selected' : ''; ?>>Tutti gli stati</option>
+        <option value="draft"<?php echo $statusFilter === 'draft' ? ' selected' : ''; ?>>Bozza</option>
+        <option value="registrations_open"<?php echo $statusFilter === 'registrations_open' ? ' selected' : ''; ?>>Iscrizioni aperte</option>
+        <option value="scheduled"<?php echo $statusFilter === 'scheduled' ? ' selected' : ''; ?>>Programmato</option>
+        <option value="active"<?php echo $statusFilter === 'active' ? ' selected' : ''; ?>>In corso</option>
+        <option value="completed"<?php echo $statusFilter === 'completed' ? ' selected' : ''; ?>>Concluso</option>
+        <option value="archived"<?php echo $statusFilter === 'archived' ? ' selected' : ''; ?>>Archiviato</option>
+      </select>
       <button class="btn btn-primary" type="submit">Cerca</button>
-      <a class="btn btn-outline-secondary" href="<?php echo Route::_('index.php?option=com_decarocourses&view=editions&filter_search=&filter_course_id=0'); ?>">Azzera</a>
+      <a class="btn btn-outline-secondary" href="<?php echo $resetUrl; ?>">Azzera</a>
     </div>
 
     <?php if (!$this->items) : ?>
