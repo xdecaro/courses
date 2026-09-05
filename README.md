@@ -7,9 +7,9 @@
 - Pacchetto Joomla: `pkg_decarocourses`
 - Repository GitHub: `xdecaro/courses`
 - Versione iniziale: `1.0.0`
-- Versione corrente: `1.0.1`
-- ZIP componente: `com_decarocourses_1.0.1.zip`
-- ZIP completo: `pkg_decarocourses_1.0.1.zip`
+- Versione corrente: `1.0.3`
+- ZIP componente: `com_decarocourses_1.0.3.zip`
+- ZIP completo: `pkg_decarocourses_1.0.3.zip`
 
 ## Obiettivo
 
@@ -31,6 +31,14 @@ La UI adotta un design system unico per font, titoli, pulsanti, campi, card, bad
 ## Integrazione Forms by xdecaro
 
 L'integrazione è opzionale. Ogni edizione può memorizzare l'ID di un modulo di `com_decaroforms`; in assenza di Forms, Courses continua a funzionare normalmente.
+
+## 1.0.3
+
+Prima revisione completa della Gestione Corsi: elenco con filtri e contatori, collegamento rapido alle edizioni, editor corso più chiaro, responsive smartphone, dark mode, validazione dati, alias univoci e controlli ACL nelle viste amministrative. La pipeline GitHub verifica ora sintassi PHP e XML prima di pubblicare gli aggiornamenti Joomla.
+
+## 1.0.2
+
+Aggiunto il canale di aggiornamento automatico del pacchetto Joomla, con build GitHub, pubblicazione degli ZIP versionati e verifica SHA-256.
 
 ## 1.0.1
 
