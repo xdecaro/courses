@@ -13,6 +13,7 @@ class HtmlView extends BaseHtmlView
     public $items;
     public $pagination;
     public $state;
+    public string $selectedCourseTitle = '';
     public bool $canCreate = false;
     public bool $canEdit = false;
     public bool $canEditState = false;
@@ -26,6 +27,7 @@ class HtmlView extends BaseHtmlView
         $this->items = $this->get('Items');
         $this->pagination = $this->get('Pagination');
         $this->state = $this->get('State');
+        $this->selectedCourseTitle = $this->getModel()->getSelectedCourseTitle();
 
         $identity = Factory::getApplication()->getIdentity();
         $this->canCreate = $identity->authorise('core.create', 'com_decarocourses');
