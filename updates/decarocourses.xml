@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<updates>
+  <update>
+    <name>Courses</name>
+    <description>Courses by xdecaro</description>
+    <element>com_decarocourses</element>
+    <type>component</type>
+    <version>1.0.0</version>
+    <infourl title="Courses">https://github.com/xdecaro/courses</infourl>
+    <downloads>
+      <downloadurl type="full" format="zip">https://github.com/xdecaro/courses/releases/download/v1.0.0/com_decarocourses_1.0.0.zip</downloadurl>
+    </downloads>
+    <targetplatform name="joomla" version="6.*" />
+  </update>
+</updates>

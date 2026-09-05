@@ -1,0 +1,35 @@
+name: Build Courses Joomla package
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "component/**"
+      - "package/**"
+      - "tools/build.php"
+      - ".github/workflows/build.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build ZIP
+        run: php tools/build.php
+      - name: Verify package names
+        run: |
+          test -f dist/com_decarocourses_1.0.0.zip
+          test -f dist/pkg_decarocourses_1.0.0.zip
+          unzip -t dist/com_decarocourses_1.0.0.zip
+          unzip -t dist/pkg_decarocourses_1.0.0.zip
+      - name: Upload Joomla packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: decarocourses-1.0.0
+          path: |
+            dist/com_decarocourses_1.0.0.zip
+            dist/pkg_decarocourses_1.0.0.zip
