@@ -1,0 +1,1 @@
+-- Courses 1.0.6: nessuna modifica strutturale al database.
