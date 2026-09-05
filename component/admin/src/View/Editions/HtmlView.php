@@ -29,6 +29,7 @@ class HtmlView extends BaseHtmlView
         $canCreate = $identity->authorise('core.create', 'com_decarocourses');
         $canEdit = $identity->authorise('core.edit', 'com_decarocourses');
         $canEditState = $identity->authorise('core.edit.state', 'com_decarocourses');
+        $hasItems = !empty($this->items);
 
         ToolbarHelper::title(Text::_('COM_DECAROCOURSES_EDITIONS'), 'calendar');
 
@@ -36,11 +37,11 @@ class HtmlView extends BaseHtmlView
             ToolbarHelper::addNew('edition.add');
         }
 
-        if ($canEdit) {
+        if ($hasItems && $canEdit) {
             ToolbarHelper::editList('edition.edit');
         }
 
-        if ($canEditState) {
+        if ($hasItems && $canEditState) {
             ToolbarHelper::publish('editions.publish');
             ToolbarHelper::unpublish('editions.unpublish');
             ToolbarHelper::trash('editions.trash');
