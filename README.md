@@ -7,9 +7,9 @@
 - Pacchetto Joomla: `pkg_decarocourses`
 - Repository GitHub: `xdecaro/courses`
 - Versione iniziale: `1.0.0`
-- Versione corrente: `1.0.7`
-- ZIP componente: `com_decarocourses_1.0.7.zip`
-- ZIP completo: `pkg_decarocourses_1.0.7.zip`
+- Versione corrente: `1.0.8`
+- ZIP componente: `com_decarocourses_1.0.8.zip`
+- ZIP completo: `pkg_decarocourses_1.0.8.zip`
 
 ## Obiettivo
 
@@ -31,6 +31,10 @@ La UI adotta un design system unico per font, titoli, pulsanti, campi, card, bad
 ## Integrazione Forms by xdecaro
 
 L'integrazione è opzionale. Ogni edizione può memorizzare l'ID di un modulo di `com_decaroforms`; in assenza di Forms, Courses continua a funzionare normalmente.
+
+## 1.0.8
+
+Uniformata la barra filtri di Edizioni a quella di Corsi, aggiungendo il filtro per stato operativo. Quando Edizioni viene aperto da un corso specifico, il banner mostra il nome reale del corso anziché il solo ID. Il comando Azzera pulisce ricerca e stato mantenendo il corso selezionato, mentre Mostra tutte rimuove esplicitamente il filtro corso.
 
 ## 1.0.7
 
