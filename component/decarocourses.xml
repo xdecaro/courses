@@ -7,7 +7,7 @@
   <license>GNU General Public License version 2 or later</license>
   <authorEmail></authorEmail>
   <authorUrl>https://github.com/xdecaro/courses</authorUrl>
-  <version>1.0.1</version>
+  <version>1.0.2</version>
   <description>COM_DECAROCOURSES_XML_DESCRIPTION</description>
   <targetplatform name="joomla" version="6.*" />
   <namespace path="src">Xdecaro\Component\Decarocourses</namespace>
@@ -62,8 +62,4 @@
       <schemapath type="mysql">sql/updates/mysql</schemapath>
     </schemas>
   </update>
-
-  <updateservers>
-    <server type="extension" priority="1" name="Courses by xdecaro">https://raw.githubusercontent.com/xdecaro/courses/main/updates/decarocourses.xml</server>
-  </updateservers>
 </extension>

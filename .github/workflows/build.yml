@@ -1,4 +1,4 @@
-name: Build Courses Joomla package
+name: Build and publish Courses package
 
 on:
   push:
@@ -7,29 +7,65 @@ on:
       - "component/**"
       - "package/**"
       - "tools/build.php"
+      - "tools/publish-update.php"
       - ".github/workflows/build.yml"
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Read version
+        id: version
+        shell: bash
+        run: |
+          set -euo pipefail
+          VERSION="$(php -r '$x=simplexml_load_file("package/pkg_decarocourses.xml"); echo trim((string)$x->version);')"
+          test -n "$VERSION"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
       - name: Build ZIP
         run: php tools/build.php
-      - name: Verify package names
+
+      - name: Verify installable packages
+        shell: bash
         run: |
-          test -f dist/com_decarocourses_1.0.1.zip
-          test -f dist/pkg_decarocourses_1.0.1.zip
-          unzip -t dist/com_decarocourses_1.0.1.zip
-          unzip -t dist/pkg_decarocourses_1.0.1.zip
+          set -euo pipefail
+          VERSION="${{ steps.version.outputs.version }}"
+          test -f "dist/com_decarocourses_${VERSION}.zip"
+          test -f "dist/pkg_decarocourses_${VERSION}.zip"
+          unzip -t "dist/com_decarocourses_${VERSION}.zip"
+          unzip -t "dist/pkg_decarocourses_${VERSION}.zip"
+          unzip -p "dist/com_decarocourses_${VERSION}.zip" decarocourses.xml | grep -F "<version>${VERSION}</version>"
+          unzip -p "dist/pkg_decarocourses_${VERSION}.zip" pkg_decarocourses.xml | grep -F "<version>${VERSION}</version>"
+
+      - name: Publish update channel files
+        run: php tools/publish-update.php
+
+      - name: Commit repository release
+        shell: bash
+        run: |
+          set -euo pipefail
+          VERSION="${{ steps.version.outputs.version }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "releases/${VERSION}" updates/pkg_decarocourses.xml
+          if git diff --cached --quiet; then
+            echo "Release ${VERSION} already published with identical files."
+            exit 0
+          fi
+          git commit -m "Publish Courses ${VERSION} update package"
+          git push
+
       - name: Upload Joomla packages
         uses: actions/upload-artifact@v4
         with:
-          name: decarocourses-1.0.1
+          name: decarocourses-${{ steps.version.outputs.version }}
           path: |
-            dist/com_decarocourses_1.0.1.zip
-            dist/pkg_decarocourses_1.0.1.zip
+            dist/com_decarocourses_${{ steps.version.outputs.version }}.zip
+            dist/pkg_decarocourses_${{ steps.version.outputs.version }}.zip
