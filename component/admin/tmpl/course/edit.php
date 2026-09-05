@@ -7,7 +7,7 @@ use Joomla\CMS\Router\Route;
 $escape = static fn ($value): string => htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
 $isNew = empty($this->item->id);
 ?>
-<form action="<?php echo Route::_('index.php?option=com_decarocourses&layout=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::_('index.php?option=com_decarocourses&layout=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
 <div class="dc-app">
   <header class="dc-page-head">
     <div>
@@ -58,8 +58,16 @@ $isNew = empty($this->item->id);
       </section>
     </aside>
   </div>
+
+  <div class="dc-form-actions" aria-label="Azioni corso">
+    <?php if ($this->canSave) : ?>
+      <button class="btn btn-primary" type="submit" onclick="document.getElementById('dc-task').value='course.apply'">Salva</button>
+      <button class="btn btn-outline-primary" type="submit" onclick="document.getElementById('dc-task').value='course.save'">Salva e chiudi</button>
+    <?php endif; ?>
+    <button class="btn btn-outline-secondary" type="submit" formnovalidate onclick="document.getElementById('dc-task').value='course.cancel'">Annulla</button>
+  </div>
 </div>
 <?php echo $this->form->getInput('id'); ?>
-<input type="hidden" name="task" value="">
+<input type="hidden" name="task" id="dc-task" value="course.apply">
 <?php echo HTMLHelper::_('form.token'); ?>
 </form>
