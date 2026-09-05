@@ -20,11 +20,20 @@ final class UiHelper
             $wa->registerStyle(
                 'com_decarocourses.design',
                 'com_decarocourses/design-system.css',
-                ['version' => '1.0.9']
+                ['version' => '1.0.10']
+            );
+        }
+
+        if (!$wa->assetExists('style', 'com_decarocourses.responsive')) {
+            $wa->registerStyle(
+                'com_decarocourses.responsive',
+                'com_decarocourses/responsive.css',
+                ['version' => '1.0.10']
             );
         }
 
         $wa->useStyle('com_decarocourses.design');
+        $wa->useStyle('com_decarocourses.responsive');
     }
 
     public static function statusLabel(string $status): string
