@@ -11,6 +11,11 @@ use Xdecaro\Component\Decarocourses\Administrator\Helper\UiHelper;
       <h1>Courses</h1>
       <p>Gestione centralizzata di corsi, edizioni, anni accademici e moduli di iscrizione.</p>
     </div>
+    <?php if ($this->canConfigure) : ?>
+      <div class="dc-page-actions">
+        <a class="btn btn-outline-secondary" href="<?php echo Route::_('index.php?option=com_config&view=component&component=com_decarocourses'); ?>">Impostazioni</a>
+      </div>
+    <?php endif; ?>
   </header>
 
   <section class="dc-stats" aria-label="Riepilogo Courses">
