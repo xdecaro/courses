@@ -5,13 +5,23 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Router\Route;
 use Xdecaro\Component\Decarocourses\Administrator\Helper\UiHelper;
 
+$escape = static fn ($value): string => htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
 $courseId = (int) $this->state->get('filter.course_id', 0);
 ?>
 <form action="<?php echo Route::_('index.php?option=com_decarocourses&view=editions'); ?>" method="post" name="adminForm" id="adminForm">
 <div class="dc-app">
   <header class="dc-page-head">
-    <div><span class="dc-eyebrow">AREA SEGRETERIA</span><h1>Edizioni dei corsi</h1><p>Gestisci anno accademico, periodo, capienza, stato e modulo di iscrizione associato.</p></div>
-    <div class="dc-page-actions"><a class="btn btn-outline-secondary" href="<?php echo Route::_('index.php?option=com_decarocourses&view=courses'); ?>">← Corsi</a></div>
+    <div>
+      <span class="dc-eyebrow">AREA SEGRETERIA</span>
+      <h1>Edizioni dei corsi</h1>
+      <p>Gestisci anno accademico, periodo, capienza, stato e modulo di iscrizione associato.</p>
+    </div>
+    <div class="dc-page-actions">
+      <a class="btn btn-outline-secondary" href="<?php echo Route::_('index.php?option=com_decarocourses&view=courses'); ?>">← Corsi</a>
+      <?php if ($this->canCreate) : ?>
+        <a class="btn btn-primary" href="<?php echo Route::_('index.php?option=com_decarocourses&task=edition.add'); ?>">+ Nuova edizione</a>
+      <?php endif; ?>
+    </div>
   </header>
 
   <?php if ($courseId > 0) : ?>
@@ -22,21 +32,71 @@ $courseId = (int) $this->state->get('filter.course_id', 0);
   <?php endif; ?>
 
   <section class="dc-card">
-    <div class="dc-toolbar">
-      <input class="form-control" type="search" name="filter_search" value="<?php echo htmlspecialchars((string) $this->state->get('filter.search'), ENT_QUOTES, 'UTF-8'); ?>" placeholder="Cerca corso, edizione o anno…" aria-label="Cerca edizioni">
+    <div class="dc-toolbar" role="search">
+      <input class="form-control" type="search" name="filter_search" value="<?php echo $escape($this->state->get('filter.search')); ?>" placeholder="Cerca corso, edizione o anno…" aria-label="Cerca edizioni">
       <button class="btn btn-primary" type="submit">Cerca</button>
       <a class="btn btn-outline-secondary" href="<?php echo Route::_('index.php?option=com_decarocourses&view=editions&filter_search=&filter_course_id=0'); ?>">Azzera</a>
     </div>
-    <?php if (!$this->items) : ?><div class="dc-empty"><strong>Nessuna edizione trovata.</strong><span>Crea una nuova edizione oppure modifica i filtri.</span></div><?php else : ?>
-    <div class="dc-table-wrap"><table class="dc-table"><thead><tr><th class="dc-check"><?php echo HTMLHelper::_('grid.checkall'); ?></th><th>Corso</th><th>Edizione</th><th>Anno</th><th>Stato</th><th>Forms</th><th>ID</th></tr></thead><tbody>
-    <?php foreach ($this->items as $i => $item) : ?>
-      <tr><td class="dc-check"><?php echo HTMLHelper::_('grid.id', $i, $item->id); ?></td><td><?php echo htmlspecialchars((string) $item->course_title, ENT_QUOTES, 'UTF-8'); ?></td><td><a class="dc-title-link" href="<?php echo Route::_('index.php?option=com_decarocourses&task=edition.edit&id=' . (int) $item->id); ?>"><?php echo htmlspecialchars((string) $item->title, ENT_QUOTES, 'UTF-8'); ?></a></td><td><?php echo htmlspecialchars((string) $item->academic_year, ENT_QUOTES, 'UTF-8'); ?></td><td><span class="dc-status <?php echo UiHelper::statusClass((string) $item->status); ?>"><?php echo UiHelper::statusLabel((string) $item->status); ?></span></td><td><?php echo (int) $item->forms_form_id > 0 ? '<span class="dc-badge is-info">#' . (int) $item->forms_form_id . '</span>' : '—'; ?></td><td><?php echo (int) $item->id; ?></td></tr>
-    <?php endforeach; ?>
-    </tbody></table></div>
-    <?php echo $this->pagination->getListFooter(); ?>
+
+    <?php if (!$this->items) : ?>
+      <div class="dc-empty"><strong>Nessuna edizione trovata.</strong><span>Crea una nuova edizione oppure modifica i filtri.</span></div>
+    <?php else : ?>
+      <?php if ($this->canEditState) : ?>
+        <div class="dc-bulk-actions" aria-label="Azioni sulle edizioni selezionate">
+          <span class="dc-bulk-label">Selezionati</span>
+          <button class="btn btn-sm btn-outline-success" type="button" onclick="Joomla.submitbutton('editions.publish')">Pubblica</button>
+          <button class="btn btn-sm btn-outline-secondary" type="button" onclick="Joomla.submitbutton('editions.unpublish')">Sospendi</button>
+          <button class="btn btn-sm btn-outline-danger" type="button" onclick="Joomla.submitbutton('editions.trash')">Cestino</button>
+        </div>
+      <?php endif; ?>
+
+      <div class="dc-table-wrap">
+        <table class="dc-table dc-responsive-table">
+          <thead>
+            <tr>
+              <th class="dc-check"><?php echo HTMLHelper::_('grid.checkall'); ?></th>
+              <th>Corso</th>
+              <th>Edizione</th>
+              <th>Anno</th>
+              <th>Stato</th>
+              <th>Forms</th>
+              <th class="dc-actions-col">Azioni</th>
+            </tr>
+          </thead>
+          <tbody>
+          <?php foreach ($this->items as $i => $item) :
+              $editUrl = Route::_('index.php?option=com_decarocourses&task=edition.edit&id=' . (int) $item->id);
+          ?>
+            <tr>
+              <td class="dc-check" data-label="Seleziona"><?php echo HTMLHelper::_('grid.id', $i, $item->id); ?></td>
+              <td data-label="Corso"><?php echo $escape($item->course_title); ?></td>
+              <td data-label="Edizione">
+                <?php if ($this->canEdit) : ?>
+                  <a class="dc-title-link" href="<?php echo $editUrl; ?>"><?php echo $escape($item->title); ?></a>
+                <?php else : ?>
+                  <strong><?php echo $escape($item->title); ?></strong>
+                <?php endif; ?>
+                <small class="dc-row-subtitle">ID <?php echo (int) $item->id; ?></small>
+              </td>
+              <td data-label="Anno"><?php echo $escape($item->academic_year); ?></td>
+              <td data-label="Stato"><span class="dc-status <?php echo UiHelper::statusClass((string) $item->status); ?>"><?php echo UiHelper::statusLabel((string) $item->status); ?></span></td>
+              <td data-label="Forms"><?php echo (int) $item->forms_form_id > 0 ? '<span class="dc-badge is-info">#' . (int) $item->forms_form_id . '</span>' : '—'; ?></td>
+              <td data-label="Azioni">
+                <?php if ($this->canEdit) : ?>
+                  <div class="dc-row-actions"><a class="btn btn-sm btn-outline-primary" href="<?php echo $editUrl; ?>">Modifica</a></div>
+                <?php else : ?>—<?php endif; ?>
+              </td>
+            </tr>
+          <?php endforeach; ?>
+          </tbody>
+        </table>
+      </div>
+      <div class="dc-pagination"><?php echo $this->pagination->getListFooter(); ?></div>
     <?php endif; ?>
   </section>
 </div>
 <input type="hidden" name="filter_course_id" value="<?php echo $courseId; ?>">
-<input type="hidden" name="task" value=""><input type="hidden" name="boxchecked" value="0"><?php echo HTMLHelper::_('form.token'); ?>
+<input type="hidden" name="task" value="">
+<input type="hidden" name="boxchecked" value="0">
+<?php echo HTMLHelper::_('form.token'); ?>
 </form>
