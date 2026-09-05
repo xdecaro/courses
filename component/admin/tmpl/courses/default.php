@@ -87,15 +87,15 @@ $stateMeta = [
       <?php endif; ?>
 
       <div class="dc-table-wrap">
-        <table class="dc-table dc-responsive-table">
+        <table class="dc-table dc-responsive-table dc-courses-table">
           <thead>
             <tr>
               <th class="dc-check"><?php echo HTMLHelper::_('grid.checkall'); ?></th>
-              <th>Titolo</th>
-              <th>Codice</th>
-              <th>Edizioni</th>
-              <th>Stato</th>
-              <th>Aggiornato</th>
+              <th class="dc-col-title">Titolo</th>
+              <th class="dc-col-code">Codice</th>
+              <th class="dc-col-editions">Edizioni</th>
+              <th class="dc-col-state">Stato</th>
+              <th class="dc-col-updated">Aggiornato</th>
               <th class="dc-actions-col">Azioni</th>
             </tr>
           </thead>
@@ -106,37 +106,37 @@ $stateMeta = [
               $editUrl = Route::_('index.php?option=com_decarocourses&task=course.edit&id=' . (int) $item->id);
               $editionsUrl = Route::_('index.php?option=com_decarocourses&view=editions&filter_search=&filter_course_id=' . (int) $item->id);
               $modified = !empty($item->modified) ? (string) $item->modified : (string) $item->created;
+              $modifiedLabel = $modified !== '' ? HTMLHelper::_('date', $modified, 'd/m/Y H:i') : '—';
           ?>
             <tr>
               <td class="dc-check" data-label="Seleziona"><?php echo HTMLHelper::_('grid.id', $i, $item->id); ?></td>
-              <td data-label="Titolo">
+              <td class="dc-col-title" data-label="Titolo">
                 <?php if ($this->canEdit) : ?>
                   <a class="dc-title-link" href="<?php echo $editUrl; ?>"><?php echo $escape($item->title); ?></a>
                 <?php else : ?>
                   <strong><?php echo $escape($item->title); ?></strong>
                 <?php endif; ?>
                 <small class="dc-row-subtitle">ID <?php echo (int) $item->id; ?></small>
+                <small class="dc-tablet-updated">Aggiornato: <?php echo $modifiedLabel; ?></small>
               </td>
-              <td data-label="Codice">
+              <td class="dc-col-code" data-label="Codice">
                 <?php if ((string) $item->code !== '') : ?>
                   <span class="dc-code"><?php echo $escape($item->code); ?></span>
                 <?php else : ?>—<?php endif; ?>
               </td>
-              <td data-label="Edizioni">
+              <td class="dc-col-editions" data-label="Edizioni">
                 <a class="dc-count-link" href="<?php echo $editionsUrl; ?>" aria-label="Apri le edizioni di <?php echo $escape($item->title); ?>">
                   <?php echo (int) $item->editions_count; ?>
                 </a>
               </td>
-              <td data-label="Stato"><span class="dc-badge <?php echo $meta['class']; ?>"><?php echo $meta['label']; ?></span></td>
-              <td data-label="Aggiornato" class="dc-meta">
-                <?php echo $modified !== '' ? HTMLHelper::_('date', $modified, 'd/m/Y H:i') : '—'; ?>
-              </td>
-              <td data-label="Azioni">
+              <td class="dc-col-state" data-label="Stato"><span class="dc-badge <?php echo $meta['class']; ?>"><?php echo $meta['label']; ?></span></td>
+              <td class="dc-meta dc-col-updated" data-label="Aggiornato"><?php echo $modifiedLabel; ?></td>
+              <td class="dc-col-actions" data-label="Azioni">
                 <div class="dc-row-actions">
                   <?php if ($this->canEdit) : ?>
-                    <a class="btn btn-sm btn-outline-primary" href="<?php echo $editUrl; ?>">Modifica</a>
+                    <a class="btn btn-sm btn-outline-primary dc-row-action-edit" href="<?php echo $editUrl; ?>">Modifica</a>
                   <?php endif; ?>
-                  <a class="btn btn-sm btn-outline-secondary" href="<?php echo $editionsUrl; ?>">Edizioni</a>
+                  <a class="btn btn-sm btn-outline-secondary dc-row-action-related" href="<?php echo $editionsUrl; ?>">Edizioni</a>
                 </div>
               </td>
             </tr>
