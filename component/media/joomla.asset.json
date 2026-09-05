@@ -1,7 +1,7 @@
 {
   "$schema": "https://developer.joomla.org/schemas/json-schema/web_assets.json",
   "name": "com_decarocourses",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "Courses administrator design system",
   "license": "GPL-2.0-or-later",
   "assets": [
@@ -9,7 +9,14 @@
       "name": "com_decarocourses.design",
       "type": "style",
       "uri": "com_decarocourses/design-system.css",
-      "version": "1.0.9"
+      "version": "1.0.10"
+    },
+    {
+      "name": "com_decarocourses.responsive",
+      "type": "style",
+      "uri": "com_decarocourses/responsive.css",
+      "version": "1.0.10",
+      "dependencies": ["com_decarocourses.design"]
     }
   ]
 }
