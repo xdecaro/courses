@@ -4,7 +4,6 @@ namespace Xdecaro\Component\Decarocourses\Administrator\Helper;
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\Uri\Uri;
 
 final class UiHelper
 {
@@ -12,14 +11,16 @@ final class UiHelper
     {
         $document = Factory::getApplication()->getDocument();
         $wa = $document->getWebAssetManager();
-        $styleUri = rtrim(Uri::root(true), '/') . '/media/com_decarocourses/css/design-system.css';
+
+        if (!$wa->assetExists('style', 'com_decarocourses.design')) {
+            $wa->getRegistry()->addExtensionRegistryFile('com_decarocourses');
+        }
 
         if (!$wa->assetExists('style', 'com_decarocourses.design')) {
             $wa->registerStyle(
                 'com_decarocourses.design',
-                $styleUri,
-                [],
-                ['version' => '1.0.4']
+                'com_decarocourses/design-system.css',
+                ['version' => '1.0.5']
             );
         }
 
