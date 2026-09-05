@@ -7,9 +7,9 @@
 - Pacchetto Joomla: `pkg_decarocourses`
 - Repository GitHub: `xdecaro/courses`
 - Versione iniziale: `1.0.0`
-- Versione corrente: `1.0.9`
-- ZIP componente: `com_decarocourses_1.0.9.zip`
-- ZIP completo: `pkg_decarocourses_1.0.9.zip`
+- Versione corrente: `1.0.10`
+- ZIP componente: `com_decarocourses_1.0.10.zip`
+- ZIP completo: `pkg_decarocourses_1.0.10.zip`
 
 ## Obiettivo
 
@@ -31,6 +31,10 @@ La UI adotta un design system unico per font, titoli, pulsanti, campi, card, bad
 ## Integrazione Forms by xdecaro
 
 L'integrazione è opzionale. Ogni edizione può memorizzare l'ID di un modulo di `com_decaroforms`; in assenza di Forms, Courses continua a funzionare normalmente.
+
+## 1.0.10
+
+Rivista la card smartphone di Gestione Corsi secondo il layout a blocchi approvato: checkbox spostata in alto a destra, titolo e ID in testa, dati Codice/Edizioni/Stato/Aggiornato in blocchi compatti e azioni Modifica/Edizioni a due colonne. Modifica ora usa un colore primario pieno mentre Edizioni resta neutro, con adattamento dark mode. Il responsive viene caricato globalmente insieme al design system per mantenere lo stesso comportamento nelle viste amministrative.
 
 ## 1.0.9
 
