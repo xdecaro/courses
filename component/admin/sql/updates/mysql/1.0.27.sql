@@ -1,0 +1,2 @@
+-- Courses 1.0.27
+-- No database schema changes in this release.
