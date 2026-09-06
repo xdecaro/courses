@@ -4,7 +4,9 @@ namespace Xdecaro\Component\Decarocourses\Administrator\Model;
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\Database\ParameterType;
 
 class CourseModel extends AdminModel
 {
@@ -36,6 +38,33 @@ class CourseModel extends AdminModel
         }
 
         return parent::save($data);
+    }
+
+    protected function canDelete($record): bool
+    {
+        if (!parent::canDelete($record)) {
+            return false;
+        }
+
+        $id = (int) ($record->id ?? 0);
+
+        if ($id <= 0) {
+            return false;
+        }
+
+        $db = $this->getDatabase();
+        $query = $db->getQuery(true)
+            ->select('COUNT(*)')
+            ->from($db->quoteName('#__decarocourses_editions'))
+            ->where($db->quoteName('course_id') . ' = :courseId')
+            ->bind(':courseId', $id, ParameterType::INTEGER);
+
+        if ((int) $db->setQuery($query)->loadResult() > 0) {
+            $this->setError(Text::_('COM_DECAROCOURSES_ERROR_COURSE_DELETE_HAS_EDITIONS'));
+            return false;
+        }
+
+        return true;
     }
 
     protected function loadFormData()
