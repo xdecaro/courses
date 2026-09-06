@@ -7,9 +7,9 @@
 - Pacchetto Joomla: `pkg_decarocourses`
 - Repository GitHub: `xdecaro/courses`
 - Versione iniziale: `1.0.0`
-- Versione corrente: `1.0.26`
-- ZIP componente: `com_decarocourses_1.0.26.zip`
-- ZIP completo: `pkg_decarocourses_1.0.26.zip`
+- Versione corrente: `1.0.27`
+- ZIP componente: `com_decarocourses_1.0.27.zip`
+- ZIP completo: `pkg_decarocourses_1.0.27.zip`
 
 ## Obiettivo
 
@@ -32,6 +32,10 @@ La UI adotta un design system unico per font, titoli, pulsanti, campi, card, bad
 ## Integrazione Forms by xdecaro
 
 L'integrazione è opzionale. Ogni edizione può memorizzare l'ID di un modulo di `com_decaroforms`; in assenza di Forms, Courses continua a funzionare normalmente.
+
+## 1.0.27
+
+Introdotto un livello responsive adattivo basato sulla larghezza reale disponibile a `.dc-app`, tramite container queries caricate dopo gli asset esistenti. Corsi, Edizioni, editor, tabelle, filtri, card, griglie e controlli live non dipendono più soltanto dalla larghezza della finestra: quando il menu amministrativo Joomla viene aperto, la finestra viene affiancata o lo spazio disponibile si riduce, il layout si ricompone automaticamente senza compressioni o overflow. Uniformate inoltre le label dei form, incluse `Tipo periodo` e `Anno / Periodo`, e normalizzato il ritmo verticale mobile fra Periodo, Nuovo anno, Formula e Formula personalizzata. Aggiunta la nuova voce amministrativa `Informazioni` con versioni componente/pacchetto, Joomla/PHP, schema database, stato delle tabelle, integrazione Forms, update server e diagnostica copiabile priva di password, token e dati personali. Nessuna modifica distruttiva a dati o schema database.
 
 ## 1.0.26
 
@@ -99,7 +103,7 @@ Release di consolidamento UI. Introdotto un sistema pulsanti proprietario di Cou
 
 ## 1.0.10
 
-Rivista la card smartphone di Gestione Corsi secondo il layout a blocchi approvato: checkbox spostata in alto a destra, titolo e ID in testa, dati Codice/Edizioni/Stato/Aggiornato in blocchi compatti e azioni Modifica/Edizioni a due colonne. Modifica ora usa un colore primario pieno mentre Edizioni resta neutro, con adattamento dark mode. Il responsive viene caricato globalmente insieme al design system per mantenere lo stesso comportamento nelle viste amministrative.
+Rivista la card smartphone di Gestione Corsi secondo il layout a blocchi approvato: checkbox spostata in alto a destra, titolo e ID in testa, dati Codice/Edizioni/Stato/Aggiornato in blocchi compatti e azioni Modifica/Edizioni a due colonne. Modifica ora usa un colore primario pieno mentre Edizioni resta neutro, con adattamento dark mode.
 
 ## 1.0.9
 
