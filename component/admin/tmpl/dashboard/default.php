@@ -13,7 +13,7 @@ use Xdecaro\Component\Decarocourses\Administrator\Helper\UiHelper;
     </div>
     <?php if ($this->canConfigure) : ?>
       <div class="dc-page-actions">
-        <a class="btn btn-outline-secondary" href="<?php echo Route::_('index.php?option=com_config&view=component&component=com_decarocourses'); ?>">Impostazioni</a>
+        <a class="btn dc-btn dc-btn-secondary" href="<?php echo Route::_('index.php?option=com_config&view=component&component=com_decarocourses'); ?>">Impostazioni</a>
       </div>
     <?php endif; ?>
   </header>
