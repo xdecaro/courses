@@ -7,9 +7,9 @@
 - Pacchetto Joomla: `pkg_decarocourses`
 - Repository GitHub: `xdecaro/courses`
 - Versione iniziale: `1.0.0`
-- Versione corrente: `1.0.27`
-- ZIP componente: `com_decarocourses_1.0.27.zip`
-- ZIP completo: `pkg_decarocourses_1.0.27.zip`
+- Versione corrente: `1.0.28`
+- ZIP componente: `com_decarocourses_1.0.28.zip`
+- ZIP completo: `pkg_decarocourses_1.0.28.zip`
 
 ## Obiettivo
 
@@ -32,6 +32,10 @@ La UI adotta un design system unico per font, titoli, pulsanti, campi, card, bad
 ## Integrazione Forms by xdecaro
 
 L'integrazione è opzionale. Ogni edizione può memorizzare l'ID di un modulo di `com_decaroforms`; in assenza di Forms, Courses continua a funzionare normalmente.
+
+## 1.0.28
+
+Consolidata la strategia responsive delle gestioni amministrative: desktop e tablet privilegiano la vista lista/tabella, mentre la modalità card resta riservata alle larghezze realmente da smartphone. Le regole adattive tengono conto della larghezza effettiva di Courses anche con menu Joomla aperto, senza sovrapposizioni fra label, valori, badge o azioni. Le statistiche di Gestione Corsi restano in quattro colonne finché lo spazio desktop lo consente e passano a 2+2 su tablet. Aggiunte anche quattro statistiche cliccabili in Edizioni — Totale edizioni, Iscrizioni aperte, Programmate e Attive — rispettando l'eventuale filtro corso. Nell'editor Edizione la configurazione è ora una griglia coordinata: Tipo periodo e Formula sono allineati sulla prima riga, Anno / Periodo e Formula personalizzata sulla seconda, mentre su smartphone l'ordine resta verticale e naturale. Nessuna modifica distruttiva a dati o schema database.
 
 ## 1.0.27
 
