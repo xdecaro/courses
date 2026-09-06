@@ -1,0 +1,2 @@
+-- Courses 1.0.28: responsive/list/statistics refinement only.
+-- No database schema changes are required.
