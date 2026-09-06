@@ -5,6 +5,7 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
+use Xdecaro\Component\Decarocourses\Administrator\Helper\AdminToolbarHelper;
 use Xdecaro\Component\Decarocourses\Administrator\Helper\UiHelper;
 
 class HtmlView extends BaseHtmlView
@@ -22,6 +23,8 @@ class HtmlView extends BaseHtmlView
         $identity = Factory::getApplication()->getIdentity();
         $this->canConfigure = $identity->authorise('core.admin', 'com_decarocourses')
             || $identity->authorise('core.options', 'com_decarocourses');
+
+        AdminToolbarHelper::dashboard($this->canConfigure);
 
         parent::display($tpl);
     }

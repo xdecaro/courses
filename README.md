@@ -7,9 +7,9 @@
 - Pacchetto Joomla: `pkg_decarocourses`
 - Repository GitHub: `xdecaro/courses`
 - Versione iniziale: `1.0.0`
-- Versione corrente: `1.0.23`
-- ZIP componente: `com_decarocourses_1.0.23.zip`
-- ZIP completo: `pkg_decarocourses_1.0.23.zip`
+- Versione corrente: `1.0.24`
+- ZIP componente: `com_decarocourses_1.0.24.zip`
+- ZIP completo: `pkg_decarocourses_1.0.24.zip`
 
 ## Obiettivo
 
@@ -32,6 +32,10 @@ La UI adotta un design system unico per font, titoli, pulsanti, campi, card, bad
 ## Integrazione Forms by xdecaro
 
 L'integrazione è opzionale. Ogni edizione può memorizzare l'ID di un modulo di `com_decaroforms`; in assenza di Forms, Courses continua a funzionare normalmente.
+
+## 1.0.24
+
+Ripristinata e centralizzata la toolbar amministrativa nativa Joomla in tutte le viste di `com_decarocourses`. Le azioni globali `Nuovo`, `Salva`, `Salva e chiudi`, `Annulla`, `Pubblica`, `Sospendi`, `Cestino`, eliminazione definitiva e `Opzioni` ora usano `ToolbarHelper` tramite un helper amministrativo comune, senza toolbar simulate nel contenuto. Rimossi i grandi blocchi di azioni da liste ed editor; restano nel contenuto soltanto azioni contestuali del singolo record, come l'apertura delle Edizioni di un corso. Le liste usano la selezione multipla e il comportamento disabilitato nativo Joomla. Rafforzati anche i controlli ACL lato controller/modello, inclusa la protezione server-side di `state` e `ordering` per chi non dispone di `core.edit.state`, e impedito il salvataggio dalla UI di record bloccati da un altro utente. L'editor carica gli asset Joomla `keepalive` e `form.validate`; la creazione di una nuova Edizione mantiene il corso filtrato nel redirect. Rimossi il vecchio JavaScript mobile dedicato alla barra Salva fissa e il relativo CSS, perché le azioni editor sono ora gestite dalla toolbar responsive nativa Joomla. Nessuna modifica distruttiva ai dati o allo schema database.
 
 ## 1.0.23
 

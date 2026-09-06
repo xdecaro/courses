@@ -12,7 +12,6 @@ $stats = $this->stats ?: (object) ['total' => 0, 'active' => 0, 'inactive' => 0,
 
 $listUrl = 'index.php?option=com_decarocourses&view=courses';
 $resetUrl = Route::_($listUrl . '&filter_search=&filter_state=');
-$newCourseUrl = Route::_('index.php?option=com_decarocourses&task=course.add');
 
 $stateMeta = [
     1 => ['label' => Text::_('COM_DECAROCOURSES_STATE_ACTIVE'), 'class' => 'is-success'],
@@ -28,11 +27,6 @@ $stateMeta = [
       <h1><?php echo Text::_('COM_DECAROCOURSES_COURSES_TITLE'); ?></h1>
       <p><?php echo Text::_('COM_DECAROCOURSES_COURSES_DESCRIPTION'); ?></p>
     </div>
-    <?php if ($this->canCreate) : ?>
-      <div class="dc-page-actions">
-        <a class="btn dc-btn dc-btn-primary" href="<?php echo $newCourseUrl; ?>"><?php echo Text::_('COM_DECAROCOURSES_ACTION_NEW_COURSE'); ?></a>
-      </div>
-    <?php endif; ?>
   </header>
 
   <nav class="dc-stats" aria-label="<?php echo $escape(Text::_('COM_DECAROCOURSES_STATS_ARIA')); ?>">
@@ -76,22 +70,6 @@ $stateMeta = [
         <span><?php echo Text::_('COM_DECAROCOURSES_EMPTY_COURSES_HELP'); ?></span>
       </div>
     <?php else : ?>
-      <?php if ($this->canEditState || ($isTrashFilter && $this->canDelete)) : ?>
-        <div class="dc-bulk-actions" aria-label="<?php echo $escape(Text::_('COM_DECAROCOURSES_BULK_ARIA')); ?>">
-          <span class="dc-bulk-label"><?php echo Text::_('COM_DECAROCOURSES_BULK_SELECTED'); ?></span>
-          <?php if ($this->canEditState) : ?>
-            <button class="btn dc-btn dc-btn-success" type="button" data-dc-bulk-action disabled aria-disabled="true" onclick="Joomla.submitbutton('courses.publish')"><?php echo Text::_('COM_DECAROCOURSES_ACTION_PUBLISH'); ?></button>
-            <?php if (!$isTrashFilter) : ?>
-              <button class="btn dc-btn dc-btn-neutral" type="button" data-dc-bulk-action disabled aria-disabled="true" onclick="Joomla.submitbutton('courses.unpublish')"><?php echo Text::_('COM_DECAROCOURSES_ACTION_SUSPEND'); ?></button>
-              <button class="btn dc-btn dc-btn-danger" type="button" data-dc-bulk-action disabled aria-disabled="true" onclick="Joomla.submitbutton('courses.trash')"><?php echo Text::_('COM_DECAROCOURSES_ACTION_TRASH'); ?></button>
-            <?php endif; ?>
-          <?php endif; ?>
-          <?php if ($isTrashFilter && $this->canDelete) : ?>
-            <button class="btn dc-btn dc-btn-danger-solid" type="button" data-dc-bulk-action disabled aria-disabled="true" onclick="Joomla.submitbutton('courses.delete')"><?php echo Text::_('COM_DECAROCOURSES_ACTION_DELETE_PERMANENTLY'); ?></button>
-          <?php endif; ?>
-        </div>
-      <?php endif; ?>
-
       <div class="dc-table-wrap dc-courses-table-wrap">
         <table class="dc-table dc-responsive-table dc-courses-table">
           <thead>

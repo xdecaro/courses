@@ -11,7 +11,6 @@ $courseId = (int) $this->state->get('filter.course_id', 0);
 $statusFilter = (string) $this->state->get('filter.status', '');
 $courseLabel = trim((string) $this->selectedCourseTitle);
 $resetUrl = Route::_('index.php?option=com_decarocourses&view=editions&filter_search=&filter_status=&filter_course_id=' . $courseId);
-$newEditionUrl = Route::_('index.php?option=com_decarocourses&task=edition.add' . ($courseId > 0 ? '&course_id=' . $courseId : ''));
 ?>
 <form action="<?php echo Route::_('index.php?option=com_decarocourses&view=editions'); ?>" method="post" name="adminForm" id="adminForm">
 <div class="dc-app">
@@ -20,12 +19,6 @@ $newEditionUrl = Route::_('index.php?option=com_decarocourses&task=edition.add' 
       <span class="dc-eyebrow"><?php echo Text::_('COM_DECAROCOURSES_AREA_OFFICE'); ?></span>
       <h1><?php echo Text::_('COM_DECAROCOURSES_EDITIONS_TITLE'); ?></h1>
       <p><?php echo Text::_('COM_DECAROCOURSES_EDITIONS_DESCRIPTION'); ?></p>
-    </div>
-    <div class="dc-page-actions">
-      <a class="btn dc-btn dc-btn-secondary" href="<?php echo Route::_('index.php?option=com_decarocourses&view=courses'); ?>"><?php echo Text::_('COM_DECAROCOURSES_BACK_TO_COURSES_SHORT'); ?></a>
-      <?php if ($this->canCreate) : ?>
-        <a class="btn dc-btn dc-btn-primary" href="<?php echo $newEditionUrl; ?>"><?php echo Text::_('COM_DECAROCOURSES_ACTION_NEW_EDITION'); ?></a>
-      <?php endif; ?>
     </div>
   </header>
 
@@ -65,15 +58,6 @@ $newEditionUrl = Route::_('index.php?option=com_decarocourses&task=edition.add' 
         <span><?php echo Text::_($courseId > 0 ? 'COM_DECAROCOURSES_EMPTY_EDITIONS_COURSE_HELP' : 'COM_DECAROCOURSES_EMPTY_EDITIONS_HELP'); ?></span>
       </div>
     <?php else : ?>
-      <?php if ($this->canEditState) : ?>
-        <div class="dc-bulk-actions" aria-label="<?php echo $escape(Text::_('COM_DECAROCOURSES_EDITIONS_BULK_ARIA')); ?>">
-          <span class="dc-bulk-label"><?php echo Text::_('COM_DECAROCOURSES_BULK_SELECTED'); ?></span>
-          <button class="btn dc-btn dc-btn-success" type="button" data-dc-bulk-action disabled aria-disabled="true" onclick="Joomla.submitbutton('editions.publish')"><?php echo Text::_('COM_DECAROCOURSES_ACTION_PUBLISH'); ?></button>
-          <button class="btn dc-btn dc-btn-neutral" type="button" data-dc-bulk-action disabled aria-disabled="true" onclick="Joomla.submitbutton('editions.unpublish')"><?php echo Text::_('COM_DECAROCOURSES_ACTION_SUSPEND'); ?></button>
-          <button class="btn dc-btn dc-btn-danger" type="button" data-dc-bulk-action disabled aria-disabled="true" onclick="Joomla.submitbutton('editions.trash')"><?php echo Text::_('COM_DECAROCOURSES_ACTION_TRASH'); ?></button>
-        </div>
-      <?php endif; ?>
-
       <div class="dc-table-wrap dc-editions-table-wrap">
         <table class="dc-table dc-responsive-table dc-editions-table">
           <thead>

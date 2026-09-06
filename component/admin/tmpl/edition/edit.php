@@ -8,8 +8,6 @@ use Joomla\CMS\Router\Route;
 
 $escape = static fn ($value): string => htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
 $isNew = empty($this->item->id);
-$courseId = (int) ($this->form->getValue('course_id') ?: 0);
-$backUrl = Route::_('index.php?option=com_decarocourses&view=editions&filter_search=&filter_status=&filter_course_id=' . $courseId);
 
 $periodValue = trim((string) $this->form->getValue('academic_year'));
 $periodType = preg_match('/^\d{4}\/\d{4}$/', $periodValue) === 1 ? 'academic' : 'single';
@@ -24,8 +22,6 @@ if (preg_match('/^(\d{4})/', $periodValue, $periodMatches) === 1) {
     }
 }
 
-// Keep the selector intentionally compact: for a new edition Joomla's current
-// year is the only initial option; when editing, preserve the saved year.
 $periodYears = [$selectedYear];
 ?>
 <form action="<?php echo Route::_('index.php?option=com_decarocourses&layout=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
@@ -35,9 +31,6 @@ $periodYears = [$selectedYear];
       <span class="dc-eyebrow"><?php echo Text::_('COM_DECAROCOURSES_EDITION_EYEBROW'); ?></span>
       <h1><?php echo $isNew ? Text::_('COM_DECAROCOURSES_EDITION_NEW') : $escape($this->item->title); ?></h1>
       <p><?php echo Text::_('COM_DECAROCOURSES_EDITION_FORM_DESCRIPTION'); ?></p>
-    </div>
-    <div class="dc-page-actions">
-      <a class="btn dc-btn dc-btn-secondary" href="<?php echo $backUrl; ?>"><?php echo Text::_('COM_DECAROCOURSES_BACK_TO_EDITIONS'); ?></a>
     </div>
   </header>
 
@@ -180,16 +173,8 @@ $periodYears = [$selectedYear];
       </div>
     </div>
   </dialog>
-
-  <div class="dc-form-actions dc-edition-form-actions" data-dc-edition-actions aria-label="<?php echo $escape(Text::_('COM_DECAROCOURSES_EDITION_ACTIONS_ARIA')); ?>">
-    <?php if ($this->canSave) : ?>
-      <button class="btn dc-btn dc-btn-primary" type="submit" onclick="document.getElementById('dc-task').value='edition.apply'"><?php echo Text::_('COM_DECAROCOURSES_ACTION_SAVE'); ?></button>
-      <button class="btn dc-btn dc-btn-secondary" type="submit" onclick="document.getElementById('dc-task').value='edition.save'"><?php echo Text::_('COM_DECAROCOURSES_ACTION_SAVE_CLOSE'); ?></button>
-    <?php endif; ?>
-    <button class="btn dc-btn dc-btn-neutral" type="submit" formnovalidate onclick="document.getElementById('dc-task').value='edition.cancel'"><?php echo Text::_('COM_DECAROCOURSES_ACTION_CANCEL'); ?></button>
-  </div>
 </div>
 <?php echo $this->form->getInput('id'); ?>
-<input type="hidden" name="task" id="dc-task" value="edition.apply">
+<input type="hidden" name="task" value="">
 <?php echo HTMLHelper::_('form.token'); ?>
 </form>

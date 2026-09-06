@@ -1,62 +1,6 @@
 (() => {
   'use strict';
 
-  const initBulkActions = () => {
-    const form = document.querySelector('.dc-app')?.closest('form#adminForm')
-      || document.querySelector('form#adminForm');
-
-    if (!form) {
-      return;
-    }
-
-    const bulkButtons = [...form.querySelectorAll('[data-dc-bulk-action]')];
-
-    if (!bulkButtons.length) {
-      return;
-    }
-
-    const getRowCheckboxes = () => [...form.querySelectorAll('input[name="cid[]"]')];
-    const boxchecked = form.querySelector('input[name="boxchecked"]');
-    let updateQueued = false;
-
-    const updateState = () => {
-      const selectedCount = getRowCheckboxes().filter((checkbox) => checkbox.checked).length;
-      const hasSelection = selectedCount > 0;
-
-      if (boxchecked) {
-        boxchecked.value = String(selectedCount);
-      }
-
-      bulkButtons.forEach((button) => {
-        button.disabled = !hasSelection;
-        button.setAttribute('aria-disabled', hasSelection ? 'false' : 'true');
-        button.classList.toggle('is-disabled', !hasSelection);
-      });
-    };
-
-    const queueUpdate = () => {
-      if (updateQueued) {
-        return;
-      }
-
-      updateQueued = true;
-      window.requestAnimationFrame(() => {
-        updateQueued = false;
-        updateState();
-      });
-    };
-
-    form.addEventListener('change', (event) => {
-      const target = event.target;
-
-      if (target instanceof HTMLInputElement && target.type === 'checkbox') {
-        queueUpdate();
-      }
-    });
-
-    updateState();
-  };
-
   const initEditionCustomFormat = () => {
     const format = document.getElementById('jform_format');
     const custom = document.getElementById('jform_format_custom');
@@ -279,7 +223,6 @@
   const initJoomlaLayoutOffsets = () => {
     const app = document.querySelector('.dc-app');
     const stickySide = document.querySelector('.dc-edition-sticky-side');
-    const actions = document.querySelector('[data-dc-edition-actions]');
 
     if (!(app instanceof HTMLElement)) {
       return;
@@ -338,27 +281,8 @@
         bottomOffset = Math.max(bottomOffset, window.innerHeight - rect.top);
       });
 
-      const roundedTop = Math.ceil(topOffset);
-      const roundedBottom = Math.ceil(bottomOffset);
-
-      app.style.setProperty('--dc-joomla-sticky-offset', `${roundedTop}px`);
-      app.style.setProperty('--dc-joomla-bottom-offset', `${roundedBottom}px`);
-
-      if (actions instanceof HTMLElement) {
-        const appRect = app.getBoundingClientRect();
-        const actionHeight = Math.ceil(actions.getBoundingClientRect().height);
-
-        app.style.setProperty('--dc-edition-actions-left', `${Math.max(0, Math.round(appRect.left))}px`);
-        app.style.setProperty('--dc-edition-actions-width', `${Math.max(0, Math.round(appRect.width))}px`);
-        app.style.setProperty('--dc-edition-actions-height', `${actionHeight}px`);
-      }
-
-      document.dispatchEvent(new CustomEvent('decarocourses:layoutoffsets', {
-        detail: {
-          top: roundedTop,
-          bottom: roundedBottom
-        }
-      }));
+      app.style.setProperty('--dc-joomla-sticky-offset', `${Math.ceil(topOffset)}px`);
+      app.style.setProperty('--dc-joomla-bottom-offset', `${Math.ceil(bottomOffset)}px`);
     };
 
     const queueUpdate = () => {
@@ -375,7 +299,7 @@
 
     if ('ResizeObserver' in window) {
       const observer = new ResizeObserver(queueUpdate);
-      [app, stickySide, actions, ...getTopCandidates(), ...getBottomCandidates()]
+      [app, stickySide, ...getTopCandidates(), ...getBottomCandidates()]
         .filter((element) => element instanceof HTMLElement)
         .forEach((element) => observer.observe(element));
     }
@@ -400,7 +324,6 @@
   };
 
   const init = () => {
-    initBulkActions();
     initEditionCustomFormat();
     initEditionPeriodBuilder();
     initJoomlaLayoutOffsets();

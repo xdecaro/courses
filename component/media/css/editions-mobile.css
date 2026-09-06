@@ -1,17 +1,9 @@
 /* Mobile refinements for Courses editions. Loaded after the shared responsive rules. */
 
 @media (max-width: 760px) {
-  /* Leave enough real scroll space above Joomla's fixed mobile bar. */
+  /* Keep enough scroll space above Joomla's fixed mobile navigation. */
   .dc-app {
     padding-bottom: calc(var(--dc-joomla-bottom-offset, 72px) + 72px);
-  }
-
-  .dc-edition-page {
-    padding-bottom: calc(
-      var(--dc-edition-actions-height, 64px)
-      + var(--dc-joomla-bottom-offset, 72px)
-      + 48px
-    );
   }
 
   /* Keep course title and ID visually anchored on the left. */
@@ -69,26 +61,6 @@
   .dc-editions-table .dc-col-forms {
     line-height: 1.35;
   }
-
-  /* Fields brought into focus must stop above the fixed action bar. */
-  .dc-edition-page .control-group,
-  .dc-edition-page .dc-period-type,
-  .dc-edition-page .dc-period-year-group,
-  .dc-edition-page .dc-choice-pill,
-  .dc-edition-page input,
-  .dc-edition-page select,
-  .dc-edition-page textarea,
-  .dc-edition-page button {
-    scroll-margin-bottom: calc(
-      var(--dc-edition-actions-height, 64px)
-      + var(--dc-joomla-bottom-offset, 72px)
-      + 32px
-    );
-  }
-
-  .dc-edition-form-actions button {
-    scroll-margin-bottom: 0;
-  }
 }
 
 @media (max-width: 560px) {
@@ -100,26 +72,5 @@
     min-height: 54px;
     grid-template-columns: 88px minmax(0, 1fr);
     padding: 8px 11px;
-  }
-
-  /* Keep all editor actions visible in one compact row on narrow phones. */
-  .dc-edition-form-actions {
-    display: grid;
-    grid-template-columns: minmax(0, .85fr) minmax(0, 1.25fr) minmax(0, .9fr);
-    align-items: stretch;
-    gap: 6px;
-    padding: 6px 8px;
-    bottom: calc(var(--dc-joomla-bottom-offset, 0px) + 16px);
-  }
-
-  .dc-edition-form-actions .btn,
-  .dc-edition-form-actions .btn:last-child {
-    grid-column: auto;
-    width: 100%;
-    min-width: 0;
-    min-height: 42px;
-    padding-inline: 6px;
-    font-size: 12px;
-    white-space: nowrap;
   }
 }

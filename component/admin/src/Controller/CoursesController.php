@@ -3,6 +3,8 @@ namespace Xdecaro\Component\Decarocourses\Administrator\Controller;
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\AdminController;
 
 class CoursesController extends AdminController
@@ -10,5 +12,24 @@ class CoursesController extends AdminController
     public function getModel($name = 'Course', $prefix = 'Administrator', $config = ['ignore_request' => true])
     {
         return parent::getModel($name, $prefix, $config);
+    }
+
+    public function publish()
+    {
+        $this->assertAuthorised('core.edit.state');
+        parent::publish();
+    }
+
+    public function delete()
+    {
+        $this->assertAuthorised('core.delete');
+        parent::delete();
+    }
+
+    private function assertAuthorised(string $action): void
+    {
+        if (!Factory::getApplication()->getIdentity()->authorise($action, 'com_decarocourses')) {
+            throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
     }
 }

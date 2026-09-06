@@ -6,6 +6,7 @@ defined('_JEXEC') or die;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
+use Xdecaro\Component\Decarocourses\Administrator\Helper\AdminToolbarHelper;
 use Xdecaro\Component\Decarocourses\Administrator\Helper\UiHelper;
 
 class HtmlView extends BaseHtmlView
@@ -34,6 +35,8 @@ class HtmlView extends BaseHtmlView
         $this->canEdit = $identity->authorise('core.edit', 'com_decarocourses');
         $this->canEditState = $identity->authorise('core.edit.state', 'com_decarocourses');
         $this->canDelete = $identity->authorise('core.delete', 'com_decarocourses');
+
+        AdminToolbarHelper::editions($this->canCreate, $this->canEditState);
 
         parent::display($tpl);
     }

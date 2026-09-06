@@ -1,7 +1,8 @@
 /* Courses administrator UI refinements. */
 
 /* --------------------------------------------------------------------------
-   Button system
+   Button system for contextual actions inside component content.
+   Global view actions use Joomla's native administrator toolbar.
    -------------------------------------------------------------------------- */
 
 .btn.dc-btn {
@@ -135,8 +136,6 @@
 
 .dc-page-actions .dc-btn,
 .dc-toolbar .dc-btn,
-.dc-bulk-actions .dc-btn,
-.dc-form-actions .dc-btn,
 .dc-row-actions .dc-btn {
   min-height: 42px;
   border-radius: 9px;
@@ -151,10 +150,6 @@
 
 .dc-row-actions .dc-btn {
   padding-inline: 12px;
-}
-
-.dc-bulk-actions .dc-btn {
-  padding-inline: 13px;
 }
 
 /* --------------------------------------------------------------------------
