@@ -23,6 +23,45 @@ if (preg_match('/^(\d{4})/', $periodValue, $periodMatches) === 1) {
 }
 
 $periodYears = [$selectedYear];
+
+$renderLiveSelect = function (string $fieldName, string $source) use ($escape): void {
+    if (!$this->canSave) {
+        echo $this->form->renderField($fieldName);
+        return;
+    }
+
+    $field = $this->form->getField($fieldName);
+
+    if (!$field) {
+        return;
+    }
+
+    $description = trim((string) ($field->description ?? ''));
+    ?>
+    <div class="control-group dc-live-field" data-dc-live-refresh data-dc-source="<?php echo $escape($source); ?>">
+      <div class="control-label"><?php echo $this->form->getLabel($fieldName); ?></div>
+      <div class="controls">
+        <div class="dc-live-select-row">
+          <?php echo $this->form->getInput($fieldName); ?>
+          <button
+            class="btn dc-btn dc-btn-secondary dc-live-refresh-button"
+            type="button"
+            data-dc-live-refresh-button
+            aria-label="<?php echo $escape(Text::_('COM_DECAROCOURSES_ACTION_REFRESH')); ?>"
+            title="<?php echo $escape(Text::_('COM_DECAROCOURSES_ACTION_REFRESH')); ?>"
+          >
+            <span class="icon-refresh" aria-hidden="true"></span>
+            <span><?php echo Text::_('COM_DECAROCOURSES_ACTION_REFRESH'); ?></span>
+          </button>
+        </div>
+        <?php if ($description !== '') : ?>
+          <div class="form-text"><?php echo Text::_($description); ?></div>
+        <?php endif; ?>
+        <div class="dc-live-status" data-dc-live-status aria-live="polite" hidden></div>
+      </div>
+    </div>
+    <?php
+};
 ?>
 <form action="<?php echo Route::_('index.php?option=com_decarocourses&layout=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
 <div class="dc-app dc-edition-page">
@@ -45,7 +84,7 @@ $periodYears = [$selectedYear];
           <p><?php echo Text::_('COM_DECAROCOURSES_EDITION_CONFIGURATION_HELP'); ?></p>
         </div>
         <div class="dc-form-grid dc-form-grid-2">
-          <div class="dc-field-span-2"><?php echo $this->form->renderField('course_id'); ?></div>
+          <div class="dc-field-span-2"><?php $renderLiveSelect('course_id', 'courses'); ?></div>
 
           <div class="dc-edition-config-columns dc-field-span-2">
             <div class="dc-period-builder" data-dc-period-builder>
@@ -114,7 +153,7 @@ $periodYears = [$selectedYear];
         </div>
         <div class="dc-form-grid dc-form-grid-2">
           <div><?php echo $this->form->renderField('capacity'); ?></div>
-          <div><?php echo $this->form->renderField('forms_form_id'); ?></div>
+          <div><?php $renderLiveSelect('forms_form_id', 'forms'); ?></div>
         </div>
       </section>
 
