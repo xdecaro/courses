@@ -13,6 +13,7 @@ class HtmlView extends BaseHtmlView
     public $item;
     public bool $canSave = false;
     public bool $canCreate = false;
+    public bool $canEditState = false;
 
     public function display($tpl = null): void
     {
@@ -25,9 +26,14 @@ class HtmlView extends BaseHtmlView
         $identity = Factory::getApplication()->getIdentity();
 
         $this->canCreate = $identity->authorise('core.create', 'com_decarocourses');
+        $this->canEditState = $identity->authorise('core.edit.state', 'com_decarocourses');
         $this->canSave = $isNew
             ? $this->canCreate
             : $identity->authorise('core.edit', 'com_decarocourses');
+
+        if (!$this->canEditState && $this->form) {
+            $this->form->setFieldAttribute('state', 'disabled', 'true');
+        }
 
         parent::display($tpl);
     }
