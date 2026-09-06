@@ -1,0 +1,2 @@
+-- Courses 1.0.30
+-- No schema changes. State/trash management and deletion safeguards only.
