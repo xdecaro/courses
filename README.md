@@ -7,9 +7,9 @@
 - Pacchetto Joomla: `pkg_decarocourses`
 - Repository GitHub: `xdecaro/courses`
 - Versione iniziale: `1.0.0`
-- Versione corrente: `1.0.19`
-- ZIP componente: `com_decarocourses_1.0.19.zip`
-- ZIP completo: `pkg_decarocourses_1.0.19.zip`
+- Versione corrente: `1.0.20`
+- ZIP componente: `com_decarocourses_1.0.20.zip`
+- ZIP completo: `pkg_decarocourses_1.0.20.zip`
 
 ## Obiettivo
 
@@ -32,6 +32,10 @@ La UI adotta un design system unico per font, titoli, pulsanti, campi, card, bad
 ## Integrazione Forms by xdecaro
 
 L'integrazione è opzionale. Ogni edizione può memorizzare l'ID di un modulo di `com_decaroforms`; in assenza di Forms, Courses continua a funzionare normalmente.
+
+## 1.0.20
+
+Rifinita la visualizzazione della Formula nella lista Edizioni dopo i test reali di salvataggio e persistenza. Quando l'edizione usa `Personalizzato`, la colonna Formula mostra direttamente il valore personalizzato, ad esempio `Test intensivo`, senza il prefisso ridondante `Personalizzato —`. Il database continua a conservare separatamente `format=custom` e `format_custom`, quindi la distinzione tecnica e la validazione restano invariate. Le formule standard continuano a mostrare Annuale, Intensivo, Serale o Weekend. Nessuna modifica ai dati o allo schema del database.
 
 ## 1.0.19
 
