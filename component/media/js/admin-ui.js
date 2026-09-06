@@ -2,7 +2,8 @@
   'use strict';
 
   const initBulkActions = () => {
-    const form = document.querySelector('.dc-app')?.closest('form#adminForm') || document.querySelector('form#adminForm');
+    const form = document.querySelector('.dc-app')?.closest('form#adminForm')
+      || document.querySelector('form#adminForm');
 
     if (!form) {
       return;
@@ -14,44 +15,43 @@
       return;
     }
 
-    const rowCheckboxes = () => [...form.querySelectorAll('input[name="cid[]"]')];
+    const getRowCheckboxes = () => [...form.querySelectorAll('input[name="cid[]"]')];
+    const boxchecked = form.querySelector('input[name="boxchecked"]');
+    let updateQueued = false;
 
     const updateState = () => {
-      const selected = rowCheckboxes().some((checkbox) => checkbox.checked);
+      const selectedCount = getRowCheckboxes().filter((checkbox) => checkbox.checked).length;
+      const hasSelection = selectedCount > 0;
+
+      if (boxchecked) {
+        boxchecked.value = String(selectedCount);
+      }
 
       bulkButtons.forEach((button) => {
-        button.disabled = !selected;
-        button.setAttribute('aria-disabled', selected ? 'false' : 'true');
-        button.classList.toggle('is-disabled', !selected);
+        button.disabled = !hasSelection;
+        button.setAttribute('aria-disabled', hasSelection ? 'false' : 'true');
+        button.classList.toggle('is-disabled', !hasSelection);
+      });
+    };
+
+    const queueUpdate = () => {
+      if (updateQueued) {
+        return;
+      }
+
+      updateQueued = true;
+      window.requestAnimationFrame(() => {
+        updateQueued = false;
+        updateState();
       });
     };
 
     form.addEventListener('change', (event) => {
       const target = event.target;
 
-      if (!(target instanceof HTMLInputElement) || target.type !== 'checkbox') {
-        return;
-      }
-
-      window.setTimeout(updateState, 0);
-    });
-
-    form.addEventListener('click', (event) => {
-      const target = event.target;
-
       if (target instanceof HTMLInputElement && target.type === 'checkbox') {
-        window.setTimeout(updateState, 0);
+        queueUpdate();
       }
-    });
-
-    bulkButtons.forEach((button) => {
-      button.addEventListener('click', (event) => {
-        if (!rowCheckboxes().some((checkbox) => checkbox.checked)) {
-          event.preventDefault();
-          event.stopImmediatePropagation();
-          updateState();
-        }
-      }, true);
     });
 
     updateState();
