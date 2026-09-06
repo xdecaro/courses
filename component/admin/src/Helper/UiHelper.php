@@ -20,7 +20,7 @@ final class UiHelper
             $wa->registerStyle(
                 'com_decarocourses.design',
                 'com_decarocourses/design-system.css',
-                ['version' => '1.0.10']
+                ['version' => '1.0.11']
             );
         }
 
@@ -28,12 +28,22 @@ final class UiHelper
             $wa->registerStyle(
                 'com_decarocourses.responsive',
                 'com_decarocourses/responsive.css',
-                ['version' => '1.0.10']
+                ['version' => '1.0.11']
+            );
+        }
+
+        if (!$wa->assetExists('script', 'com_decarocourses.admin-ui')) {
+            $wa->registerScript(
+                'com_decarocourses.admin-ui',
+                'com_decarocourses/admin-ui.js',
+                ['version' => '1.0.11'],
+                ['defer' => true]
             );
         }
 
         $wa->useStyle('com_decarocourses.design');
         $wa->useStyle('com_decarocourses.responsive');
+        $wa->useScript('com_decarocourses.admin-ui');
     }
 
     public static function statusLabel(string $status): string
