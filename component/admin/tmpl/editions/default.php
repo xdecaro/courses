@@ -22,9 +22,9 @@ $resetUrl = Route::_(
       <p>Gestisci anno accademico, periodo, capienza, stato e modulo di iscrizione associato.</p>
     </div>
     <div class="dc-page-actions">
-      <a class="btn btn-outline-secondary" href="<?php echo Route::_('index.php?option=com_decarocourses&view=courses'); ?>">← Corsi</a>
+      <a class="btn dc-btn dc-btn-secondary" href="<?php echo Route::_('index.php?option=com_decarocourses&view=courses'); ?>">← Corsi</a>
       <?php if ($this->canCreate) : ?>
-        <a class="btn btn-primary" href="<?php echo Route::_('index.php?option=com_decarocourses&task=edition.add'); ?>">+ Nuova edizione</a>
+        <a class="btn dc-btn dc-btn-primary" href="<?php echo Route::_('index.php?option=com_decarocourses&task=edition.add'); ?>">+ Nuova edizione</a>
       <?php endif; ?>
     </div>
   </header>
@@ -58,8 +58,8 @@ $resetUrl = Route::_(
         <option value="completed"<?php echo $statusFilter === 'completed' ? ' selected' : ''; ?>>Concluso</option>
         <option value="archived"<?php echo $statusFilter === 'archived' ? ' selected' : ''; ?>>Archiviato</option>
       </select>
-      <button class="btn btn-primary" type="submit">Cerca</button>
-      <a class="btn btn-outline-secondary" href="<?php echo $resetUrl; ?>">Azzera</a>
+      <button class="btn dc-btn dc-btn-primary" type="submit">Cerca</button>
+      <a class="btn dc-btn dc-btn-secondary" href="<?php echo $resetUrl; ?>">Azzera</a>
     </div>
 
     <?php if (!$this->items) : ?>
@@ -68,9 +68,9 @@ $resetUrl = Route::_(
       <?php if ($this->canEditState) : ?>
         <div class="dc-bulk-actions" aria-label="Azioni sulle edizioni selezionate">
           <span class="dc-bulk-label">Selezionati</span>
-          <button class="btn btn-sm btn-outline-success" type="button" onclick="Joomla.submitbutton('editions.publish')">Pubblica</button>
-          <button class="btn btn-sm btn-outline-secondary" type="button" onclick="Joomla.submitbutton('editions.unpublish')">Sospendi</button>
-          <button class="btn btn-sm btn-outline-danger" type="button" onclick="Joomla.submitbutton('editions.trash')">Cestino</button>
+          <button class="btn dc-btn dc-btn-success" type="button" data-dc-bulk-action disabled aria-disabled="true" onclick="Joomla.submitbutton('editions.publish')">Pubblica</button>
+          <button class="btn dc-btn dc-btn-neutral" type="button" data-dc-bulk-action disabled aria-disabled="true" onclick="Joomla.submitbutton('editions.unpublish')">Sospendi</button>
+          <button class="btn dc-btn dc-btn-danger" type="button" data-dc-bulk-action disabled aria-disabled="true" onclick="Joomla.submitbutton('editions.trash')">Cestino</button>
         </div>
       <?php endif; ?>
 
@@ -107,7 +107,7 @@ $resetUrl = Route::_(
               <td data-label="Forms"><?php echo (int) $item->forms_form_id > 0 ? '<span class="dc-badge is-info">#' . (int) $item->forms_form_id . '</span>' : '—'; ?></td>
               <td data-label="Azioni">
                 <?php if ($this->canEdit) : ?>
-                  <div class="dc-row-actions"><a class="btn btn-sm btn-outline-primary" href="<?php echo $editUrl; ?>">Modifica</a></div>
+                  <div class="dc-row-actions"><a class="btn dc-btn dc-btn-primary" href="<?php echo $editUrl; ?>">Modifica</a></div>
                 <?php else : ?>—<?php endif; ?>
               </td>
             </tr>
