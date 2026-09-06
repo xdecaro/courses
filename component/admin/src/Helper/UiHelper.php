@@ -21,7 +21,7 @@ final class UiHelper
             $wa->registerStyle(
                 'com_decarocourses.design',
                 'com_decarocourses/design-system.css',
-                ['version' => '1.0.22']
+                ['version' => '1.0.23']
             );
         }
 
@@ -29,7 +29,7 @@ final class UiHelper
             $wa->registerStyle(
                 'com_decarocourses.responsive',
                 'com_decarocourses/responsive.css',
-                ['version' => '1.0.22']
+                ['version' => '1.0.23']
             );
         }
 
@@ -37,7 +37,7 @@ final class UiHelper
             $wa->registerStyle(
                 'com_decarocourses.editions',
                 'com_decarocourses/editions.css',
-                ['version' => '1.0.22']
+                ['version' => '1.0.23']
             );
         }
 
@@ -45,7 +45,7 @@ final class UiHelper
             $wa->registerStyle(
                 'com_decarocourses.editions-mobile',
                 'com_decarocourses/editions-mobile.css',
-                ['version' => '1.0.22']
+                ['version' => '1.0.23']
             );
         }
 
@@ -53,7 +53,7 @@ final class UiHelper
             $wa->registerScript(
                 'com_decarocourses.admin-ui',
                 'com_decarocourses/admin-ui.js',
-                ['version' => '1.0.22'],
+                ['version' => '1.0.23'],
                 ['defer' => true]
             );
         }
@@ -62,7 +62,7 @@ final class UiHelper
             $wa->registerScript(
                 'com_decarocourses.mobile-ui',
                 'com_decarocourses/mobile-ui.js',
-                ['version' => '1.0.22'],
+                ['version' => '1.0.23'],
                 ['defer' => true]
             );
         }
