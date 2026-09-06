@@ -1,0 +1,2 @@
+-- Courses 1.0.29
+-- No database schema changes. UI and period-builder cleanup only.
