@@ -2,6 +2,7 @@
 defined('_JEXEC') or die;
 
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Xdecaro\Component\Decarocourses\Administrator\Helper\UiHelper;
 
@@ -9,33 +10,29 @@ $escape = static fn ($value): string => htmlspecialchars((string) $value, ENT_QU
 $courseId = (int) $this->state->get('filter.course_id', 0);
 $statusFilter = (string) $this->state->get('filter.status', '');
 $courseLabel = trim((string) $this->selectedCourseTitle);
-$resetUrl = Route::_(
-    'index.php?option=com_decarocourses&view=editions&filter_search=&filter_status=&filter_course_id=' . $courseId
-);
+$resetUrl = Route::_('index.php?option=com_decarocourses&view=editions&filter_search=&filter_status=&filter_course_id=' . $courseId);
+$newEditionUrl = Route::_('index.php?option=com_decarocourses&task=edition.add' . ($courseId > 0 ? '&course_id=' . $courseId : ''));
 ?>
 <form action="<?php echo Route::_('index.php?option=com_decarocourses&view=editions'); ?>" method="post" name="adminForm" id="adminForm">
 <div class="dc-app">
   <header class="dc-page-head">
     <div>
-      <span class="dc-eyebrow">AREA SEGRETERIA</span>
-      <h1>Edizioni dei corsi</h1>
-      <p>Gestisci anno accademico, periodo, capienza, stato e modulo di iscrizione associato.</p>
+      <span class="dc-eyebrow"><?php echo Text::_('COM_DECAROCOURSES_AREA_OFFICE'); ?></span>
+      <h1><?php echo Text::_('COM_DECAROCOURSES_EDITIONS_TITLE'); ?></h1>
+      <p><?php echo Text::_('COM_DECAROCOURSES_EDITIONS_DESCRIPTION'); ?></p>
     </div>
     <div class="dc-page-actions">
-      <a class="btn dc-btn dc-btn-secondary" href="<?php echo Route::_('index.php?option=com_decarocourses&view=courses'); ?>">← Corsi</a>
+      <a class="btn dc-btn dc-btn-secondary" href="<?php echo Route::_('index.php?option=com_decarocourses&view=courses'); ?>"><?php echo Text::_('COM_DECAROCOURSES_BACK_TO_COURSES_SHORT'); ?></a>
       <?php if ($this->canCreate) : ?>
-        <a class="btn dc-btn dc-btn-primary" href="<?php echo Route::_('index.php?option=com_decarocourses&task=edition.add'); ?>">+ Nuova edizione</a>
+        <a class="btn dc-btn dc-btn-primary" href="<?php echo $newEditionUrl; ?>"><?php echo Text::_('COM_DECAROCOURSES_ACTION_NEW_EDITION'); ?></a>
       <?php endif; ?>
     </div>
   </header>
 
   <?php if ($courseId > 0) : ?>
     <div class="dc-filter-notice">
-      <span>
-        Stai visualizzando le edizioni di
-        <strong>“<?php echo $escape($courseLabel !== '' ? $courseLabel : 'Corso #' . $courseId); ?>”</strong>.
-      </span>
-      <a href="<?php echo Route::_('index.php?option=com_decarocourses&view=editions&filter_search=&filter_status=&filter_course_id=0'); ?>">Mostra tutte</a>
+      <span><?php echo Text::sprintf('COM_DECAROCOURSES_EDITIONS_FILTERED_BY_COURSE', $escape($courseLabel !== '' ? $courseLabel : Text::sprintf('COM_DECAROCOURSES_COURSE_NUMBER', $courseId))); ?></span>
+      <a href="<?php echo Route::_('index.php?option=com_decarocourses&view=editions&filter_search=&filter_status=&filter_course_id=0'); ?>"><?php echo Text::_('COM_DECAROCOURSES_ACTION_SHOW_ALL'); ?></a>
     </div>
   <?php endif; ?>
 
@@ -46,68 +43,69 @@ $resetUrl = Route::_(
         type="search"
         name="filter_search"
         value="<?php echo $escape($this->state->get('filter.search')); ?>"
-        placeholder="Cerca corso, edizione o anno…"
-        aria-label="Cerca edizioni"
+        placeholder="<?php echo $escape(Text::_('COM_DECAROCOURSES_EDITIONS_SEARCH_PLACEHOLDER')); ?>"
+        aria-label="<?php echo $escape(Text::_('COM_DECAROCOURSES_EDITIONS_SEARCH_ARIA')); ?>"
       >
-      <select class="form-select" name="filter_status" aria-label="Filtra edizioni per stato operativo">
-        <option value=""<?php echo $statusFilter === '' ? ' selected' : ''; ?>>Tutti gli stati</option>
-        <option value="draft"<?php echo $statusFilter === 'draft' ? ' selected' : ''; ?>>Bozza</option>
-        <option value="registrations_open"<?php echo $statusFilter === 'registrations_open' ? ' selected' : ''; ?>>Iscrizioni aperte</option>
-        <option value="scheduled"<?php echo $statusFilter === 'scheduled' ? ' selected' : ''; ?>>Programmato</option>
-        <option value="active"<?php echo $statusFilter === 'active' ? ' selected' : ''; ?>>In corso</option>
-        <option value="completed"<?php echo $statusFilter === 'completed' ? ' selected' : ''; ?>>Concluso</option>
-        <option value="archived"<?php echo $statusFilter === 'archived' ? ' selected' : ''; ?>>Archiviato</option>
+      <select class="form-select" name="filter_status" aria-label="<?php echo $escape(Text::_('COM_DECAROCOURSES_EDITIONS_STATUS_FILTER_ARIA')); ?>">
+        <option value=""<?php echo $statusFilter === '' ? ' selected' : ''; ?>><?php echo Text::_('COM_DECAROCOURSES_FILTER_ALL_STATES'); ?></option>
+        <option value="draft"<?php echo $statusFilter === 'draft' ? ' selected' : ''; ?>><?php echo Text::_('COM_DECAROCOURSES_STATUS_DRAFT'); ?></option>
+        <option value="registrations_open"<?php echo $statusFilter === 'registrations_open' ? ' selected' : ''; ?>><?php echo Text::_('COM_DECAROCOURSES_STATUS_REGISTRATIONS_OPEN'); ?></option>
+        <option value="scheduled"<?php echo $statusFilter === 'scheduled' ? ' selected' : ''; ?>><?php echo Text::_('COM_DECAROCOURSES_STATUS_SCHEDULED'); ?></option>
+        <option value="active"<?php echo $statusFilter === 'active' ? ' selected' : ''; ?>><?php echo Text::_('COM_DECAROCOURSES_STATUS_ACTIVE'); ?></option>
+        <option value="completed"<?php echo $statusFilter === 'completed' ? ' selected' : ''; ?>><?php echo Text::_('COM_DECAROCOURSES_STATUS_COMPLETED'); ?></option>
+        <option value="archived"<?php echo $statusFilter === 'archived' ? ' selected' : ''; ?>><?php echo Text::_('COM_DECAROCOURSES_STATUS_ARCHIVED'); ?></option>
       </select>
-      <button class="btn dc-btn dc-btn-primary" type="submit">Cerca</button>
-      <a class="btn dc-btn dc-btn-secondary" href="<?php echo $resetUrl; ?>">Azzera</a>
+      <button class="btn dc-btn dc-btn-primary" type="submit"><?php echo Text::_('COM_DECAROCOURSES_ACTION_SEARCH'); ?></button>
+      <a class="btn dc-btn dc-btn-secondary" href="<?php echo $resetUrl; ?>"><?php echo Text::_('COM_DECAROCOURSES_ACTION_RESET'); ?></a>
     </div>
 
     <?php if (!$this->items) : ?>
-      <div class="dc-empty"><strong>Nessuna edizione trovata.</strong><span>Crea una nuova edizione oppure modifica i filtri.</span></div>
+      <div class="dc-empty">
+        <strong><?php echo Text::_($courseId > 0 ? 'COM_DECAROCOURSES_EMPTY_EDITIONS_COURSE_TITLE' : 'COM_DECAROCOURSES_EMPTY_EDITIONS_TITLE'); ?></strong>
+        <span><?php echo Text::_($courseId > 0 ? 'COM_DECAROCOURSES_EMPTY_EDITIONS_COURSE_HELP' : 'COM_DECAROCOURSES_EMPTY_EDITIONS_HELP'); ?></span>
+      </div>
     <?php else : ?>
       <?php if ($this->canEditState) : ?>
-        <div class="dc-bulk-actions" aria-label="Azioni sulle edizioni selezionate">
-          <span class="dc-bulk-label">Selezionati</span>
-          <button class="btn dc-btn dc-btn-success" type="button" data-dc-bulk-action disabled aria-disabled="true" onclick="Joomla.submitbutton('editions.publish')">Pubblica</button>
-          <button class="btn dc-btn dc-btn-neutral" type="button" data-dc-bulk-action disabled aria-disabled="true" onclick="Joomla.submitbutton('editions.unpublish')">Sospendi</button>
-          <button class="btn dc-btn dc-btn-danger" type="button" data-dc-bulk-action disabled aria-disabled="true" onclick="Joomla.submitbutton('editions.trash')">Cestino</button>
+        <div class="dc-bulk-actions" aria-label="<?php echo $escape(Text::_('COM_DECAROCOURSES_EDITIONS_BULK_ARIA')); ?>">
+          <span class="dc-bulk-label"><?php echo Text::_('COM_DECAROCOURSES_BULK_SELECTED'); ?></span>
+          <button class="btn dc-btn dc-btn-success" type="button" data-dc-bulk-action disabled aria-disabled="true" onclick="Joomla.submitbutton('editions.publish')"><?php echo Text::_('COM_DECAROCOURSES_ACTION_PUBLISH'); ?></button>
+          <button class="btn dc-btn dc-btn-neutral" type="button" data-dc-bulk-action disabled aria-disabled="true" onclick="Joomla.submitbutton('editions.unpublish')"><?php echo Text::_('COM_DECAROCOURSES_ACTION_SUSPEND'); ?></button>
+          <button class="btn dc-btn dc-btn-danger" type="button" data-dc-bulk-action disabled aria-disabled="true" onclick="Joomla.submitbutton('editions.trash')"><?php echo Text::_('COM_DECAROCOURSES_ACTION_TRASH'); ?></button>
         </div>
       <?php endif; ?>
 
-      <div class="dc-table-wrap">
-        <table class="dc-table dc-responsive-table">
+      <div class="dc-table-wrap dc-editions-table-wrap">
+        <table class="dc-table dc-responsive-table dc-editions-table">
           <thead>
             <tr>
-              <th class="dc-check"><?php echo HTMLHelper::_('grid.checkall'); ?></th>
-              <th>Corso</th>
-              <th>Edizione</th>
-              <th>Anno</th>
-              <th>Stato</th>
-              <th>Forms</th>
-              <th class="dc-actions-col">Azioni</th>
+              <th class="dc-check" scope="col"><?php echo HTMLHelper::_('grid.checkall'); ?></th>
+              <th class="dc-col-edition-course" scope="col"><?php echo Text::_('COM_DECAROCOURSES_COLUMN_COURSE'); ?></th>
+              <th class="dc-col-period" scope="col"><?php echo Text::_('COM_DECAROCOURSES_COLUMN_PERIOD'); ?></th>
+              <th class="dc-col-format" scope="col"><?php echo Text::_('COM_DECAROCOURSES_COLUMN_FORMAT'); ?></th>
+              <th class="dc-col-edition-status" scope="col"><?php echo Text::_('COM_DECAROCOURSES_COLUMN_STATE'); ?></th>
+              <th class="dc-col-forms" scope="col"><?php echo Text::_('COM_DECAROCOURSES_COLUMN_FORMS'); ?></th>
+              <th class="dc-actions-col" scope="col"><?php echo Text::_('COM_DECAROCOURSES_COLUMN_ACTIONS'); ?></th>
             </tr>
           </thead>
           <tbody>
           <?php foreach ($this->items as $i => $item) :
               $editUrl = Route::_('index.php?option=com_decarocourses&task=edition.edit&id=' . (int) $item->id);
+              $formsLabel = (int) $item->forms_form_id > 0 ? '#' . (int) $item->forms_form_id : '—';
           ?>
             <tr>
-              <td class="dc-check" data-label="Seleziona"><?php echo HTMLHelper::_('grid.id', $i, $item->id); ?></td>
-              <td data-label="Corso"><?php echo $escape($item->course_title); ?></td>
-              <td data-label="Edizione">
-                <?php if ($this->canEdit) : ?>
-                  <a class="dc-title-link" href="<?php echo $editUrl; ?>"><?php echo $escape($item->title); ?></a>
-                <?php else : ?>
-                  <strong><?php echo $escape($item->title); ?></strong>
-                <?php endif; ?>
+              <td class="dc-check" data-label="<?php echo $escape(Text::_('COM_DECAROCOURSES_ROW_SELECT')); ?>"><?php echo HTMLHelper::_('grid.id', $i, $item->id); ?></td>
+              <td class="dc-col-edition-course" data-label="<?php echo $escape(Text::_('COM_DECAROCOURSES_COLUMN_COURSE')); ?>">
+                <strong class="dc-edition-course-title"><?php echo $escape($item->course_title); ?></strong>
                 <small class="dc-row-subtitle">ID <?php echo (int) $item->id; ?></small>
+                <small class="dc-edition-tablet-forms"><?php echo Text::sprintf('COM_DECAROCOURSES_FORMS_PREFIX', $escape($formsLabel)); ?></small>
               </td>
-              <td data-label="Anno"><?php echo $escape($item->academic_year); ?></td>
-              <td data-label="Stato"><span class="dc-status <?php echo UiHelper::statusClass((string) $item->status); ?>"><?php echo UiHelper::statusLabel((string) $item->status); ?></span></td>
-              <td data-label="Forms"><?php echo (int) $item->forms_form_id > 0 ? '<span class="dc-badge is-info">#' . (int) $item->forms_form_id . '</span>' : '—'; ?></td>
-              <td data-label="Azioni">
+              <td class="dc-col-period" data-label="<?php echo $escape(Text::_('COM_DECAROCOURSES_COLUMN_PERIOD')); ?>"><strong><?php echo $escape($item->academic_year); ?></strong></td>
+              <td class="dc-col-format" data-label="<?php echo $escape(Text::_('COM_DECAROCOURSES_COLUMN_FORMAT')); ?>"><?php echo $escape(UiHelper::formatLabel((string) $item->format, (string) $item->format_custom)); ?></td>
+              <td class="dc-col-edition-status" data-label="<?php echo $escape(Text::_('COM_DECAROCOURSES_COLUMN_STATE')); ?>"><span class="dc-status <?php echo UiHelper::statusClass((string) $item->status); ?>"><?php echo $escape(UiHelper::statusLabel((string) $item->status)); ?></span></td>
+              <td class="dc-col-forms" data-label="<?php echo $escape(Text::_('COM_DECAROCOURSES_COLUMN_FORMS')); ?>"><?php echo (int) $item->forms_form_id > 0 ? '<span class="dc-badge is-info">' . $escape($formsLabel) . '</span>' : '—'; ?></td>
+              <td class="dc-col-actions" data-label="<?php echo $escape(Text::_('COM_DECAROCOURSES_COLUMN_ACTIONS')); ?>">
                 <?php if ($this->canEdit) : ?>
-                  <div class="dc-row-actions"><a class="btn dc-btn dc-btn-primary" href="<?php echo $editUrl; ?>">Modifica</a></div>
+                  <div class="dc-row-actions"><a class="btn dc-btn dc-btn-primary" href="<?php echo $editUrl; ?>"><?php echo Text::_('COM_DECAROCOURSES_ACTION_EDIT'); ?></a></div>
                 <?php else : ?>—<?php endif; ?>
               </td>
             </tr>
