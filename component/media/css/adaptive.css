@@ -1,0 +1,393 @@
+/* Container-aware administrator layout for Courses.
+   Loaded last so the component responds to the real width available inside Joomla,
+   including when the administrator sidebar, split view or DevTools reduce content width. */
+
+.dc-app {
+  container-type: inline-size;
+  container-name: dc-courses;
+}
+
+/* Shared form-label rhythm: custom period labels must match Joomla-rendered labels. */
+.dc-form-section .control-label,
+.dc-form-card .control-label,
+.dc-period-type legend,
+.dc-period-year-group > label {
+  color: var(--dc-text);
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+/* Information view. */
+.dc-information-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.dc-information-card {
+  min-width: 0;
+}
+
+.dc-information-list {
+  display: grid;
+  gap: 0;
+  margin: 0;
+}
+
+.dc-information-row {
+  display: grid;
+  grid-template-columns: minmax(150px, .85fr) minmax(0, 1.15fr);
+  gap: 18px;
+  align-items: start;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--dc-border);
+}
+
+.dc-information-row:last-child {
+  border-bottom: 0;
+}
+
+.dc-information-row dt,
+.dc-information-row dd {
+  min-width: 0;
+  margin: 0;
+}
+
+.dc-information-row dt {
+  color: var(--dc-muted);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.dc-information-row dd {
+  color: var(--dc-text);
+  overflow-wrap: anywhere;
+}
+
+.dc-information-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+.dc-information-copy-status {
+  color: var(--dc-muted);
+  font-size: 12px;
+}
+
+/* Tablet/narrow desktop based on component width, not viewport width. */
+@container dc-courses (max-width: 1100px) {
+  .dc-editor-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .dc-editor-side,
+  .dc-edition-sticky-side {
+    position: static;
+    top: auto;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .dc-grid-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .dc-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .dc-information-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@container dc-courses (max-width: 860px) {
+  .dc-section-head {
+    display: block;
+  }
+
+  .dc-section-head p {
+    max-width: none;
+    margin-top: 8px;
+  }
+
+  .dc-form-grid-2,
+  .dc-edition-config-columns {
+    grid-template-columns: 1fr;
+  }
+
+  .dc-field-span-2 {
+    grid-column: span 1;
+  }
+
+  .dc-edition-config-columns {
+    gap: 22px;
+  }
+
+  .dc-period-builder,
+  .dc-edition-format-column {
+    gap: 20px;
+    padding: 0;
+  }
+
+  .dc-editor-side,
+  .dc-edition-sticky-side {
+    grid-template-columns: 1fr;
+  }
+
+  .dc-toolbar {
+    grid-template-columns: minmax(0, 1fr) minmax(150px, 190px) auto auto;
+  }
+}
+
+/* Card-mode tables activate from available component width too. */
+@container dc-courses (max-width: 760px) {
+  .dc-toolbar {
+    grid-template-columns: 1fr 1fr;
+    align-items: stretch;
+  }
+
+  .dc-toolbar input[type="search"],
+  .dc-toolbar select {
+    grid-column: 1 / -1;
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+  }
+
+  .dc-toolbar .btn {
+    width: 100%;
+  }
+
+  .dc-responsive-table {
+    display: block;
+    min-width: 0;
+    background: transparent;
+  }
+
+  .dc-table-wrap:has(.dc-responsive-table) {
+    overflow: visible;
+    border: 0;
+    background: transparent;
+  }
+
+  .dc-responsive-table thead {
+    display: none;
+  }
+
+  .dc-responsive-table tbody {
+    display: grid;
+    gap: 14px;
+  }
+
+  .dc-responsive-table tr {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    padding: 16px;
+    border: 1px solid var(--dc-border);
+    border-radius: 14px;
+    background: var(--dc-surface);
+    box-shadow: 0 2px 10px rgba(15, 23, 42, .035);
+  }
+
+  .dc-responsive-table td {
+    display: grid;
+    grid-template-columns: 96px minmax(0, 1fr);
+    gap: 12px;
+    align-items: center;
+    width: 100%;
+    margin: 0 0 8px;
+    padding: 11px 13px;
+    border: 1px solid var(--dc-border);
+    border-radius: 10px;
+    background: var(--dc-surface-soft);
+  }
+
+  .dc-responsive-table td::before {
+    content: attr(data-label);
+    justify-self: start;
+    color: var(--dc-muted);
+    font-size: 11px;
+    font-weight: 750;
+    letter-spacing: .03em;
+    text-align: left;
+    text-transform: uppercase;
+  }
+
+  .dc-responsive-table .dc-check {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 2;
+    display: block;
+    width: auto;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    text-align: right;
+  }
+
+  .dc-responsive-table .dc-check::before {
+    display: none;
+    content: none;
+  }
+
+  .dc-courses-table .dc-col-title,
+  .dc-editions-table .dc-col-edition-course {
+    display: block;
+    margin: 0 0 10px;
+    padding: 0 50px 14px 0;
+    border: 0;
+    border-bottom: 1px solid var(--dc-border);
+    border-radius: 0;
+    background: transparent;
+    text-align: left;
+  }
+
+  .dc-courses-table .dc-col-title::before,
+  .dc-editions-table .dc-col-edition-course::before {
+    display: none;
+    content: none;
+  }
+
+  .dc-courses-table .dc-title-link,
+  .dc-editions-table .dc-edition-course-title {
+    display: block;
+    font-size: 19px;
+    line-height: 1.25;
+    text-align: left;
+  }
+
+  .dc-responsive-table .dc-row-subtitle {
+    display: block;
+    margin-top: 5px;
+    color: var(--dc-muted);
+    font-size: 12px;
+    line-height: 1.35;
+    text-align: left;
+  }
+
+  .dc-courses-table .dc-code,
+  .dc-courses-table .dc-count-link,
+  .dc-courses-table .dc-badge,
+  .dc-editions-table .dc-col-period strong,
+  .dc-editions-table .dc-col-format,
+  .dc-editions-table .dc-status,
+  .dc-editions-table .dc-badge,
+  .dc-editions-table .dc-col-forms {
+    justify-self: end;
+    text-align: right;
+  }
+
+  .dc-courses-table .dc-col-actions,
+  .dc-editions-table .dc-col-actions {
+    display: block;
+    margin: 4px 0 0;
+    padding: 6px 0 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+  }
+
+  .dc-courses-table .dc-col-actions::before,
+  .dc-editions-table .dc-col-actions::before {
+    display: none;
+    content: none;
+  }
+
+  .dc-courses-table .dc-row-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    width: 100%;
+  }
+
+  .dc-editions-table .dc-row-actions {
+    display: block;
+    width: 100%;
+  }
+
+  .dc-courses-table .dc-row-actions .dc-btn,
+  .dc-editions-table .dc-row-actions .dc-btn {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .dc-tablet-updated,
+  .dc-edition-tablet-forms {
+    display: none !important;
+  }
+
+  .dc-information-row {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}
+
+@container dc-courses (max-width: 620px) {
+  .dc-period-type-options,
+  .dc-period-year-row,
+  .dc-live-select-row {
+    grid-template-columns: 1fr;
+  }
+
+  .dc-period-year-row .dc-btn,
+  .dc-live-refresh-button {
+    width: 100%;
+  }
+
+  .dc-edition-config-columns {
+    gap: 22px;
+  }
+
+  .dc-period-builder,
+  .dc-edition-format-column {
+    gap: 20px;
+  }
+
+  .dc-stats {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .dc-card {
+    padding: 16px;
+  }
+
+  .dc-page-head {
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+}
+
+@container dc-courses (max-width: 460px) {
+  .dc-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .dc-responsive-table tr {
+    padding: 14px;
+  }
+
+  .dc-responsive-table td {
+    grid-template-columns: 82px minmax(0, 1fr);
+    gap: 10px;
+    padding: 10px 12px;
+  }
+
+  .dc-responsive-table .dc-check {
+    top: 14px;
+    right: 14px;
+  }
+
+  .dc-courses-table .dc-col-title,
+  .dc-editions-table .dc-col-edition-course {
+    padding-right: 46px;
+  }
+}
