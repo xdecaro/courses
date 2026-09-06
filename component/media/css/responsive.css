@@ -1,43 +1,188 @@
-/* Courses responsive refinements: shared across administrator views. */
+/* Courses UI refinements: shared across administrator views. */
 
-.dc-row-action-edit {
+/* --------------------------------------------------------------------------
+   Button system
+   -------------------------------------------------------------------------- */
+
+.btn.dc-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0 14px;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  font-family: var(--dc-font);
+  font-size: 14px;
+  font-weight: 650;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: none;
+  cursor: pointer;
+  transition: background-color .16s ease, border-color .16s ease, color .16s ease, box-shadow .16s ease;
+}
+
+.btn.dc-btn:hover,
+.btn.dc-btn:focus {
+  text-decoration: none;
+}
+
+.btn.dc-btn:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--dc-primary) 28%, transparent);
+  outline-offset: 2px;
+}
+
+.btn.dc-btn-primary {
   border-color: var(--dc-primary);
   background: var(--dc-primary);
   color: #fff;
 }
 
-.dc-row-action-edit:hover,
-.dc-row-action-edit:focus {
+.btn.dc-btn-primary:hover,
+.btn.dc-btn-primary:focus {
   border-color: var(--dc-primary-dark);
   background: var(--dc-primary-dark);
   color: #fff;
 }
 
-.dc-row-action-related {
-  border-color: color-mix(in srgb, var(--dc-primary) 18%, var(--dc-border));
+.btn.dc-btn-secondary {
+  border-color: color-mix(in srgb, var(--dc-primary) 24%, var(--dc-border));
   background: var(--dc-surface-soft);
   color: var(--dc-text);
 }
 
-.dc-row-action-related:hover,
-.dc-row-action-related:focus {
-  border-color: color-mix(in srgb, var(--dc-primary) 42%, var(--dc-border));
+.btn.dc-btn-secondary:hover,
+.btn.dc-btn-secondary:focus {
+  border-color: color-mix(in srgb, var(--dc-primary) 48%, var(--dc-border));
   background: color-mix(in srgb, var(--dc-primary) 7%, var(--dc-surface));
   color: var(--dc-text);
 }
 
-[data-bs-theme="dark"] .dc-row-action-edit,
-[data-bs-theme="dark"] .dc-row-action-edit:hover,
-[data-bs-theme="dark"] .dc-row-action-edit:focus {
+.btn.dc-btn-success {
+  border-color: var(--dc-success);
+  background: var(--dc-success-soft);
+  color: var(--dc-success);
+}
+
+.btn.dc-btn-success:hover,
+.btn.dc-btn-success:focus {
+  border-color: var(--dc-success);
+  background: color-mix(in srgb, var(--dc-success) 14%, var(--dc-surface));
+  color: var(--dc-success);
+}
+
+.btn.dc-btn-neutral {
+  border-color: var(--dc-border);
+  background: var(--dc-surface);
+  color: var(--dc-text);
+}
+
+.btn.dc-btn-neutral:hover,
+.btn.dc-btn-neutral:focus {
+  border-color: color-mix(in srgb, var(--dc-primary) 36%, var(--dc-border));
+  background: var(--dc-surface-soft);
+  color: var(--dc-text);
+}
+
+.btn.dc-btn-danger {
+  border-color: var(--dc-danger);
+  background: var(--dc-danger-soft);
+  color: var(--dc-danger);
+}
+
+.btn.dc-btn-danger:hover,
+.btn.dc-btn-danger:focus {
+  border-color: var(--dc-danger);
+  background: color-mix(in srgb, var(--dc-danger) 14%, var(--dc-surface));
+  color: var(--dc-danger);
+}
+
+.btn.dc-btn-danger-solid {
+  border-color: var(--dc-danger);
+  background: var(--dc-danger);
+  color: #fff;
+}
+
+.btn.dc-btn-danger-solid:hover,
+.btn.dc-btn-danger-solid:focus {
+  border-color: color-mix(in srgb, var(--dc-danger) 82%, #000);
+  background: color-mix(in srgb, var(--dc-danger) 82%, #000);
+  color: #fff;
+}
+
+.btn.dc-btn[disabled],
+.btn.dc-btn.is-disabled,
+.btn.dc-btn[aria-disabled="true"] {
+  opacity: .46;
+  cursor: not-allowed;
+  filter: saturate(.55);
+  box-shadow: none;
+}
+
+[data-bs-theme="dark"] .btn.dc-btn-primary,
+[data-bs-theme="dark"] .btn.dc-btn-primary:hover,
+[data-bs-theme="dark"] .btn.dc-btn-primary:focus {
   color: #101828;
 }
 
+[data-bs-theme="dark"] .btn.dc-btn-danger-solid,
+[data-bs-theme="dark"] .btn.dc-btn-danger-solid:hover,
+[data-bs-theme="dark"] .btn.dc-btn-danger-solid:focus {
+  color: #fff;
+}
+
+.dc-page-actions .dc-btn,
+.dc-toolbar .dc-btn,
+.dc-bulk-actions .dc-btn,
+.dc-form-actions .dc-btn,
+.dc-row-actions .dc-btn {
+  min-height: 42px;
+  border-radius: 9px;
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.dc-row-actions {
+  align-items: center;
+  gap: 8px;
+}
+
+.dc-row-actions .dc-btn {
+  padding-inline: 12px;
+}
+
+.dc-bulk-actions .dc-btn {
+  padding-inline: 13px;
+}
+
+/* --------------------------------------------------------------------------
+   Tablet: Courses table
+   -------------------------------------------------------------------------- */
+
 @media (min-width: 761px) and (max-width: 1024px) {
-  .dc-courses-table .dc-row-action-edit,
-  .dc-courses-table .dc-row-action-related {
-    min-height: 36px;
+  .dc-courses-table .dc-actions-col,
+  .dc-courses-table .dc-col-actions {
+    width: 180px;
+  }
+
+  .dc-courses-table .dc-row-actions {
+    gap: 6px;
+    flex-wrap: nowrap;
+  }
+
+  .dc-courses-table .dc-row-actions .dc-btn {
+    min-height: 42px;
+    padding-inline: 10px;
+    font-size: 14px;
+    font-weight: 650;
   }
 }
+
+/* --------------------------------------------------------------------------
+   Smartphone: approved compact course card (Solution 2)
+   -------------------------------------------------------------------------- */
 
 @media (max-width: 760px) {
   .dc-courses-table-wrap {
@@ -179,16 +324,16 @@
     width: 100%;
   }
 
-  .dc-courses-table .dc-row-actions .btn {
+  .dc-courses-table .dc-row-actions .dc-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     width: 100%;
-    min-height: 44px;
-    padding: 9px 12px;
-    border-radius: 10px;
+    min-height: 42px;
+    padding: 0 12px;
+    border-radius: 9px;
     font-size: 14px;
-    font-weight: 700;
+    font-weight: 650;
   }
 }
 
