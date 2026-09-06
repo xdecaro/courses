@@ -165,7 +165,7 @@
 @media (min-width: 1025px) {
   .dc-edition-sticky-side {
     position: sticky;
-    top: 16px;
+    top: calc(var(--dc-joomla-sticky-offset, 0px) + 16px);
     align-self: start;
   }
 
