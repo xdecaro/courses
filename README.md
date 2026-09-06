@@ -7,9 +7,9 @@
 - Pacchetto Joomla: `pkg_decarocourses`
 - Repository GitHub: `xdecaro/courses`
 - Versione iniziale: `1.0.0`
-- Versione corrente: `1.0.14`
-- ZIP componente: `com_decarocourses_1.0.14.zip`
-- ZIP completo: `pkg_decarocourses_1.0.14.zip`
+- Versione corrente: `1.0.15`
+- ZIP componente: `com_decarocourses_1.0.15.zip`
+- ZIP completo: `pkg_decarocourses_1.0.15.zip`
 
 ## Obiettivo
 
@@ -32,6 +32,10 @@ La UI adotta un design system unico per font, titoli, pulsanti, campi, card, bad
 ## Integrazione Forms by xdecaro
 
 L'integrazione è opzionale. Ogni edizione può memorizzare l'ID di un modulo di `com_decaroforms`; in assenza di Forms, Courses continua a funzionare normalmente.
+
+## 1.0.15
+
+Rifinito l'editor Edizioni dopo il test UI. Il Periodo non usa più un unico select misto: ora si sceglie prima `Anno singolo` oppure `Anno accademico`, poi un secondo elenco mostra solo gli anni coerenti con la scelta. Aggiunto `+ Nuovo anno`, che permette di inserire un nuovo anno di partenza e genera automaticamente il formato `YYYY/YYYY+1` quando è selezionato Anno accademico, mantenendo la validazione server-side già presente e lo stesso campo database `academic_year`. Unificati Stato operativo e Pubblicazione in una sola card `STATO EDIZIONE / Gestione stato`; la colonna laterale è sticky su desktop e resta vincolata all'area dell'editor, quindi non copre la barra finale Salva/Salva e chiudi/Annulla. La sezione Note mantiene la gerarchia uniforme a tre livelli `DETTAGLI / Informazioni aggiuntive / Note`. Aggiornati stili responsive, dark mode, testi IT/EN e asset versionati. Nessuna modifica ai dati o allo schema applicativo.
 
 ## 1.0.14
 
