@@ -86,7 +86,7 @@ $renderLiveSelect = function (string $fieldName, string $source) use ($escape): 
         <div class="dc-form-grid dc-form-grid-2">
           <div class="dc-field-span-2"><?php $renderLiveSelect('course_id', 'courses'); ?></div>
 
-          <div class="dc-edition-config-grid dc-field-span-2">
+          <div class="dc-edition-config-grid dc-field-span-2" data-dc-period-builder>
             <fieldset class="dc-period-type dc-config-period-type">
               <legend><?php echo Text::_('COM_DECAROCOURSES_FIELD_PERIOD_TYPE'); ?> <span class="star" aria-hidden="true">*</span></legend>
               <div class="dc-period-type-options">
