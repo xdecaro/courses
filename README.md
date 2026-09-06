@@ -1,15 +1,15 @@
 # Courses
 
-**Courses** è il componente Joomla per la gestione centralizzata di corsi, edizioni, anni accademici e collegamenti con la piattaforma didattica SILIS.
+**Courses** è il componente Joomla per la gestione centralizzata di corsi, edizioni, periodi didattici e collegamenti con la piattaforma didattica SILIS.
 
 - Nome visibile: `Courses`
 - Componente Joomla: `com_decarocourses`
 - Pacchetto Joomla: `pkg_decarocourses`
 - Repository GitHub: `xdecaro/courses`
 - Versione iniziale: `1.0.0`
-- Versione corrente: `1.0.13`
-- ZIP componente: `com_decarocourses_1.0.13.zip`
-- ZIP completo: `pkg_decarocourses_1.0.13.zip`
+- Versione corrente: `1.0.14`
+- ZIP componente: `com_decarocourses_1.0.14.zip`
+- ZIP completo: `pkg_decarocourses_1.0.14.zip`
 
 ## Obiettivo
 
@@ -19,7 +19,8 @@ Il componente mantiene separati:
 
 - corso;
 - edizione del corso;
-- anno accademico;
+- periodo/anno accademico;
+- formula;
 - stato operativo;
 - periodo iscrizioni;
 - modulo Forms associato.
@@ -31,6 +32,10 @@ La UI adotta un design system unico per font, titoli, pulsanti, campi, card, bad
 ## Integrazione Forms by xdecaro
 
 L'integrazione è opzionale. Ogni edizione può memorizzare l'ID di un modulo di `com_decaroforms`; in assenza di Forms, Courses continua a funzionare normalmente.
+
+## 1.0.14
+
+Redesign e consolidamento completo di Edizioni. Rimosso il Titolo edizione dalla compilazione manuale: il nome interno viene generato automaticamente da corso, periodo e formula. Il campo Anno accademico è diventato Periodo con select controllata per anno singolo (`2026`) o anno accademico (`2026/2027`) e validazione lato server. Aggiunta la formula Weekend e la formula Personalizzato con campo dedicato obbligatorio solo quando necessario, supportata dalla nuova colonna `format_custom` e relativo SQL di aggiornamento. Il campo Posti disponibili chiarisce che `0` significa illimitato. Corretto il caricamento del campo Forms personalizzato e introdotta la lista automatica dei moduli esistenti di Forms by xdecaro, mantenendo Courses funzionante anche senza Forms. L'editor Edizione è stato diviso in card Dati edizione, Calendario, Iscrizioni, Note, Stato edizione e Visibilità, con layout desktop a due aree e adattamento tablet/mobile. La lista Edizioni ora evita il doppione del titolo e mostra Corso, Periodo, Formula, Stato, Forms e Azioni, con card smartphone dedicate, dark mode e stili separati in `editions.css`. Localizzati testi e validazioni IT/EN e mantenuti ACL, token Joomla e query bindate.
 
 ## 1.0.13
 
