@@ -14,6 +14,7 @@ class HtmlView extends BaseHtmlView
     public $items;
     public $pagination;
     public $state;
+    public $stats;
     public string $selectedCourseTitle = '';
     public bool $canCreate = false;
     public bool $canEdit = false;
@@ -28,6 +29,7 @@ class HtmlView extends BaseHtmlView
         $this->items = $this->get('Items');
         $this->pagination = $this->get('Pagination');
         $this->state = $this->get('State');
+        $this->stats = $this->get('Stats');
         $this->selectedCourseTitle = $this->getModel()->getSelectedCourseTitle();
 
         $identity = Factory::getApplication()->getIdentity();
