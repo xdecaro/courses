@@ -24,7 +24,7 @@ $stateMeta = [
     </div>
     <?php if ($this->canCreate) : ?>
       <div class="dc-page-actions">
-        <a class="btn btn-primary" href="<?php echo Route::_('index.php?option=com_decarocourses&task=course.add'); ?>">+ Nuovo corso</a>
+        <a class="btn dc-btn dc-btn-primary" href="<?php echo Route::_('index.php?option=com_decarocourses&task=course.add'); ?>">+ Nuovo corso</a>
       </div>
     <?php endif; ?>
   </header>
@@ -60,8 +60,8 @@ $stateMeta = [
         <option value="0"<?php echo $filterState === '0' ? ' selected' : ''; ?>>Disattivati</option>
         <option value="-2"<?php echo $filterState === '-2' ? ' selected' : ''; ?>>Cestino</option>
       </select>
-      <button class="btn btn-primary" type="submit">Cerca</button>
-      <a class="btn btn-outline-secondary" href="<?php echo Route::_('index.php?option=com_decarocourses&view=courses&filter_search=&filter_state='); ?>">Azzera</a>
+      <button class="btn dc-btn dc-btn-primary" type="submit">Cerca</button>
+      <a class="btn dc-btn dc-btn-secondary" href="<?php echo Route::_('index.php?option=com_decarocourses&view=courses&filter_search=&filter_state='); ?>">Azzera</a>
     </div>
 
     <?php if (!$this->items) : ?>
@@ -74,14 +74,14 @@ $stateMeta = [
         <div class="dc-bulk-actions" aria-label="Azioni sui corsi selezionati">
           <span class="dc-bulk-label">Selezionati</span>
           <?php if ($this->canEditState) : ?>
-            <button class="btn btn-sm btn-outline-success" type="button" onclick="Joomla.submitbutton('courses.publish')">Pubblica</button>
+            <button class="btn dc-btn dc-btn-success" type="button" data-dc-bulk-action disabled aria-disabled="true" onclick="Joomla.submitbutton('courses.publish')">Pubblica</button>
             <?php if ($filterState !== '-2') : ?>
-              <button class="btn btn-sm btn-outline-secondary" type="button" onclick="Joomla.submitbutton('courses.unpublish')">Sospendi</button>
-              <button class="btn btn-sm btn-outline-danger" type="button" onclick="Joomla.submitbutton('courses.trash')">Cestino</button>
+              <button class="btn dc-btn dc-btn-neutral" type="button" data-dc-bulk-action disabled aria-disabled="true" onclick="Joomla.submitbutton('courses.unpublish')">Sospendi</button>
+              <button class="btn dc-btn dc-btn-danger" type="button" data-dc-bulk-action disabled aria-disabled="true" onclick="Joomla.submitbutton('courses.trash')">Cestino</button>
             <?php endif; ?>
           <?php endif; ?>
           <?php if ($filterState === '-2' && $this->canDelete) : ?>
-            <button class="btn btn-sm btn-danger" type="button" onclick="Joomla.submitbutton('courses.delete')">Elimina definitivamente</button>
+            <button class="btn dc-btn dc-btn-danger-solid" type="button" data-dc-bulk-action disabled aria-disabled="true" onclick="Joomla.submitbutton('courses.delete')">Elimina definitivamente</button>
           <?php endif; ?>
         </div>
       <?php endif; ?>
@@ -134,9 +134,9 @@ $stateMeta = [
               <td class="dc-col-actions" data-label="Azioni">
                 <div class="dc-row-actions">
                   <?php if ($this->canEdit) : ?>
-                    <a class="btn btn-sm btn-outline-primary dc-row-action-edit" href="<?php echo $editUrl; ?>">Modifica</a>
+                    <a class="btn dc-btn dc-btn-primary dc-row-action-edit" href="<?php echo $editUrl; ?>">Modifica</a>
                   <?php endif; ?>
-                  <a class="btn btn-sm btn-outline-secondary dc-row-action-related" href="<?php echo $editionsUrl; ?>">Edizioni</a>
+                  <a class="btn dc-btn dc-btn-secondary dc-row-action-related" href="<?php echo $editionsUrl; ?>">Edizioni</a>
                 </div>
               </td>
             </tr>
