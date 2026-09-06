@@ -5,6 +5,7 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Table\Table;
 use Joomla\Database\DatabaseDriver;
 use Joomla\Database\ParameterType;
@@ -25,12 +26,12 @@ class CourseTable extends Table
         $this->state = (int) $this->state;
 
         if ($this->title === '') {
-            $this->setError('Il titolo del corso è obbligatorio.');
+            $this->setError(Text::_('COM_DECAROCOURSES_ERROR_COURSE_TITLE_REQUIRED'));
             return false;
         }
 
         if (mb_strlen($this->title) > 255) {
-            $this->setError('Il titolo del corso è troppo lungo.');
+            $this->setError(Text::_('COM_DECAROCOURSES_ERROR_COURSE_TITLE_TOO_LONG'));
             return false;
         }
 
@@ -39,7 +40,7 @@ class CourseTable extends Table
         }
 
         if (mb_strlen($this->code) > 80) {
-            $this->setError('Il codice del corso è troppo lungo.');
+            $this->setError(Text::_('COM_DECAROCOURSES_ERROR_COURSE_CODE_TOO_LONG'));
             return false;
         }
 
