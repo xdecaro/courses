@@ -57,9 +57,44 @@
     updateState();
   };
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initBulkActions, { once: true });
-  } else {
+  const initEditionCustomFormat = () => {
+    const format = document.getElementById('jform_format');
+    const custom = document.getElementById('jform_format_custom');
+    const wrapper = document.querySelector('[data-dc-format-custom]');
+
+    if (!(format instanceof HTMLSelectElement)
+      || !(custom instanceof HTMLInputElement)
+      || !(wrapper instanceof HTMLElement)) {
+      return;
+    }
+
+    const updateState = () => {
+      const isCustom = format.value === 'custom';
+
+      wrapper.hidden = !isCustom;
+      wrapper.setAttribute('aria-hidden', isCustom ? 'false' : 'true');
+      custom.required = isCustom;
+      custom.classList.toggle('required', isCustom);
+
+      if (isCustom) {
+        custom.setAttribute('aria-required', 'true');
+      } else {
+        custom.removeAttribute('aria-required');
+      }
+    };
+
+    format.addEventListener('change', updateState);
+    updateState();
+  };
+
+  const init = () => {
     initBulkActions();
+    initEditionCustomFormat();
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init, { once: true });
+  } else {
+    init();
   }
 })();
