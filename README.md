@@ -7,9 +7,9 @@
 - Pacchetto Joomla: `pkg_decarocourses`
 - Repository GitHub: `xdecaro/courses`
 - Versione iniziale: `1.0.0`
-- Versione corrente: `1.0.22`
-- ZIP componente: `com_decarocourses_1.0.22.zip`
-- ZIP completo: `pkg_decarocourses_1.0.22.zip`
+- Versione corrente: `1.0.23`
+- ZIP componente: `com_decarocourses_1.0.23.zip`
+- ZIP completo: `pkg_decarocourses_1.0.23.zip`
 
 ## Obiettivo
 
@@ -32,6 +32,10 @@ La UI adotta un design system unico per font, titoli, pulsanti, campi, card, bad
 ## Integrazione Forms by xdecaro
 
 L'integrazione è opzionale. Ogni edizione può memorizzare l'ID di un modulo di `com_decaroforms`; in assenza di Forms, Courses continua a funzionare normalmente.
+
+## 1.0.23
+
+Centralizzata la gestione degli offset dell'interfaccia Joomla in `admin-ui.js` per tutte le viste `.dc-app`, non più soltanto nell'editor Edizioni. L'altezza reale delle barre superiori e inferiori Atum viene calcolata e scritta nelle variabili CSS condivise `--dc-joomla-sticky-offset` e `--dc-joomla-bottom-offset` anche nella lista Edizioni, con aggiornamento su resize, cambio orientamento, load e modifiche dinamiche di header/subhead. `mobile-ui.js` non duplica più il rilevamento della barra Joomla: usa l'offset centrale e resta responsabile soltanto della safe area e del focus nell'editor smartphone. Aggiunto un evento interno `decarocourses:layoutoffsets` per sincronizzare in modo affidabile i comportamenti mobili dopo ogni ricalcolo. Nessuna modifica a dati o database.
 
 ## 1.0.22
 
@@ -107,7 +111,7 @@ Corretto il caricamento del design system nell'amministrazione Joomla, ripristin
 
 ## 1.0.3
 
-Prima revisione completa della Gestione Corsi: elenco con filtri e contatori, collegamento rapido alle edizioni, editor corso più chiaro, responsive smartphone, dark mode, validazione dati, alias univoci e controlli ACL nelle viste amministrative. La pipeline GitHub verifica ora sintassi PHP e XML prima di pubblicare gli aggiornamenti Joomla.
+Prima revisione completa di Gestione Corsi: elenco con filtri e contatori, collegamento rapido alle edizioni, editor corso più chiaro, responsive smartphone, dark mode, validazione dati, alias univoci e controlli ACL nelle viste amministrative. La pipeline GitHub verifica ora sintassi PHP e XML prima di pubblicare gli aggiornamenti Joomla.
 
 ## 1.0.2
 
