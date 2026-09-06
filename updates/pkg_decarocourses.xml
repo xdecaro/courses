@@ -6,15 +6,15 @@
     <element>pkg_decarocourses</element>
     <type>package</type>
     <client>site</client>
-    <version>1.0.15</version>
+    <version>1.0.16</version>
     <downloads>
-      <downloadurl type="full" format="zip">https://raw.githubusercontent.com/xdecaro/courses/main/releases/1.0.15/pkg_decarocourses_1.0.15.zip</downloadurl>
+      <downloadurl type="full" format="zip">https://raw.githubusercontent.com/xdecaro/courses/main/releases/1.0.16/pkg_decarocourses_1.0.16.zip</downloadurl>
     </downloads>
     <tags><tag>stable</tag></tags>
     <maintainer>Luca De Caro</maintainer>
     <maintainerurl>https://github.com/xdecaro/courses</maintainerurl>
     <targetplatform name="joomla" version="6\.[0-9]+" />
     <php_minimum>8.3.0</php_minimum>
-    <sha256>b15be5fcddb1da0ee6b091f15f53c19b0a18567fb3fc992d83e2c9c7d9118c14</sha256>
+    <sha256>8aff2cdbede01f65e7a580058005e16a28de8632b406a43d32f904abd7642911</sha256>
   </update>
 </updates>
