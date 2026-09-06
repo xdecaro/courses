@@ -9,7 +9,7 @@ use Joomla\Database\QueryInterface;
 
 class CoursesModel extends ListModel
 {
-    private const FILTER_STATES = [-2, 0, 1];
+    private const FILTER_STATES = ['-2', '0', '1'];
 
     public function __construct($config = [])
     {
@@ -127,7 +127,7 @@ class CoursesModel extends ListModel
             'string'
         );
 
-        if ($state !== '' && !in_array((int) $state, self::FILTER_STATES, true)) {
+        if ($state !== '' && !in_array($state, self::FILTER_STATES, true)) {
             $state = '';
         }
 
