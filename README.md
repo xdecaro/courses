@@ -7,9 +7,9 @@
 - Pacchetto Joomla: `pkg_decarocourses`
 - Repository GitHub: `xdecaro/courses`
 - Versione iniziale: `1.0.0`
-- Versione corrente: `1.0.28`
-- ZIP componente: `com_decarocourses_1.0.28.zip`
-- ZIP completo: `pkg_decarocourses_1.0.28.zip`
+- Versione corrente: `1.0.29`
+- ZIP componente: `com_decarocourses_1.0.29.zip`
+- ZIP completo: `pkg_decarocourses_1.0.29.zip`
 
 ## Obiettivo
 
@@ -32,6 +32,10 @@ La UI adotta un design system unico per font, titoli, pulsanti, campi, card, bad
 ## Integrazione Forms by xdecaro
 
 L'integrazione è opzionale. Ogni edizione può memorizzare l'ID di un modulo di `com_decaroforms`; in assenza di Forms, Courses continua a funzionare normalmente.
+
+## 1.0.29
+
+Corretto alla radice il cambio fra `Anno singolo` e `Anno accademico` nell'editor Edizione. Durante il refactor della griglia 1.0.28 era stato perso l'attributo `data-dc-period-builder`, quindi il JavaScript del period builder non veniva inizializzato: il radio cambiava visivamente ma il select continuava a mostrare il vecchio periodo. Ripristinato il binding senza duplicare script e mantenuta la sincronizzazione del campo nascosto `academic_year`, della modale `+ Nuovo anno` e del titolo automatico. Eseguita inoltre una pulizia del layout Configurazione: label, control-group, controls, radio, select, input e testo di aiuto condividono ora lo stesso ritmo verticale e le due righe desktop sono realmente allineate (`Tipo periodo | Formula`, `Anno / Periodo | Formula personalizzata`). Tablet e smartphone mantengono l'ordine adattivo già previsto. Nessuna modifica a dati o schema database.
 
 ## 1.0.28
 
