@@ -36,7 +36,7 @@ final class AdminToolbarHelper
         }
 
         if ($isTrashFilter && $canDelete) {
-            ToolbarHelper::deleteList('', 'courses.delete', 'COM_DECAROCOURSES_ACTION_DELETE_PERMANENTLY');
+            ToolbarHelper::deleteList('JGLOBAL_CONFIRM_DELETE', 'courses.delete', 'COM_DECAROCOURSES_ACTION_DELETE_PERMANENTLY');
         }
     }
 
@@ -77,7 +77,7 @@ final class AdminToolbarHelper
         }
 
         if ($isTrashFilter && $canDelete) {
-            ToolbarHelper::deleteList('', 'editions.delete', 'COM_DECAROCOURSES_ACTION_DELETE_PERMANENTLY');
+            ToolbarHelper::deleteList('JGLOBAL_CONFIRM_DELETE', 'editions.delete', 'COM_DECAROCOURSES_ACTION_DELETE_PERMANENTLY');
         }
     }
 
