@@ -35,6 +35,14 @@ final class UiHelper
             );
         }
 
+        if (!$wa->assetExists('style', 'com_decarocourses.live-refresh')) {
+            $wa->registerStyle(
+                'com_decarocourses.live-refresh',
+                'com_decarocourses/live-refresh.css',
+                ['version' => '1.0.26']
+            );
+        }
+
         if (!$wa->assetExists('style', 'com_decarocourses.editions')) {
             $wa->registerStyle(
                 'com_decarocourses.editions',
@@ -75,6 +83,7 @@ final class UiHelper
 
         $wa->useStyle('com_decarocourses.design');
         $wa->useStyle('com_decarocourses.responsive');
+        $wa->useStyle('com_decarocourses.live-refresh');
         $wa->useStyle('com_decarocourses.editions');
         $wa->useStyle('com_decarocourses.editions-mobile');
         $wa->useScript('com_decarocourses.admin-ui');
