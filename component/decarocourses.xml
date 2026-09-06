@@ -7,7 +7,7 @@
   <license>GNU General Public License version 2 or later</license>
   <authorEmail></authorEmail>
   <authorUrl>https://github.com/xdecaro/courses</authorUrl>
-  <version>1.0.10</version>
+  <version>1.0.11</version>
   <description>COM_DECAROCOURSES_XML_DESCRIPTION</description>
   <targetplatform name="joomla" version="6.*" />
   <namespace path="src">Xdecaro\Component\Decarocourses</namespace>
@@ -44,6 +44,7 @@
   <media destination="com_decarocourses" folder="media">
     <filename>joomla.asset.json</filename>
     <folder>css</folder>
+    <folder>js</folder>
   </media>
 
   <install>
