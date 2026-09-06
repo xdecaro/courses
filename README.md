@@ -7,9 +7,9 @@
 - Pacchetto Joomla: `pkg_decarocourses`
 - Repository GitHub: `xdecaro/courses`
 - Versione iniziale: `1.0.0`
-- Versione corrente: `1.0.10`
-- ZIP componente: `com_decarocourses_1.0.10.zip`
-- ZIP completo: `pkg_decarocourses_1.0.10.zip`
+- Versione corrente: `1.0.11`
+- ZIP componente: `com_decarocourses_1.0.11.zip`
+- ZIP completo: `pkg_decarocourses_1.0.11.zip`
 
 ## Obiettivo
 
@@ -31,6 +31,10 @@ La UI adotta un design system unico per font, titoli, pulsanti, campi, card, bad
 ## Integrazione Forms by xdecaro
 
 L'integrazione è opzionale. Ogni edizione può memorizzare l'ID di un modulo di `com_decaroforms`; in assenza di Forms, Courses continua a funzionare normalmente.
+
+## 1.0.11
+
+Release di consolidamento UI. Introdotto un sistema pulsanti proprietario di Courses per eliminare le differenze causate da `btn-sm` e dagli outline Bootstrap/Joomla: azioni principali, secondarie, positive, neutre e distruttive condividono ora altezza, font, peso, radius, hover, focus e dark mode. `Modifica` usa il colore primario pieno e `Edizioni` uno stile neutro coerente su desktop, iPad Air e iPhone. Le azioni massive partono disabilitate e si attivano solo quando è selezionata almeno una riga tramite uno script comune. Uniformati Dashboard, Corsi, Edizioni e relativi editor. Nell'editor corso la card laterale usa ora la gerarchia `VISIBILITÀ` → `Pubblicazione` → `Stato`. Aggiunto il caricamento del nuovo asset JavaScript nel manifest Joomla.
 
 ## 1.0.10
 
