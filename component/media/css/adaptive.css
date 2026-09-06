@@ -7,7 +7,7 @@
   container-name: dc-courses;
 }
 
-/* Shared form-label rhythm: custom period labels must match Joomla-rendered labels. */
+/* Shared form-label rhythm: custom period labels match Joomla-rendered labels. */
 .dc-form-section .control-label,
 .dc-form-card .control-label,
 .dc-period-type legend,
@@ -16,6 +16,10 @@
   font-size: 15px;
   font-weight: 700;
   line-height: 1.35;
+}
+
+.dc-stat.is-scheduled {
+  border-left: 4px solid var(--dc-info);
 }
 
 /* Information view. */
@@ -78,7 +82,7 @@
   font-size: 12px;
 }
 
-/* Tablet/narrow desktop based on component width, not viewport width. */
+/* Narrow desktop: editors stack, statistics remain four across while there is room. */
 @container dc-courses (max-width: 1100px) {
   .dc-editor-layout {
     grid-template-columns: 1fr;
@@ -95,15 +99,12 @@
     grid-template-columns: 1fr;
   }
 
-  .dc-stats {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
   .dc-information-grid {
     grid-template-columns: 1fr;
   }
 }
 
+/* Tablet / reduced Joomla content width: keep management views as compact lists. */
 @container dc-courses (max-width: 860px) {
   .dc-section-head {
     display: block;
@@ -115,7 +116,7 @@
   }
 
   .dc-form-grid-2,
-  .dc-edition-config-columns {
+  .dc-edition-config-grid {
     grid-template-columns: 1fr;
   }
 
@@ -123,14 +124,17 @@
     grid-column: span 1;
   }
 
-  .dc-edition-config-columns {
-    gap: 22px;
+  .dc-edition-config-grid {
+    row-gap: 20px;
+    padding: 0;
   }
 
-  .dc-period-builder,
-  .dc-edition-format-column {
-    gap: 20px;
-    padding: 0;
+  .dc-config-period-type,
+  .dc-config-period-year,
+  .dc-config-format,
+  .dc-config-format-custom {
+    grid-column: 1;
+    grid-row: auto;
   }
 
   .dc-editor-side,
@@ -141,9 +145,88 @@
   .dc-toolbar {
     grid-template-columns: minmax(0, 1fr) minmax(150px, 190px) auto auto;
   }
+
+  .dc-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .dc-courses-table-wrap,
+  .dc-editions-table-wrap {
+    overflow: hidden;
+  }
+
+  .dc-courses-table,
+  .dc-editions-table {
+    min-width: 0;
+    table-layout: fixed;
+  }
+
+  .dc-courses-table th,
+  .dc-courses-table td,
+  .dc-editions-table th,
+  .dc-editions-table td {
+    padding: 10px 8px;
+  }
+
+  .dc-courses-table .dc-check,
+  .dc-editions-table .dc-check {
+    width: 38px;
+  }
+
+  .dc-courses-table .dc-col-updated {
+    display: none;
+  }
+
+  .dc-courses-table .dc-tablet-updated {
+    display: block;
+  }
+
+  .dc-courses-table .dc-actions-col,
+  .dc-courses-table .dc-col-actions {
+    width: 180px;
+  }
+
+  .dc-courses-table .dc-row-actions {
+    gap: 6px;
+    flex-wrap: nowrap;
+  }
+
+  .dc-courses-table .dc-row-actions .dc-btn {
+    min-width: 0;
+    padding-inline: 9px;
+  }
+
+  .dc-editions-table .dc-col-period {
+    width: 100px;
+  }
+
+  .dc-editions-table .dc-col-format {
+    width: 118px;
+  }
+
+  .dc-editions-table .dc-col-edition-status {
+    width: 116px;
+  }
+
+  .dc-editions-table .dc-col-forms {
+    display: none;
+  }
+
+  .dc-editions-table .dc-actions-col,
+  .dc-editions-table .dc-col-actions {
+    width: 108px;
+  }
+
+  .dc-editions-table .dc-edition-tablet-forms {
+    display: block;
+  }
+
+  .dc-editions-table .dc-row-actions .dc-btn {
+    padding-inline: 10px;
+  }
 }
 
-/* Card-mode tables activate from available component width too. */
+/* Filters may stack before the list itself becomes card mode. */
 @container dc-courses (max-width: 760px) {
   .dc-toolbar {
     grid-template-columns: 1fr 1fr;
@@ -162,6 +245,37 @@
     width: 100%;
   }
 
+  .dc-information-row {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}
+
+@container dc-courses (max-width: 620px) {
+  .dc-period-type-options,
+  .dc-period-year-row,
+  .dc-live-select-row {
+    grid-template-columns: 1fr;
+  }
+
+  .dc-period-year-row .dc-btn,
+  .dc-live-refresh-button {
+    width: 100%;
+  }
+
+  .dc-card {
+    padding: 16px;
+  }
+
+  .dc-page-head {
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+}
+
+/* Card mode is reserved for genuinely phone-sized content areas. */
+@container dc-courses (max-width: 520px) {
   .dc-responsive-table {
     display: block;
     min-width: 0;
@@ -240,6 +354,7 @@
   .dc-courses-table .dc-col-title,
   .dc-editions-table .dc-col-edition-course {
     display: block;
+    width: 100%;
     margin: 0 0 10px;
     padding: 0 50px 14px 0;
     border: 0;
@@ -284,9 +399,15 @@
     text-align: right;
   }
 
+  .dc-courses-table .dc-col-updated,
+  .dc-editions-table .dc-col-forms {
+    display: grid;
+  }
+
   .dc-courses-table .dc-col-actions,
   .dc-editions-table .dc-col-actions {
     display: block;
+    width: 100%;
     margin: 4px 0 0;
     padding: 6px 0 0;
     border: 0;
@@ -321,48 +442,6 @@
   .dc-tablet-updated,
   .dc-edition-tablet-forms {
     display: none !important;
-  }
-
-  .dc-information-row {
-    grid-template-columns: 1fr;
-    gap: 4px;
-  }
-}
-
-@container dc-courses (max-width: 620px) {
-  .dc-period-type-options,
-  .dc-period-year-row,
-  .dc-live-select-row {
-    grid-template-columns: 1fr;
-  }
-
-  .dc-period-year-row .dc-btn,
-  .dc-live-refresh-button {
-    width: 100%;
-  }
-
-  .dc-edition-config-columns {
-    gap: 22px;
-  }
-
-  .dc-period-builder,
-  .dc-edition-format-column {
-    gap: 20px;
-  }
-
-  .dc-stats {
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-  }
-
-  .dc-card {
-    padding: 16px;
-  }
-
-  .dc-page-head {
-    flex-direction: column;
-    gap: 12px;
-    margin-bottom: 18px;
   }
 }
 
