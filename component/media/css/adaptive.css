@@ -77,6 +77,13 @@
   margin-top: 7px;
 }
 
+.dc-editions-filter-pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  min-width: 0;
+}
+
 .dc-stat.is-scheduled {
   border-left: 4px solid var(--dc-info);
 }
@@ -300,6 +307,12 @@
     max-width: none;
   }
 
+  .dc-toolbar .dc-editions-filter-pair {
+    grid-column: 1 / -1;
+    width: 100%;
+    min-width: 0;
+  }
+
   .dc-toolbar .btn {
     width: 100%;
   }
@@ -314,6 +327,10 @@
   .dc-period-type-options,
   .dc-period-year-row,
   .dc-live-select-row {
+    grid-template-columns: 1fr;
+  }
+
+  .dc-editions-filter-pair {
     grid-template-columns: 1fr;
   }
 
