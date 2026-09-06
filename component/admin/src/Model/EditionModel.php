@@ -18,6 +18,24 @@ class EditionModel extends AdminModel
         return $this->loadForm('com_decarocourses.edition', 'edition', ['control' => 'jform', 'load_data' => $loadData]);
     }
 
+    public function save($data)
+    {
+        $identity = Factory::getApplication()->getIdentity();
+
+        if (!$identity->authorise('core.edit.state', 'com_decarocourses')) {
+            $id = (int) ($data['id'] ?? 0);
+
+            if ($id > 0) {
+                $current = $this->getItem($id);
+                $data['state'] = (int) ($current->state ?? 0);
+            } else {
+                $data['state'] = 0;
+            }
+        }
+
+        return parent::save($data);
+    }
+
     protected function loadFormData()
     {
         $app = Factory::getApplication();
