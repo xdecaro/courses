@@ -9,15 +9,16 @@
 
   const editionPage = app.classList.contains('dc-edition-page') ? app : null;
   const actions = document.querySelector('[data-dc-edition-actions]');
-  const mobileQuery = window.matchMedia('(max-width: 560px)');
-  const bottomCandidates = [...new Set(document.querySelectorAll('#header .header-items, .header-items'))]
-    .filter((element) => element instanceof HTMLElement);
+  const mobileQuery = window.matchMedia('(max-width: 760px)');
   let frame = 0;
+
+  const getBottomCandidates = () => [...new Set(document.querySelectorAll('#header .header-items, .header-items'))]
+    .filter((element) => element instanceof HTMLElement);
 
   const getBottomOffset = () => {
     let bottomOffset = 0;
 
-    bottomCandidates.forEach((element) => {
+    getBottomCandidates().forEach((element) => {
       const style = window.getComputedStyle(element);
 
       if (style.position !== 'fixed'
@@ -28,7 +29,9 @@
 
       const rect = element.getBoundingClientRect();
 
-      if (rect.height <= 0 || rect.top >= window.innerHeight || rect.bottom < window.innerHeight - 2) {
+      if (rect.height <= 0
+        || rect.top >= window.innerHeight
+        || rect.bottom < window.innerHeight - 2) {
         return;
       }
 
@@ -40,6 +43,7 @@
 
   const updateSafeArea = () => {
     frame = 0;
+
     const bottomOffset = getBottomOffset();
     app.style.setProperty('--dc-joomla-bottom-offset', `${bottomOffset}px`);
 
@@ -97,6 +101,8 @@
   }
 
   window.addEventListener('resize', queueUpdate, { passive: true });
+  window.addEventListener('orientationchange', queueUpdate, { passive: true });
+  window.addEventListener('load', queueUpdate, { once: true });
 
   if (typeof mobileQuery.addEventListener === 'function') {
     mobileQuery.addEventListener('change', queueUpdate);
@@ -104,9 +110,21 @@
 
   if ('ResizeObserver' in window) {
     const observer = new ResizeObserver(queueUpdate);
-    [app, actions, ...bottomCandidates]
+    [app, actions, ...getBottomCandidates()]
       .filter((element) => element instanceof HTMLElement)
       .forEach((element) => observer.observe(element));
+  }
+
+  const header = document.getElementById('header');
+
+  if ('MutationObserver' in window && header instanceof HTMLElement) {
+    const observer = new MutationObserver(queueUpdate);
+    observer.observe(header, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['class', 'style', 'hidden']
+    });
   }
 
   updateSafeArea();
