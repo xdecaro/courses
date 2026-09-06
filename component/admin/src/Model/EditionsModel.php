@@ -18,6 +18,8 @@ class EditionsModel extends ListModel
         'archived',
     ];
 
+    private const FILTER_STATES = ['-2', '0', '1'];
+
     public function __construct($config = [])
     {
         $config['filter_fields'] ??= [
@@ -54,7 +56,7 @@ class EditionsModel extends ListModel
                 . ' OR ' . $db->quoteName('e.academic_year') . ' LIKE :search'
                 . ' OR ' . $db->quoteName('e.format_custom') . ' LIKE :search'
                 . ' OR ' . $db->quoteName('c.title') . ' LIKE :search)'
-            )->bind(':search', $token);
+            )->bind(':search', $token, ParameterType::STRING);
         }
 
         $courseId = (int) $this->getState('filter.course_id', 0);
@@ -68,7 +70,14 @@ class EditionsModel extends ListModel
 
         if (in_array($status, self::ALLOWED_STATUSES, true)) {
             $query->where($db->quoteName('e.status') . ' = :status')
-                ->bind(':status', $status);
+                ->bind(':status', $status, ParameterType::STRING);
+        }
+
+        $state = $this->getState('filter.state');
+
+        if ($state !== '' && $state !== null) {
+            $query->where($db->quoteName('e.state') . ' = :state')
+                ->bind(':state', (int) $state, ParameterType::INTEGER);
         }
 
         $query->order($db->quoteName('e.id') . ' DESC');
@@ -135,6 +144,16 @@ class EditionsModel extends ListModel
     {
         $search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search', '', 'string');
         $status = $this->getUserStateFromRequest($this->context . '.filter.status', 'filter_status', '', 'cmd');
+        $state = (string) $this->getUserStateFromRequest(
+            $this->context . '.filter.state',
+            'filter_state',
+            '',
+            'string'
+        );
+
+        if ($state !== '' && !in_array($state, self::FILTER_STATES, true)) {
+            $state = '';
+        }
 
         $this->setState('filter.search', mb_substr(trim((string) $search), 0, 100));
         $this->setState(
@@ -142,6 +161,7 @@ class EditionsModel extends ListModel
             (int) $this->getUserStateFromRequest($this->context . '.filter.course_id', 'filter_course_id', 0, 'int')
         );
         $this->setState('filter.status', in_array($status, self::ALLOWED_STATUSES, true) ? $status : '');
+        $this->setState('filter.state', $state);
 
         parent::populateState($ordering, $direction);
     }
