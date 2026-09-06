@@ -165,20 +165,31 @@ class EditionTable extends Table
     {
         $value = trim((string) ($this->$field ?? ''));
 
-        if ($value === '') {
+        if ($value === '' || $value === '0000-00-00' || $value === '0000-00-00 00:00:00') {
             $this->$field = null;
             return true;
         }
 
+        // Joomla's CalendarField with translateformat enabled normalises a
+        // submitted date to an SQL datetime string even when showtime=false.
+        // Accept both the database DATE format and Joomla's Y-m-d H:i:s
+        // representation, then persist only the date part required by this table.
         $date = \DateTimeImmutable::createFromFormat('!Y-m-d', $value);
 
-        if ($date === false || $date->format('Y-m-d') !== $value) {
-            $this->setError(Text::_('COM_DECAROCOURSES_ERROR_EDITION_DATE_INVALID'));
-            return false;
+        if ($date !== false && $date->format('Y-m-d') === $value) {
+            $this->$field = $value;
+            return true;
         }
 
-        $this->$field = $value;
-        return true;
+        $date = \DateTimeImmutable::createFromFormat('!Y-m-d H:i:s', $value);
+
+        if ($date !== false && $date->format('Y-m-d H:i:s') === $value) {
+            $this->$field = $date->format('Y-m-d');
+            return true;
+        }
+
+        $this->setError(Text::_('COM_DECAROCOURSES_ERROR_EDITION_DATE_INVALID'));
+        return false;
     }
 
     public function store($updateNulls = true): bool
