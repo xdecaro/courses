@@ -1,0 +1,1 @@
+-- Courses 1.0.20: nessuna modifica allo schema del database.
