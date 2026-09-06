@@ -2,23 +2,26 @@
 defined('_JEXEC') or die;
 
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
 $escape = static fn ($value): string => htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
 $isNew = empty($this->item->id);
+$coursesUrl = Route::_('index.php?option=com_decarocourses&view=courses');
+$editionsUrl = Route::_('index.php?option=com_decarocourses&view=editions&filter_search=&filter_course_id=' . (int) $this->item->id);
 ?>
 <form action="<?php echo Route::_('index.php?option=com_decarocourses&layout=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
 <div class="dc-app">
   <header class="dc-page-head">
     <div>
-      <span class="dc-eyebrow">CORSO</span>
-      <h1><?php echo $isNew ? 'Nuovo corso' : $escape($this->item->title); ?></h1>
-      <p>Qui salvi le informazioni generali del corso. Anno accademico, date, capienza e iscrizioni vengono gestiti nelle singole edizioni.</p>
+      <span class="dc-eyebrow"><?php echo Text::_('COM_DECAROCOURSES_COURSE_EYEBROW'); ?></span>
+      <h1><?php echo $isNew ? Text::_('COM_DECAROCOURSES_COURSE_NEW') : $escape($this->item->title); ?></h1>
+      <p><?php echo Text::_('COM_DECAROCOURSES_COURSE_FORM_DESCRIPTION'); ?></p>
     </div>
     <div class="dc-page-actions">
-      <a class="btn dc-btn dc-btn-secondary" href="<?php echo Route::_('index.php?option=com_decarocourses&view=courses'); ?>">← Elenco corsi</a>
+      <a class="btn dc-btn dc-btn-secondary" href="<?php echo $coursesUrl; ?>"><?php echo Text::_('COM_DECAROCOURSES_BACK_TO_COURSES'); ?></a>
       <?php if (!$isNew) : ?>
-        <a class="btn dc-btn dc-btn-primary" href="<?php echo Route::_('index.php?option=com_decarocourses&view=editions&filter_search=&filter_course_id=' . (int) $this->item->id); ?>">Apri edizioni</a>
+        <a class="btn dc-btn dc-btn-primary" href="<?php echo $editionsUrl; ?>"><?php echo Text::_('COM_DECAROCOURSES_OPEN_EDITIONS'); ?></a>
       <?php endif; ?>
     </div>
   </header>
@@ -27,8 +30,8 @@ $isNew = empty($this->item->id);
     <main class="dc-editor-main">
       <section class="dc-card dc-form-section">
         <div class="dc-section-head">
-          <div><span class="dc-eyebrow">DATI PRINCIPALI</span><h2>Identità del corso</h2></div>
-          <p>Titolo e codice identificano il corso nel catalogo.</p>
+          <div><span class="dc-eyebrow"><?php echo Text::_('COM_DECAROCOURSES_SECTION_MAIN_DATA'); ?></span><h2><?php echo Text::_('COM_DECAROCOURSES_COURSE_IDENTITY'); ?></h2></div>
+          <p><?php echo Text::_('COM_DECAROCOURSES_COURSE_IDENTITY_HELP'); ?></p>
         </div>
         <div class="dc-form-grid dc-form-grid-2">
           <div class="dc-field-span-2"><?php echo $this->form->renderField('title'); ?></div>
@@ -39,7 +42,7 @@ $isNew = empty($this->item->id);
 
       <section class="dc-card dc-form-section">
         <div class="dc-section-head">
-          <div><span class="dc-eyebrow">DESCRIZIONE</span><h2>Informazioni generali</h2></div>
+          <div><span class="dc-eyebrow"><?php echo Text::_('COM_DECAROCOURSES_SECTION_DESCRIPTION'); ?></span><h2><?php echo Text::_('COM_DECAROCOURSES_GENERAL_INFORMATION'); ?></h2></div>
         </div>
         <?php echo $this->form->renderField('description'); ?>
       </section>
@@ -47,24 +50,24 @@ $isNew = empty($this->item->id);
 
     <aside class="dc-editor-side">
       <section class="dc-card dc-form-section">
-        <div class="dc-section-head"><div><span class="dc-eyebrow">VISIBILITÀ</span><h2>Pubblicazione</h2></div></div>
+        <div class="dc-section-head"><div><span class="dc-eyebrow"><?php echo Text::_('COM_DECAROCOURSES_SECTION_VISIBILITY'); ?></span><h2><?php echo Text::_('COM_DECAROCOURSES_PUBLICATION'); ?></h2></div></div>
         <?php echo $this->form->renderField('state'); ?>
         <?php echo $this->form->renderField('ordering'); ?>
       </section>
 
       <section class="dc-help-box">
-        <strong>Come funziona</strong>
-        <p>Il corso è la scheda principale. Per ogni anno o sessione crea un’<b>edizione</b> collegata, così eviti duplicati e mantieni uno storico pulito.</p>
+        <strong><?php echo Text::_('COM_DECAROCOURSES_HOW_IT_WORKS'); ?></strong>
+        <p><?php echo Text::_('COM_DECAROCOURSES_COURSE_HELP_TEXT'); ?></p>
       </section>
     </aside>
   </div>
 
-  <div class="dc-form-actions" aria-label="Azioni corso">
+  <div class="dc-form-actions" aria-label="<?php echo $escape(Text::_('COM_DECAROCOURSES_COURSE_ACTIONS_ARIA')); ?>">
     <?php if ($this->canSave) : ?>
-      <button class="btn dc-btn dc-btn-primary" type="submit" onclick="document.getElementById('dc-task').value='course.apply'">Salva</button>
-      <button class="btn dc-btn dc-btn-secondary" type="submit" onclick="document.getElementById('dc-task').value='course.save'">Salva e chiudi</button>
+      <button class="btn dc-btn dc-btn-primary" type="submit" onclick="document.getElementById('dc-task').value='course.apply'"><?php echo Text::_('COM_DECAROCOURSES_ACTION_SAVE'); ?></button>
+      <button class="btn dc-btn dc-btn-secondary" type="submit" onclick="document.getElementById('dc-task').value='course.save'"><?php echo Text::_('COM_DECAROCOURSES_ACTION_SAVE_CLOSE'); ?></button>
     <?php endif; ?>
-    <button class="btn dc-btn dc-btn-neutral" type="submit" formnovalidate onclick="document.getElementById('dc-task').value='course.cancel'">Annulla</button>
+    <button class="btn dc-btn dc-btn-neutral" type="submit" formnovalidate onclick="document.getElementById('dc-task').value='course.cancel'"><?php echo Text::_('COM_DECAROCOURSES_ACTION_CANCEL'); ?></button>
   </div>
 </div>
 <?php echo $this->form->getInput('id'); ?>
