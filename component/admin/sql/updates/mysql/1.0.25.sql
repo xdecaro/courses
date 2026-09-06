@@ -1,0 +1,2 @@
+-- Courses 1.0.25
+-- Toolbar label cleanup; no database changes.
