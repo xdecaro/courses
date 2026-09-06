@@ -1,4 +1,4 @@
-/* Courses UI refinements: shared across administrator views. */
+/* Courses administrator UI refinements. */
 
 /* --------------------------------------------------------------------------
    Button system
@@ -177,7 +177,6 @@
   .dc-courses-table .dc-row-actions .dc-btn {
     width: 100%;
     min-width: 0;
-    min-height: 42px;
     padding-inline: 10px;
   }
 }
@@ -198,10 +197,7 @@
   }
 
   .dc-courses-table .dc-row-actions .dc-btn {
-    min-height: 42px;
     padding-inline: 10px;
-    font-size: 14px;
-    font-weight: 650;
   }
 }
 
@@ -350,15 +346,8 @@
   }
 
   .dc-courses-table .dc-row-actions .dc-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
     width: 100%;
-    min-height: 42px;
     padding: 0 12px;
-    border-radius: 9px;
-    font-size: 14px;
-    font-weight: 650;
   }
 }
 
