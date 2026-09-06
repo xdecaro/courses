@@ -20,31 +20,44 @@
   max-width: none;
 }
 
-.dc-edition-config-columns {
+/* Coordinated desktop grid: row 1 = Period type / Format, row 2 = Period / Custom format. */
+.dc-edition-config-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px;
+  column-gap: 18px;
+  row-gap: 18px;
   align-items: start;
   min-width: 0;
-}
-
-.dc-edition-format-column {
-  display: grid;
-  gap: 14px;
-  min-width: 0;
   padding: 10px 0;
 }
 
-.dc-edition-format-column .control-group {
-  padding-top: 0;
-  padding-bottom: 0;
+.dc-config-period-type {
+  grid-column: 1;
+  grid-row: 1;
 }
 
-.dc-period-builder {
-  display: grid;
-  gap: 14px;
+.dc-config-format {
+  grid-column: 2;
+  grid-row: 1;
   min-width: 0;
-  padding: 10px 0;
+}
+
+.dc-config-period-year {
+  grid-column: 1;
+  grid-row: 2;
+  min-width: 0;
+}
+
+.dc-config-format-custom {
+  grid-column: 2;
+  grid-row: 2;
+  min-width: 0;
+}
+
+.dc-config-format .control-group,
+.dc-config-format-custom .control-group {
+  margin: 0;
+  padding: 0;
 }
 
 .dc-period-type {
@@ -60,8 +73,9 @@
   width: 100%;
   margin: 0 0 7px;
   color: var(--dc-text);
-  font-size: 14px;
-  font-weight: 650;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.35;
 }
 
 .dc-period-type-options {
@@ -339,10 +353,23 @@
 }
 
 @media (max-width: 760px) {
-  .dc-edition-config-columns,
+  .dc-edition-config-grid,
   .dc-period-type-options,
   .dc-period-year-row {
     grid-template-columns: 1fr;
+  }
+
+  .dc-edition-config-grid {
+    row-gap: 20px;
+    padding: 0;
+  }
+
+  .dc-config-period-type,
+  .dc-config-period-year,
+  .dc-config-format,
+  .dc-config-format-custom {
+    grid-column: 1;
+    grid-row: auto;
   }
 
   .dc-period-year-row .dc-btn {
