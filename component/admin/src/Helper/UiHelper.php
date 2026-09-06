@@ -23,7 +23,7 @@ final class UiHelper
             $wa->registerStyle(
                 'com_decarocourses.design',
                 'com_decarocourses/design-system.css',
-                ['version' => '1.0.26']
+                ['version' => '1.0.27']
             );
         }
 
@@ -31,7 +31,7 @@ final class UiHelper
             $wa->registerStyle(
                 'com_decarocourses.responsive',
                 'com_decarocourses/responsive.css',
-                ['version' => '1.0.26']
+                ['version' => '1.0.27']
             );
         }
 
@@ -39,7 +39,7 @@ final class UiHelper
             $wa->registerStyle(
                 'com_decarocourses.live-refresh',
                 'com_decarocourses/live-refresh.css',
-                ['version' => '1.0.26']
+                ['version' => '1.0.27']
             );
         }
 
@@ -47,7 +47,7 @@ final class UiHelper
             $wa->registerStyle(
                 'com_decarocourses.editions',
                 'com_decarocourses/editions.css',
-                ['version' => '1.0.26']
+                ['version' => '1.0.27']
             );
         }
 
@@ -55,7 +55,15 @@ final class UiHelper
             $wa->registerStyle(
                 'com_decarocourses.editions-mobile',
                 'com_decarocourses/editions-mobile.css',
-                ['version' => '1.0.26']
+                ['version' => '1.0.27']
+            );
+        }
+
+        if (!$wa->assetExists('style', 'com_decarocourses.adaptive')) {
+            $wa->registerStyle(
+                'com_decarocourses.adaptive',
+                'com_decarocourses/adaptive.css',
+                ['version' => '1.0.27']
             );
         }
 
@@ -63,7 +71,7 @@ final class UiHelper
             $wa->registerScript(
                 'com_decarocourses.admin-ui',
                 'com_decarocourses/admin-ui.js',
-                ['version' => '1.0.26'],
+                ['version' => '1.0.27'],
                 ['defer' => true]
             );
         }
@@ -86,6 +94,7 @@ final class UiHelper
         $wa->useStyle('com_decarocourses.live-refresh');
         $wa->useStyle('com_decarocourses.editions');
         $wa->useStyle('com_decarocourses.editions-mobile');
+        $wa->useStyle('com_decarocourses.adaptive');
         $wa->useScript('com_decarocourses.admin-ui');
     }
 
