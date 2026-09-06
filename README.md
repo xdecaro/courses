@@ -7,9 +7,9 @@
 - Pacchetto Joomla: `pkg_decarocourses`
 - Repository GitHub: `xdecaro/courses`
 - Versione iniziale: `1.0.0`
-- Versione corrente: `1.0.29`
-- ZIP componente: `com_decarocourses_1.0.29.zip`
-- ZIP completo: `pkg_decarocourses_1.0.29.zip`
+- Versione corrente: `1.0.30`
+- ZIP componente: `com_decarocourses_1.0.30.zip`
+- ZIP completo: `pkg_decarocourses_1.0.30.zip`
 
 ## Obiettivo
 
@@ -32,6 +32,10 @@ La UI adotta un design system unico per font, titoli, pulsanti, campi, card, bad
 ## Integrazione Forms by xdecaro
 
 L'integrazione è opzionale. Ogni edizione può memorizzare l'ID di un modulo di `com_decaroforms`; in assenza di Forms, Courses continua a funzionare normalmente.
+
+## 1.0.30
+
+Consolidata la gestione di pubblicazione, cestino e cancellazione definitiva prima della chiusura del blocco Corsi + Edizioni. Edizioni dispone ora di un filtro separato per Pubblicato, Sospeso e Cestinato, mantenendo distinto lo stato operativo dell'edizione. La toolbar nativa Joomla riconosce il filtro Cestino anche nelle Edizioni: mostra Ripristina e, solo con `core.delete`, Elimina definitivamente; fuori dal Cestino mantiene Pubblica, Sospendi e Cestino. Allineato anche Corsi usando Ripristina nel Cestino. Rafforzata inoltre l'integrità dei dati: un corso non può essere eliminato definitivamente finché esistono edizioni collegate, evitando record orfani; l'utente riceve un messaggio chiaro e deve eliminare prima le edizioni. Filtri, ACL, token Joomla e comportamento responsive restano basati sulle API native. Nessuna modifica allo schema database.
 
 ## 1.0.29
 
