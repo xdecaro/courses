@@ -69,8 +69,8 @@ $showAllUrl = Route::_($listUrl . '&filter_search=&filter_status=' . rawurlencod
         placeholder="<?php echo $escape(Text::_('COM_DECAROCOURSES_EDITIONS_SEARCH_PLACEHOLDER')); ?>"
         aria-label="<?php echo $escape(Text::_('COM_DECAROCOURSES_EDITIONS_SEARCH_ARIA')); ?>"
       >
-      <div class="d-grid d-md-flex gap-2">
-        <select class="form-select flex-fill" name="filter_status" aria-label="<?php echo $escape(Text::_('COM_DECAROCOURSES_EDITIONS_STATUS_FILTER_ARIA')); ?>">
+      <div class="dc-editions-filter-pair">
+        <select class="form-select" name="filter_status" aria-label="<?php echo $escape(Text::_('COM_DECAROCOURSES_EDITIONS_STATUS_FILTER_ARIA')); ?>">
           <option value=""<?php echo $statusFilter === '' ? ' selected' : ''; ?>><?php echo Text::_('COM_DECAROCOURSES_FILTER_ALL_STATES'); ?></option>
           <option value="draft"<?php echo $statusFilter === 'draft' ? ' selected' : ''; ?>><?php echo Text::_('COM_DECAROCOURSES_STATUS_DRAFT'); ?></option>
           <option value="registrations_open"<?php echo $statusFilter === 'registrations_open' ? ' selected' : ''; ?>><?php echo Text::_('COM_DECAROCOURSES_STATUS_REGISTRATIONS_OPEN'); ?></option>
@@ -79,7 +79,7 @@ $showAllUrl = Route::_($listUrl . '&filter_search=&filter_status=' . rawurlencod
           <option value="completed"<?php echo $statusFilter === 'completed' ? ' selected' : ''; ?>><?php echo Text::_('COM_DECAROCOURSES_STATUS_COMPLETED'); ?></option>
           <option value="archived"<?php echo $statusFilter === 'archived' ? ' selected' : ''; ?>><?php echo Text::_('COM_DECAROCOURSES_STATUS_ARCHIVED'); ?></option>
         </select>
-        <select class="form-select flex-fill" name="filter_state" aria-label="<?php echo $escape(Text::_('COM_DECAROCOURSES_EDITIONS_PUBLICATION_FILTER_ARIA')); ?>">
+        <select class="form-select" name="filter_state" aria-label="<?php echo $escape(Text::_('COM_DECAROCOURSES_EDITIONS_PUBLICATION_FILTER_ARIA')); ?>">
           <option value=""<?php echo $publicationFilter === '' ? ' selected' : ''; ?>><?php echo Text::_('COM_DECAROCOURSES_FILTER_ALL_PUBLICATION'); ?></option>
           <option value="1"<?php echo $publicationFilter === '1' ? ' selected' : ''; ?>><?php echo Text::_('JPUBLISHED'); ?></option>
           <option value="0"<?php echo $publicationFilter === '0' ? ' selected' : ''; ?>><?php echo Text::_('JUNPUBLISHED'); ?></option>
