@@ -12,45 +12,23 @@
   const mobileQuery = window.matchMedia('(max-width: 760px)');
   let frame = 0;
 
-  const getBottomCandidates = () => [...new Set(document.querySelectorAll('#header .header-items, .header-items'))]
-    .filter((element) => element instanceof HTMLElement);
-
   const getBottomOffset = () => {
-    let bottomOffset = 0;
+    const value = Number.parseFloat(
+      window.getComputedStyle(app).getPropertyValue('--dc-joomla-bottom-offset')
+    );
 
-    getBottomCandidates().forEach((element) => {
-      const style = window.getComputedStyle(element);
-
-      if (style.position !== 'fixed'
-        || style.display === 'none'
-        || style.visibility === 'hidden') {
-        return;
-      }
-
-      const rect = element.getBoundingClientRect();
-
-      if (rect.height <= 0
-        || rect.top >= window.innerHeight
-        || rect.bottom < window.innerHeight - 2) {
-        return;
-      }
-
-      bottomOffset = Math.max(bottomOffset, window.innerHeight - rect.top);
-    });
-
-    return Math.ceil(bottomOffset);
+    return Number.isFinite(value) ? Math.max(0, value) : 0;
   };
 
   const updateSafeArea = () => {
     frame = 0;
 
-    const bottomOffset = getBottomOffset();
-    app.style.setProperty('--dc-joomla-bottom-offset', `${bottomOffset}px`);
-
     if (!mobileQuery.matches) {
       document.documentElement.style.removeProperty('scroll-padding-bottom');
       return;
     }
+
+    const bottomOffset = getBottomOffset();
 
     if (actions instanceof HTMLElement && editionPage instanceof HTMLElement) {
       const actionHeight = Math.ceil(actions.getBoundingClientRect().height);
@@ -100,9 +78,9 @@
     });
   }
 
+  document.addEventListener('decarocourses:layoutoffsets', queueUpdate);
   window.addEventListener('resize', queueUpdate, { passive: true });
   window.addEventListener('orientationchange', queueUpdate, { passive: true });
-  window.addEventListener('load', queueUpdate, { once: true });
 
   if (typeof mobileQuery.addEventListener === 'function') {
     mobileQuery.addEventListener('change', queueUpdate);
@@ -110,21 +88,9 @@
 
   if ('ResizeObserver' in window) {
     const observer = new ResizeObserver(queueUpdate);
-    [app, actions, ...getBottomCandidates()]
+    [app, actions]
       .filter((element) => element instanceof HTMLElement)
       .forEach((element) => observer.observe(element));
-  }
-
-  const header = document.getElementById('header');
-
-  if ('MutationObserver' in window && header instanceof HTMLElement) {
-    const observer = new MutationObserver(queueUpdate);
-    observer.observe(header, {
-      childList: true,
-      subtree: true,
-      attributes: true,
-      attributeFilter: ['class', 'style', 'hidden']
-    });
   }
 
   updateSafeArea();
