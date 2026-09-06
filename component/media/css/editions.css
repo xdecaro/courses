@@ -1,8 +1,11 @@
 /* Edition-specific UI built on the shared Courses design system. */
 
-.dc-format-custom-wrap[hidden],
-.dc-period-new-panel[hidden] {
+.dc-format-custom-wrap[hidden] {
   display: none !important;
+}
+
+.dc-edition-page {
+  padding-bottom: calc(var(--dc-edition-actions-height, 72px) + var(--dc-joomla-bottom-offset, 0px) + 32px);
 }
 
 .dc-edition-editor .dc-form-section textarea {
@@ -36,8 +39,7 @@
 }
 
 .dc-period-type legend,
-.dc-period-year-group > label,
-.dc-period-new-panel > label {
+.dc-period-year-group > label {
   display: block;
   width: 100%;
   margin: 0 0 7px;
@@ -97,31 +99,121 @@
   min-height: 42px;
 }
 
-.dc-period-new-panel {
-  padding: 12px;
+.dc-period-modal {
+  width: min(480px, calc(100vw - 32px));
+  max-width: none;
+  margin: auto;
+  padding: 0;
+  overflow: visible;
+  border: 0;
+  border-radius: 16px;
+  background: transparent;
+  color: var(--dc-text);
+}
+
+.dc-period-modal::backdrop {
+  background: rgba(15, 23, 42, .48);
+  backdrop-filter: blur(2px);
+}
+
+.dc-period-modal-card {
+  overflow: hidden;
   border: 1px solid var(--dc-border);
-  border-radius: 10px;
+  border-radius: 16px;
+  background: var(--dc-surface);
+  box-shadow: 0 24px 70px rgba(15, 23, 42, .24);
+}
+
+.dc-period-modal-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 22px 16px;
+  border-bottom: 1px solid var(--dc-border);
+}
+
+.dc-period-modal-head h2 {
+  margin: 4px 0 0;
+  color: var(--dc-text);
+  font: 700 21px / 1.2 var(--dc-font);
+}
+
+.dc-period-modal-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  min-width: 38px;
+  height: 38px;
+  padding: 0;
+  border: 1px solid var(--dc-border);
+  border-radius: 9px;
   background: var(--dc-surface-soft);
+  color: var(--dc-text);
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
 }
 
-.dc-period-new-row {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto auto;
+.dc-period-modal-close:hover,
+.dc-period-modal-close:focus-visible {
+  border-color: color-mix(in srgb, var(--dc-primary) 45%, var(--dc-border));
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--dc-primary) 18%, transparent);
+}
+
+.dc-period-modal-body {
+  padding: 20px 22px;
+}
+
+.dc-period-modal-body > label {
+  display: block;
+  margin: 0 0 7px;
+  color: var(--dc-text);
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.dc-period-modal-body .form-control {
+  width: 100%;
+  min-height: 44px;
+  border-radius: 9px;
+}
+
+.dc-period-modal-preview {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  min-height: 22px;
+  margin: 10px 0 0;
+  color: var(--dc-muted);
+  font-size: 13px;
+}
+
+.dc-period-modal-preview strong {
+  color: var(--dc-text);
+}
+
+.dc-period-modal-actions {
+  display: flex;
+  justify-content: flex-end;
   gap: 8px;
-  align-items: stretch;
+  padding: 14px 22px 20px;
 }
 
-.dc-period-new-row .form-control,
-.dc-period-new-row .dc-btn {
+.dc-period-modal-actions .dc-btn {
   min-height: 42px;
 }
 
-.dc-period-new-help {
-  min-height: 18px;
-  margin: 7px 0 0;
-  color: var(--dc-muted);
-  font-size: 12px;
-  line-height: 1.45;
+.dc-edition-form-actions {
+  position: fixed;
+  left: var(--dc-edition-actions-left, 0px);
+  bottom: calc(var(--dc-joomla-bottom-offset, 0px) + 12px);
+  z-index: 1030;
+  width: var(--dc-edition-actions-width, 100%);
+  margin: 0;
+  box-shadow: 0 12px 34px rgba(15, 23, 42, .14);
 }
 
 .dc-edition-status-fields .control-group + .control-group {
@@ -250,18 +342,6 @@
     width: 100%;
   }
 
-  .dc-period-new-row {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .dc-period-new-row .form-control {
-    grid-column: 1 / -1;
-  }
-
-  .dc-period-new-row .dc-btn {
-    width: 100%;
-  }
-
   .dc-editions-table-wrap {
     overflow: visible;
     border: 0;
@@ -387,6 +467,41 @@
 }
 
 @media (max-width: 560px) {
+  .dc-edition-form-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: stretch;
+    gap: 8px;
+    padding: 10px;
+  }
+
+  .dc-edition-form-actions .btn {
+    width: 100%;
+  }
+
+  .dc-edition-form-actions .btn:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .dc-period-modal {
+    width: calc(100vw - 24px);
+  }
+
+  .dc-period-modal-head,
+  .dc-period-modal-body {
+    padding-inline: 16px;
+  }
+
+  .dc-period-modal-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding: 12px 16px 16px;
+  }
+
+  .dc-period-modal-actions .dc-btn {
+    width: 100%;
+  }
+
   .dc-editions-table tr {
     padding: 14px;
   }
