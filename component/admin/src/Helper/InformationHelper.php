@@ -10,7 +10,7 @@ use Throwable;
 
 final class InformationHelper
 {
-    public const VERSION = '1.0.28';
+    public const VERSION = '1.0.29';
 
     public static function getData(): array
     {
