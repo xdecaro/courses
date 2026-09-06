@@ -7,7 +7,7 @@
   <license>GNU General Public License version 2 or later</license>
   <authorEmail></authorEmail>
   <authorUrl>https://github.com/xdecaro/courses</authorUrl>
-  <version>1.0.26</version>
+  <version>1.0.27</version>
   <description>COM_DECAROCOURSES_XML_DESCRIPTION</description>
   <targetplatform name="joomla" version="6.*" />
   <namespace path="src">Xdecaro\Component\Decarocourses</namespace>
@@ -23,6 +23,7 @@
       <menu view="dashboard">COM_DECAROCOURSES_DASHBOARD</menu>
       <menu view="courses">COM_DECAROCOURSES_COURSES</menu>
       <menu view="editions">COM_DECAROCOURSES_EDITIONS</menu>
+      <menu view="information">COM_DECAROCOURSES_INFORMATION</menu>
     </submenu>
     <files folder="admin">
       <filename>access.xml</filename>
@@ -36,8 +37,10 @@
     <languages folder="admin/language">
       <language tag="en-GB">en-GB/com_decarocourses.ini</language>
       <language tag="en-GB">en-GB/com_decarocourses.sys.ini</language>
+      <language tag="en-GB">en-GB/com_decarocourses.information.ini</language>
       <language tag="it-IT">it-IT/com_decarocourses.ini</language>
       <language tag="it-IT">it-IT/com_decarocourses.sys.ini</language>
+      <language tag="it-IT">it-IT/com_decarocourses.information.ini</language>
     </languages>
   </administration>
 
