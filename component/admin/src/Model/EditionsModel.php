@@ -25,6 +25,7 @@ class EditionsModel extends ListModel
             'title', 'e.title',
             'course_id', 'e.course_id',
             'academic_year', 'e.academic_year',
+            'format', 'e.format',
             'status', 'e.status',
             'state', 'e.state',
         ];
@@ -46,10 +47,12 @@ class EditionsModel extends ListModel
         $search = trim((string) $this->getState('filter.search'));
 
         if ($search !== '') {
+            $search = mb_substr(preg_replace('/\s+/u', ' ', $search) ?: '', 0, 100);
             $token = '%' . str_replace(' ', '%', $search) . '%';
             $query->where(
                 '(' . $db->quoteName('e.title') . ' LIKE :search'
                 . ' OR ' . $db->quoteName('e.academic_year') . ' LIKE :search'
+                . ' OR ' . $db->quoteName('e.format_custom') . ' LIKE :search'
                 . ' OR ' . $db->quoteName('c.title') . ' LIKE :search)'
             )->bind(':search', $token);
         }
@@ -93,18 +96,15 @@ class EditionsModel extends ListModel
 
     protected function populateState($ordering = 'e.id', $direction = 'DESC'): void
     {
-        $this->setState(
-            'filter.search',
-            $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search', '', 'string')
-        );
+        $search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search', '', 'string');
+        $status = $this->getUserStateFromRequest($this->context . '.filter.status', 'filter_status', '', 'cmd');
+
+        $this->setState('filter.search', mb_substr(trim((string) $search), 0, 100));
         $this->setState(
             'filter.course_id',
             (int) $this->getUserStateFromRequest($this->context . '.filter.course_id', 'filter_course_id', 0, 'int')
         );
-        $this->setState(
-            'filter.status',
-            $this->getUserStateFromRequest($this->context . '.filter.status', 'filter_status', '', 'cmd')
-        );
+        $this->setState('filter.status', in_array($status, self::ALLOWED_STATUSES, true) ? $status : '');
 
         parent::populateState($ordering, $direction);
     }
