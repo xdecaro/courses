@@ -7,9 +7,9 @@
 - Pacchetto Joomla: `pkg_decarocourses`
 - Repository GitHub: `xdecaro/courses`
 - Versione iniziale: `1.0.0`
-- Versione corrente: `1.0.24`
-- ZIP componente: `com_decarocourses_1.0.24.zip`
-- ZIP completo: `pkg_decarocourses_1.0.24.zip`
+- Versione corrente: `1.0.25`
+- ZIP componente: `com_decarocourses_1.0.25.zip`
+- ZIP completo: `pkg_decarocourses_1.0.25.zip`
 
 ## Obiettivo
 
@@ -32,6 +32,10 @@ La UI adotta un design system unico per font, titoli, pulsanti, campi, card, bad
 ## Integrazione Forms by xdecaro
 
 L'integrazione è opzionale. Ogni edizione può memorizzare l'ID di un modulo di `com_decaroforms`; in assenza di Forms, Courses continua a funzionare normalmente.
+
+## 1.0.25
+
+Rifiniti i testi della toolbar nativa Joomla dopo la verifica reale della 1.0.24: rimossi i simboli decorativi duplicati dalle etichette `Corsi`, `Nuovo corso` e `Nuova edizione`, riutilizzando le chiavi lingua pulite già presenti mentre le icone restano gestite esclusivamente dalla Toolbar API Joomla. Nessuna modifica a dati, database, task MVC, ACL o layout del contenuto.
 
 ## 1.0.24
 
