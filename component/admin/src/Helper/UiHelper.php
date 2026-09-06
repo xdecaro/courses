@@ -21,7 +21,7 @@ final class UiHelper
             $wa->registerStyle(
                 'com_decarocourses.design',
                 'com_decarocourses/design-system.css',
-                ['version' => '1.0.19']
+                ['version' => '1.0.20']
             );
         }
 
@@ -29,7 +29,7 @@ final class UiHelper
             $wa->registerStyle(
                 'com_decarocourses.responsive',
                 'com_decarocourses/responsive.css',
-                ['version' => '1.0.19']
+                ['version' => '1.0.20']
             );
         }
 
@@ -37,7 +37,7 @@ final class UiHelper
             $wa->registerStyle(
                 'com_decarocourses.editions',
                 'com_decarocourses/editions.css',
-                ['version' => '1.0.19']
+                ['version' => '1.0.20']
             );
         }
 
@@ -45,7 +45,7 @@ final class UiHelper
             $wa->registerScript(
                 'com_decarocourses.admin-ui',
                 'com_decarocourses/admin-ui.js',
-                ['version' => '1.0.19'],
+                ['version' => '1.0.20'],
                 ['defer' => true]
             );
         }
@@ -82,11 +82,13 @@ final class UiHelper
 
     public static function formatLabel(string $format, string $custom = ''): string
     {
+        $custom = trim($custom);
+
         return match ($format) {
             'intensive' => Text::_('COM_DECAROCOURSES_FORMAT_INTENSIVE'),
             'evening' => Text::_('COM_DECAROCOURSES_FORMAT_EVENING'),
             'weekend' => Text::_('COM_DECAROCOURSES_FORMAT_WEEKEND'),
-            'custom' => Text::_('COM_DECAROCOURSES_FORMAT_CUSTOM') . ($custom !== '' ? ' — ' . $custom : ''),
+            'custom' => $custom !== '' ? $custom : Text::_('COM_DECAROCOURSES_FORMAT_CUSTOM'),
             default => Text::_('COM_DECAROCOURSES_FORMAT_ANNUAL'),
         };
     }
