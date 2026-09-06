@@ -9,6 +9,8 @@ use Joomla\Database\QueryInterface;
 
 class CoursesModel extends ListModel
 {
+    private const FILTER_STATES = [-2, 0, 1];
+
     public function __construct($config = [])
     {
         $config['filter_fields'] ??= [
@@ -52,15 +54,14 @@ class CoursesModel extends ListModel
                 '(' . $db->quoteName('a.title') . ' LIKE :search'
                 . ' OR ' . $db->quoteName('a.code') . ' LIKE :search'
                 . ' OR ' . $db->quoteName('a.alias') . ' LIKE :search)'
-            )->bind(':search', $token);
+            )->bind(':search', $token, ParameterType::STRING);
         }
 
         $state = $this->getState('filter.state');
 
         if ($state !== '' && $state !== null) {
-            $state = (int) $state;
             $query->where($db->quoteName('a.state') . ' = :state')
-                ->bind(':state', $state, ParameterType::INTEGER);
+                ->bind(':state', (int) $state, ParameterType::INTEGER);
         }
 
         $orderingMap = [
@@ -111,14 +112,27 @@ class CoursesModel extends ListModel
 
     protected function populateState($ordering = 'a.ordering', $direction = 'ASC'): void
     {
-        $this->setState(
-            'filter.search',
-            $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search', '', 'string')
+        $search = trim((string) $this->getUserStateFromRequest(
+            $this->context . '.filter.search',
+            'filter_search',
+            '',
+            'string'
+        ));
+        $search = mb_substr($search, 0, 255);
+
+        $state = (string) $this->getUserStateFromRequest(
+            $this->context . '.filter.state',
+            'filter_state',
+            '',
+            'string'
         );
-        $this->setState(
-            'filter.state',
-            $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string')
-        );
+
+        if ($state !== '' && !in_array((int) $state, self::FILTER_STATES, true)) {
+            $state = '';
+        }
+
+        $this->setState('filter.search', $search);
+        $this->setState('filter.state', $state);
 
         parent::populateState($ordering, $direction);
     }
