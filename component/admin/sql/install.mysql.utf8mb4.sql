@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS `#__decarocourses_editions` (
   `title` varchar(255) NOT NULL,
   `academic_year` varchar(20) NOT NULL DEFAULT '',
   `format` varchar(30) NOT NULL DEFAULT 'annual',
+  `format_custom` varchar(120) NOT NULL DEFAULT '',
   `start_date` date NULL,
   `end_date` date NULL,
   `registration_start` date NULL,
