@@ -7,9 +7,9 @@
 - Pacchetto Joomla: `pkg_decarocourses`
 - Repository GitHub: `xdecaro/courses`
 - Versione iniziale: `1.0.0`
-- Versione corrente: `1.0.15`
-- ZIP componente: `com_decarocourses_1.0.15.zip`
-- ZIP completo: `pkg_decarocourses_1.0.15.zip`
+- Versione corrente: `1.0.16`
+- ZIP componente: `com_decarocourses_1.0.16.zip`
+- ZIP completo: `pkg_decarocourses_1.0.16.zip`
 
 ## Obiettivo
 
@@ -32,6 +32,10 @@ La UI adotta un design system unico per font, titoli, pulsanti, campi, card, bad
 ## Integrazione Forms by xdecaro
 
 L'integrazione è opzionale. Ogni edizione può memorizzare l'ID di un modulo di `com_decaroforms`; in assenza di Forms, Courses continua a funzionare normalmente.
+
+## 1.0.16
+
+Corretto il comportamento sticky della colonna laterale nell'editor Edizioni. Il pannello `STATO EDIZIONE` non usa più un offset fisso rispetto alla viewport: Courses rileva automaticamente le barre Joomla con posizione sticky/fixed, inclusa la toolbar `subhead`, calcola la loro altezza effettiva e mantiene la card sempre sotto l'interfaccia amministrativa Joomla. L'offset viene ricalcolato anche quando cambia la dimensione della toolbar o della finestra. Il comportamento resta attivo solo sul layout desktop già previsto; tablet e smartphone mantengono il flusso normale. Nessuna modifica ai dati o allo schema database.
 
 ## 1.0.15
 
