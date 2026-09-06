@@ -1,2 +1,54 @@
+CREATE TABLE IF NOT EXISTS `#__decarocourses_courses` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL,
+  `alias` varchar(255) NOT NULL DEFAULT '',
+  `code` varchar(80) NOT NULL DEFAULT '',
+  `description` text NULL,
+  `state` tinyint NOT NULL DEFAULT 1,
+  `ordering` int NOT NULL DEFAULT 0,
+  `checked_out` int unsigned NOT NULL DEFAULT 0,
+  `checked_out_time` datetime NULL,
+  `created` datetime NULL,
+  `created_by` int unsigned NOT NULL DEFAULT 0,
+  `modified` datetime NULL,
+  `modified_by` int unsigned NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`),
+  KEY `idx_state` (`state`),
+  KEY `idx_ordering` (`ordering`),
+  KEY `idx_checked_out` (`checked_out`),
+  UNIQUE KEY `idx_alias` (`alias`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 DEFAULT COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `#__decarocourses_editions` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `course_id` int unsigned NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `academic_year` varchar(20) NOT NULL DEFAULT '',
+  `format` varchar(30) NOT NULL DEFAULT 'annual',
+  `start_date` date NULL,
+  `end_date` date NULL,
+  `registration_start` date NULL,
+  `registration_end` date NULL,
+  `capacity` int unsigned NOT NULL DEFAULT 0,
+  `status` varchar(40) NOT NULL DEFAULT 'draft',
+  `forms_form_id` int unsigned NOT NULL DEFAULT 0,
+  `notes` text NULL,
+  `state` tinyint NOT NULL DEFAULT 1,
+  `ordering` int NOT NULL DEFAULT 0,
+  `checked_out` int unsigned NOT NULL DEFAULT 0,
+  `checked_out_time` datetime NULL,
+  `created` datetime NULL,
+  `created_by` int unsigned NOT NULL DEFAULT 0,
+  `modified` datetime NULL,
+  `modified_by` int unsigned NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`),
+  KEY `idx_course` (`course_id`),
+  KEY `idx_status` (`status`),
+  KEY `idx_year` (`academic_year`),
+  KEY `idx_forms_form` (`forms_form_id`),
+  KEY `idx_state` (`state`),
+  KEY `idx_checked_out` (`checked_out`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 DEFAULT COLLATE=utf8mb4_unicode_ci;
+
 ALTER TABLE `#__decarocourses_editions`
   ADD COLUMN `format_custom` varchar(120) NOT NULL DEFAULT '' AFTER `format`;
