@@ -18,6 +18,65 @@
   line-height: 1.35;
 }
 
+/* Edition configuration uses one coordinated two-column rhythm. */
+.dc-edition-config-grid {
+  align-items: start;
+}
+
+.dc-edition-config-grid .dc-config-period-type,
+.dc-edition-config-grid .dc-config-period-year,
+.dc-edition-config-grid .dc-config-format,
+.dc-edition-config-grid .dc-config-format-custom {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  align-self: start;
+}
+
+.dc-edition-config-grid .dc-config-format .control-group,
+.dc-edition-config-grid .dc-config-format-custom .control-group {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.dc-edition-config-grid .dc-config-format .control-label,
+.dc-edition-config-grid .dc-config-format-custom .control-label,
+.dc-edition-config-grid .dc-period-type legend,
+.dc-edition-config-grid .dc-period-year-group > label {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 21px;
+  margin: 0 0 8px;
+  padding: 0;
+  color: var(--dc-text);
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.dc-edition-config-grid .dc-config-format .controls,
+.dc-edition-config-grid .dc-config-format-custom .controls {
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.dc-edition-config-grid .dc-period-type-options,
+.dc-edition-config-grid .dc-period-year-row,
+.dc-edition-config-grid .dc-config-format select,
+.dc-edition-config-grid .dc-config-format-custom input {
+  min-height: 42px;
+}
+
+.dc-edition-config-grid .dc-config-format-custom .form-text {
+  margin-top: 7px;
+}
+
 .dc-stat.is-scheduled {
   border-left: 4px solid var(--dc-info);
 }
