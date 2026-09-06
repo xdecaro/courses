@@ -60,12 +60,16 @@
   .dc-edition-page input,
   .dc-edition-page select,
   .dc-edition-page textarea,
-  .dc-edition-page button:not(.dc-edition-form-actions button) {
+  .dc-edition-page button {
     scroll-margin-bottom: calc(
       var(--dc-edition-actions-height, 64px)
       + var(--dc-joomla-bottom-offset, 72px)
       + 32px
     );
+  }
+
+  .dc-edition-form-actions button {
+    scroll-margin-bottom: 0;
   }
 }
 
