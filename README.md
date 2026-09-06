@@ -7,9 +7,9 @@
 - Pacchetto Joomla: `pkg_decarocourses`
 - Repository GitHub: `xdecaro/courses`
 - Versione iniziale: `1.0.0`
-- Versione corrente: `1.0.25`
-- ZIP componente: `com_decarocourses_1.0.25.zip`
-- ZIP completo: `pkg_decarocourses_1.0.25.zip`
+- Versione corrente: `1.0.26`
+- ZIP componente: `com_decarocourses_1.0.26.zip`
+- ZIP completo: `pkg_decarocourses_1.0.26.zip`
 
 ## Obiettivo
 
@@ -32,6 +32,10 @@ La UI adotta un design system unico per font, titoli, pulsanti, campi, card, bad
 ## Integrazione Forms by xdecaro
 
 L'integrazione è opzionale. Ogni edizione può memorizzare l'ID di un modulo di `com_decaroforms`; in assenza di Forms, Courses continua a funzionare normalmente.
+
+## 1.0.26
+
+Introdotto un sistema riutilizzabile di aggiornamento live per le sorgenti dati dinamiche di tutto Courses. Nell'editor Edizione i select Corso e Modulo Forms possono essere aggiornati manualmente con `Aggiorna` e vengono riallineati automaticamente quando si ritorna alla scheda dopo aver lavorato in un'altra pagina o scheda, senza polling continuo e senza ricaricare l'intero editor. La selezione corrente viene preservata; se il valore selezionato non esiste più viene mantenuto visibile e segnalato come non disponibile invece di essere cancellato in silenzio. Le sorgenti sono servite da un endpoint Joomla dedicato con token CSRF GET e ACL server-side, mentre la lettura dei dati è centralizzata in `LiveDataHelper` per evitare query duplicate e rendere il meccanismo riutilizzabile da future viste, campi e integrazioni del componente. Aggiunto asset responsive/dark-mode `live-refresh.css`. Nessuna modifica a dati o schema database.
 
 ## 1.0.25
 
