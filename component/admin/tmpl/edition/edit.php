@@ -86,45 +86,41 @@ $renderLiveSelect = function (string $fieldName, string $source) use ($escape): 
         <div class="dc-form-grid dc-form-grid-2">
           <div class="dc-field-span-2"><?php $renderLiveSelect('course_id', 'courses'); ?></div>
 
-          <div class="dc-edition-config-columns dc-field-span-2">
-            <div class="dc-period-builder" data-dc-period-builder>
-              <fieldset class="dc-period-type">
-                <legend><?php echo Text::_('COM_DECAROCOURSES_FIELD_PERIOD_TYPE'); ?> <span class="star" aria-hidden="true">*</span></legend>
-                <div class="dc-period-type-options">
-                  <label class="dc-choice-pill">
-                    <input type="radio" name="dc_period_type" value="single"<?php echo $periodType === 'single' ? ' checked' : ''; ?>>
-                    <span><?php echo Text::_('COM_DECAROCOURSES_PERIOD_TYPE_SINGLE'); ?></span>
-                  </label>
-                  <label class="dc-choice-pill">
-                    <input type="radio" name="dc_period_type" value="academic"<?php echo $periodType === 'academic' ? ' checked' : ''; ?>>
-                    <span><?php echo Text::_('COM_DECAROCOURSES_PERIOD_TYPE_ACADEMIC'); ?></span>
-                  </label>
-                </div>
-              </fieldset>
-
-              <div class="dc-period-year-group">
-                <label for="dc-period-year"><?php echo Text::_('COM_DECAROCOURSES_FIELD_PERIOD_YEAR'); ?> <span class="star" aria-hidden="true">*</span></label>
-                <div class="dc-period-year-row">
-                  <select id="dc-period-year" class="form-select" data-dc-period-year required>
-                    <?php foreach ($periodYears as $year) :
-                        $label = $periodType === 'academic' ? $year . '/' . ($year + 1) : (string) $year;
-                    ?>
-                      <option value="<?php echo (int) $year; ?>"<?php echo $year === $selectedYear ? ' selected' : ''; ?>><?php echo $escape($label); ?></option>
-                    <?php endforeach; ?>
-                  </select>
-                  <button class="btn dc-btn dc-btn-secondary dc-period-new-toggle" type="button" data-dc-period-new-toggle>
-                    <?php echo Text::_('COM_DECAROCOURSES_ACTION_NEW_YEAR'); ?>
-                  </button>
-                </div>
+          <div class="dc-edition-config-grid dc-field-span-2">
+            <fieldset class="dc-period-type dc-config-period-type">
+              <legend><?php echo Text::_('COM_DECAROCOURSES_FIELD_PERIOD_TYPE'); ?> <span class="star" aria-hidden="true">*</span></legend>
+              <div class="dc-period-type-options">
+                <label class="dc-choice-pill">
+                  <input type="radio" name="dc_period_type" value="single"<?php echo $periodType === 'single' ? ' checked' : ''; ?>>
+                  <span><?php echo Text::_('COM_DECAROCOURSES_PERIOD_TYPE_SINGLE'); ?></span>
+                </label>
+                <label class="dc-choice-pill">
+                  <input type="radio" name="dc_period_type" value="academic"<?php echo $periodType === 'academic' ? ' checked' : ''; ?>>
+                  <span><?php echo Text::_('COM_DECAROCOURSES_PERIOD_TYPE_ACADEMIC'); ?></span>
+                </label>
               </div>
+            </fieldset>
 
-              <?php echo $this->form->getInput('academic_year'); ?>
+            <div class="dc-period-year-group dc-config-period-year">
+              <label for="dc-period-year"><?php echo Text::_('COM_DECAROCOURSES_FIELD_PERIOD_YEAR'); ?> <span class="star" aria-hidden="true">*</span></label>
+              <div class="dc-period-year-row">
+                <select id="dc-period-year" class="form-select" data-dc-period-year required>
+                  <?php foreach ($periodYears as $year) :
+                      $label = $periodType === 'academic' ? $year . '/' . ($year + 1) : (string) $year;
+                  ?>
+                    <option value="<?php echo (int) $year; ?>"<?php echo $year === $selectedYear ? ' selected' : ''; ?>><?php echo $escape($label); ?></option>
+                  <?php endforeach; ?>
+                </select>
+                <button class="btn dc-btn dc-btn-secondary dc-period-new-toggle" type="button" data-dc-period-new-toggle>
+                  <?php echo Text::_('COM_DECAROCOURSES_ACTION_NEW_YEAR'); ?>
+                </button>
+              </div>
             </div>
 
-            <div class="dc-edition-format-column">
-              <?php echo $this->form->renderField('format'); ?>
-              <div class="dc-format-custom-wrap" data-dc-format-custom><?php echo $this->form->renderField('format_custom'); ?></div>
-            </div>
+            <div class="dc-config-format"><?php echo $this->form->renderField('format'); ?></div>
+            <div class="dc-format-custom-wrap dc-config-format-custom" data-dc-format-custom><?php echo $this->form->renderField('format_custom'); ?></div>
+
+            <?php echo $this->form->getInput('academic_year'); ?>
           </div>
         </div>
       </section>
