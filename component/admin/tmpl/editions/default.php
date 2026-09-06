@@ -22,11 +22,6 @@ $listUrl = 'index.php?option=com_decarocourses&view=editions';
 $scopedUrl = $listUrl . '&filter_search=&filter_course_id=' . $courseId . '&filter_state=' . rawurlencode($publicationFilter);
 $resetUrl = Route::_($listUrl . '&filter_search=&filter_status=&filter_state=&filter_course_id=' . $courseId);
 $showAllUrl = Route::_($listUrl . '&filter_search=&filter_status=' . rawurlencode($statusFilter) . '&filter_state=' . rawurlencode($publicationFilter) . '&filter_course_id=0');
-$publicationMeta = [
-    1 => ['label' => Text::_('JPUBLISHED'), 'class' => 'is-success'],
-    0 => ['label' => Text::_('JUNPUBLISHED'), 'class' => 'is-muted'],
-    -2 => ['label' => Text::_('JTRASHED'), 'class' => 'is-danger'],
-];
 ?>
 <form action="<?php echo Route::_($listUrl); ?>" method="post" name="adminForm" id="adminForm">
 <div class="dc-app">
@@ -65,7 +60,7 @@ $publicationMeta = [
   </nav>
 
   <section class="dc-card">
-    <div class="dc-toolbar dc-toolbar-editions" role="search">
+    <div class="dc-toolbar" role="search">
       <input
         class="form-control"
         type="search"
@@ -74,21 +69,23 @@ $publicationMeta = [
         placeholder="<?php echo $escape(Text::_('COM_DECAROCOURSES_EDITIONS_SEARCH_PLACEHOLDER')); ?>"
         aria-label="<?php echo $escape(Text::_('COM_DECAROCOURSES_EDITIONS_SEARCH_ARIA')); ?>"
       >
-      <select class="form-select" name="filter_status" aria-label="<?php echo $escape(Text::_('COM_DECAROCOURSES_EDITIONS_STATUS_FILTER_ARIA')); ?>">
-        <option value=""<?php echo $statusFilter === '' ? ' selected' : ''; ?>><?php echo Text::_('COM_DECAROCOURSES_FILTER_ALL_STATES'); ?></option>
-        <option value="draft"<?php echo $statusFilter === 'draft' ? ' selected' : ''; ?>><?php echo Text::_('COM_DECAROCOURSES_STATUS_DRAFT'); ?></option>
-        <option value="registrations_open"<?php echo $statusFilter === 'registrations_open' ? ' selected' : ''; ?>><?php echo Text::_('COM_DECAROCOURSES_STATUS_REGISTRATIONS_OPEN'); ?></option>
-        <option value="scheduled"<?php echo $statusFilter === 'scheduled' ? ' selected' : ''; ?>><?php echo Text::_('COM_DECAROCOURSES_STATUS_SCHEDULED'); ?></option>
-        <option value="active"<?php echo $statusFilter === 'active' ? ' selected' : ''; ?>><?php echo Text::_('COM_DECAROCOURSES_STATUS_ACTIVE'); ?></option>
-        <option value="completed"<?php echo $statusFilter === 'completed' ? ' selected' : ''; ?>><?php echo Text::_('COM_DECAROCOURSES_STATUS_COMPLETED'); ?></option>
-        <option value="archived"<?php echo $statusFilter === 'archived' ? ' selected' : ''; ?>><?php echo Text::_('COM_DECAROCOURSES_STATUS_ARCHIVED'); ?></option>
-      </select>
-      <select class="form-select" name="filter_state" aria-label="<?php echo $escape(Text::_('COM_DECAROCOURSES_EDITIONS_PUBLICATION_FILTER_ARIA')); ?>">
-        <option value=""<?php echo $publicationFilter === '' ? ' selected' : ''; ?>><?php echo Text::_('COM_DECAROCOURSES_FILTER_ALL_PUBLICATION'); ?></option>
-        <option value="1"<?php echo $publicationFilter === '1' ? ' selected' : ''; ?>><?php echo Text::_('JPUBLISHED'); ?></option>
-        <option value="0"<?php echo $publicationFilter === '0' ? ' selected' : ''; ?>><?php echo Text::_('JUNPUBLISHED'); ?></option>
-        <option value="-2"<?php echo $isTrashFilter ? ' selected' : ''; ?>><?php echo Text::_('JTRASHED'); ?></option>
-      </select>
+      <div class="d-grid d-md-flex gap-2">
+        <select class="form-select flex-fill" name="filter_status" aria-label="<?php echo $escape(Text::_('COM_DECAROCOURSES_EDITIONS_STATUS_FILTER_ARIA')); ?>">
+          <option value=""<?php echo $statusFilter === '' ? ' selected' : ''; ?>><?php echo Text::_('COM_DECAROCOURSES_FILTER_ALL_STATES'); ?></option>
+          <option value="draft"<?php echo $statusFilter === 'draft' ? ' selected' : ''; ?>><?php echo Text::_('COM_DECAROCOURSES_STATUS_DRAFT'); ?></option>
+          <option value="registrations_open"<?php echo $statusFilter === 'registrations_open' ? ' selected' : ''; ?>><?php echo Text::_('COM_DECAROCOURSES_STATUS_REGISTRATIONS_OPEN'); ?></option>
+          <option value="scheduled"<?php echo $statusFilter === 'scheduled' ? ' selected' : ''; ?>><?php echo Text::_('COM_DECAROCOURSES_STATUS_SCHEDULED'); ?></option>
+          <option value="active"<?php echo $statusFilter === 'active' ? ' selected' : ''; ?>><?php echo Text::_('COM_DECAROCOURSES_STATUS_ACTIVE'); ?></option>
+          <option value="completed"<?php echo $statusFilter === 'completed' ? ' selected' : ''; ?>><?php echo Text::_('COM_DECAROCOURSES_STATUS_COMPLETED'); ?></option>
+          <option value="archived"<?php echo $statusFilter === 'archived' ? ' selected' : ''; ?>><?php echo Text::_('COM_DECAROCOURSES_STATUS_ARCHIVED'); ?></option>
+        </select>
+        <select class="form-select flex-fill" name="filter_state" aria-label="<?php echo $escape(Text::_('COM_DECAROCOURSES_EDITIONS_PUBLICATION_FILTER_ARIA')); ?>">
+          <option value=""<?php echo $publicationFilter === '' ? ' selected' : ''; ?>><?php echo Text::_('COM_DECAROCOURSES_FILTER_ALL_PUBLICATION'); ?></option>
+          <option value="1"<?php echo $publicationFilter === '1' ? ' selected' : ''; ?>><?php echo Text::_('JPUBLISHED'); ?></option>
+          <option value="0"<?php echo $publicationFilter === '0' ? ' selected' : ''; ?>><?php echo Text::_('JUNPUBLISHED'); ?></option>
+          <option value="-2"<?php echo $isTrashFilter ? ' selected' : ''; ?>><?php echo Text::_('JTRASHED'); ?></option>
+        </select>
+      </div>
       <button class="btn dc-btn dc-btn-primary" type="submit"><?php echo Text::_('COM_DECAROCOURSES_ACTION_SEARCH'); ?></button>
       <a class="btn dc-btn dc-btn-secondary" href="<?php echo $resetUrl; ?>"><?php echo Text::_('COM_DECAROCOURSES_ACTION_RESET'); ?></a>
     </div>
@@ -116,8 +113,6 @@ $publicationMeta = [
           <?php foreach ($this->items as $i => $item) :
               $editUrl = Route::_('index.php?option=com_decarocourses&task=edition.edit&id=' . (int) $item->id);
               $formsLabel = (int) $item->forms_form_id > 0 ? '#' . (int) $item->forms_form_id : '—';
-              $itemPublication = (int) $item->state;
-              $publication = $publicationMeta[$itemPublication] ?? ['label' => Text::_('COM_DECAROCOURSES_STATE_UNKNOWN'), 'class' => 'is-muted'];
           ?>
             <tr>
               <td class="dc-check" data-label="<?php echo $escape(Text::_('COM_DECAROCOURSES_ROW_SELECT')); ?>"><?php echo HTMLHelper::_('grid.id', $i, $item->id); ?></td>
@@ -128,12 +123,7 @@ $publicationMeta = [
               </td>
               <td class="dc-col-period" data-label="<?php echo $escape(Text::_('COM_DECAROCOURSES_COLUMN_PERIOD')); ?>"><strong><?php echo $escape($item->academic_year); ?></strong></td>
               <td class="dc-col-format" data-label="<?php echo $escape(Text::_('COM_DECAROCOURSES_COLUMN_FORMAT')); ?>"><?php echo $escape(UiHelper::formatLabel((string) $item->format, (string) $item->format_custom)); ?></td>
-              <td class="dc-col-edition-status" data-label="<?php echo $escape(Text::_('COM_DECAROCOURSES_COLUMN_STATE')); ?>">
-                <div class="dc-edition-state-stack">
-                  <span class="dc-status <?php echo UiHelper::statusClass((string) $item->status); ?>"><?php echo $escape(UiHelper::statusLabel((string) $item->status)); ?></span>
-                  <span class="dc-badge <?php echo $publication['class']; ?>"><?php echo $escape($publication['label']); ?></span>
-                </div>
-              </td>
+              <td class="dc-col-edition-status" data-label="<?php echo $escape(Text::_('COM_DECAROCOURSES_COLUMN_STATE')); ?>"><span class="dc-status <?php echo UiHelper::statusClass((string) $item->status); ?>"><?php echo $escape(UiHelper::statusLabel((string) $item->status)); ?></span></td>
               <td class="dc-col-forms" data-label="<?php echo $escape(Text::_('COM_DECAROCOURSES_COLUMN_FORMS')); ?>"><?php echo (int) $item->forms_form_id > 0 ? '<span class="dc-badge is-info">' . $escape($formsLabel) . '</span>' : '—'; ?></td>
               <td class="dc-col-actions" data-label="<?php echo $escape(Text::_('COM_DECAROCOURSES_COLUMN_ACTIONS')); ?>">
                 <?php if ($this->canEdit) : ?>
