@@ -10,9 +10,17 @@ $escape = static fn ($value): string => htmlspecialchars((string) $value, ENT_QU
 $courseId = (int) $this->state->get('filter.course_id', 0);
 $statusFilter = (string) $this->state->get('filter.status', '');
 $courseLabel = trim((string) $this->selectedCourseTitle);
-$resetUrl = Route::_('index.php?option=com_decarocourses&view=editions&filter_search=&filter_status=&filter_course_id=' . $courseId);
+$stats = $this->stats ?: (object) [
+    'total' => 0,
+    'registrations_open' => 0,
+    'scheduled' => 0,
+    'active' => 0,
+];
+$listUrl = 'index.php?option=com_decarocourses&view=editions';
+$scopedUrl = $listUrl . '&filter_search=&filter_course_id=' . $courseId;
+$resetUrl = Route::_($scopedUrl . '&filter_status=');
 ?>
-<form action="<?php echo Route::_('index.php?option=com_decarocourses&view=editions'); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::_($listUrl); ?>" method="post" name="adminForm" id="adminForm">
 <div class="dc-app">
   <header class="dc-page-head">
     <div>
@@ -25,9 +33,28 @@ $resetUrl = Route::_('index.php?option=com_decarocourses&view=editions&filter_se
   <?php if ($courseId > 0) : ?>
     <div class="dc-filter-notice">
       <span><?php echo Text::sprintf('COM_DECAROCOURSES_EDITIONS_FILTERED_BY_COURSE', $escape($courseLabel !== '' ? $courseLabel : Text::sprintf('COM_DECAROCOURSES_COURSE_NUMBER', $courseId))); ?></span>
-      <a href="<?php echo Route::_('index.php?option=com_decarocourses&view=editions&filter_search=&filter_status=&filter_course_id=0'); ?>"><?php echo Text::_('COM_DECAROCOURSES_ACTION_SHOW_ALL'); ?></a>
+      <a href="<?php echo Route::_($listUrl . '&filter_search=&filter_status=&filter_course_id=0'); ?>"><?php echo Text::_('COM_DECAROCOURSES_ACTION_SHOW_ALL'); ?></a>
     </div>
   <?php endif; ?>
+
+  <nav class="dc-stats dc-edition-stats" aria-label="<?php echo $escape(Text::_('COM_DECAROCOURSES_EDITIONS_STATS_ARIA')); ?>">
+    <a class="dc-stat<?php echo $statusFilter === '' ? ' is-selected' : ''; ?>" href="<?php echo $resetUrl; ?>">
+      <span><?php echo Text::_('COM_DECAROCOURSES_STAT_TOTAL_EDITIONS'); ?></span>
+      <strong><?php echo (int) $stats->total; ?></strong>
+    </a>
+    <a class="dc-stat is-open<?php echo $statusFilter === 'registrations_open' ? ' is-selected' : ''; ?>" href="<?php echo Route::_($scopedUrl . '&filter_status=registrations_open'); ?>">
+      <span><?php echo Text::_('COM_DECAROCOURSES_STAT_REGISTRATIONS_OPEN'); ?></span>
+      <strong><?php echo (int) $stats->registrations_open; ?></strong>
+    </a>
+    <a class="dc-stat is-scheduled<?php echo $statusFilter === 'scheduled' ? ' is-selected' : ''; ?>" href="<?php echo Route::_($scopedUrl . '&filter_status=scheduled'); ?>">
+      <span><?php echo Text::_('COM_DECAROCOURSES_STAT_SCHEDULED'); ?></span>
+      <strong><?php echo (int) $stats->scheduled; ?></strong>
+    </a>
+    <a class="dc-stat is-active<?php echo $statusFilter === 'active' ? ' is-selected' : ''; ?>" href="<?php echo Route::_($scopedUrl . '&filter_status=active'); ?>">
+      <span><?php echo Text::_('COM_DECAROCOURSES_STAT_ACTIVE_EDITIONS'); ?></span>
+      <strong><?php echo (int) $stats->active; ?></strong>
+    </a>
+  </nav>
 
   <section class="dc-card">
     <div class="dc-toolbar" role="search">
