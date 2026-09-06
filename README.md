@@ -7,9 +7,9 @@
 - Pacchetto Joomla: `pkg_decarocourses`
 - Repository GitHub: `xdecaro/courses`
 - Versione iniziale: `1.0.0`
-- Versione corrente: `1.0.12`
-- ZIP componente: `com_decarocourses_1.0.12.zip`
-- ZIP completo: `pkg_decarocourses_1.0.12.zip`
+- Versione corrente: `1.0.13`
+- ZIP componente: `com_decarocourses_1.0.13.zip`
+- ZIP completo: `pkg_decarocourses_1.0.13.zip`
 
 ## Obiettivo
 
@@ -31,6 +31,10 @@ La UI adotta un design system unico per font, titoli, pulsanti, campi, card, bad
 ## Integrazione Forms by xdecaro
 
 L'integrazione è opzionale. Ogni edizione può memorizzare l'ID di un modulo di `com_decaroforms`; in assenza di Forms, Courses continua a funzionare normalmente.
+
+## 1.0.13
+
+Pulizia e consolidamento generale di Gestione Corsi senza modificare il layout approvato. Localizzati in IT/EN i testi della lista e dell'editor corso, incluse validazioni e label accessibili; aggiunto `scope` alle intestazioni tabella; ripulite classi CSS obsolete dalle azioni di riga e ridotte regole responsive duplicate. Il filtro stato ora accetta solo i valori previsti e la ricerca viene normalizzata e limitata prima della query. Semplificato inoltre lo script delle azioni massive, sincronizzando in modo esplicito `boxchecked` con le righe selezionate e mantenendo i pulsanti disabilitati senza selezione. Nessuna modifica a database o dati esistenti.
 
 ## 1.0.12
 
