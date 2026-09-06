@@ -5,6 +5,8 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Session\Session;
 
 final class UiHelper
 {
@@ -21,7 +23,7 @@ final class UiHelper
             $wa->registerStyle(
                 'com_decarocourses.design',
                 'com_decarocourses/design-system.css',
-                ['version' => '1.0.25']
+                ['version' => '1.0.26']
             );
         }
 
@@ -29,7 +31,7 @@ final class UiHelper
             $wa->registerStyle(
                 'com_decarocourses.responsive',
                 'com_decarocourses/responsive.css',
-                ['version' => '1.0.25']
+                ['version' => '1.0.26']
             );
         }
 
@@ -37,7 +39,7 @@ final class UiHelper
             $wa->registerStyle(
                 'com_decarocourses.editions',
                 'com_decarocourses/editions.css',
-                ['version' => '1.0.25']
+                ['version' => '1.0.26']
             );
         }
 
@@ -45,7 +47,7 @@ final class UiHelper
             $wa->registerStyle(
                 'com_decarocourses.editions-mobile',
                 'com_decarocourses/editions-mobile.css',
-                ['version' => '1.0.25']
+                ['version' => '1.0.26']
             );
         }
 
@@ -53,10 +55,23 @@ final class UiHelper
             $wa->registerScript(
                 'com_decarocourses.admin-ui',
                 'com_decarocourses/admin-ui.js',
-                ['version' => '1.0.25'],
+                ['version' => '1.0.26'],
                 ['defer' => true]
             );
         }
+
+        $document->addScriptOptions('com_decarocourses.liveRefresh', [
+            'url' => Route::_('index.php?option=com_decarocourses&task=live.options&format=json', false),
+            'token' => Session::getFormToken(),
+            'labels' => [
+                'refreshing' => Text::_('COM_DECAROCOURSES_LIVE_REFRESHING'),
+                'updated' => Text::_('COM_DECAROCOURSES_LIVE_REFRESH_UPDATED'),
+                'unchanged' => Text::_('COM_DECAROCOURSES_LIVE_REFRESH_UNCHANGED'),
+                'error' => Text::_('COM_DECAROCOURSES_LIVE_REFRESH_ERROR'),
+                'stale' => Text::_('COM_DECAROCOURSES_LIVE_REFRESH_STALE'),
+                'staleSuffix' => Text::_('COM_DECAROCOURSES_LIVE_REFRESH_STALE_SUFFIX'),
+            ],
+        ]);
 
         $wa->useStyle('com_decarocourses.design');
         $wa->useStyle('com_decarocourses.responsive');
