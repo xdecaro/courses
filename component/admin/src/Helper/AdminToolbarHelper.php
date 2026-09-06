@@ -26,9 +26,10 @@ final class AdminToolbarHelper
         }
 
         if ($canEditState) {
-            ToolbarHelper::publish('courses.publish', 'COM_DECAROCOURSES_ACTION_PUBLISH', true);
-
-            if (!$isTrashFilter) {
+            if ($isTrashFilter) {
+                ToolbarHelper::publish('courses.publish', 'COM_DECAROCOURSES_ACTION_RESTORE', true);
+            } else {
+                ToolbarHelper::publish('courses.publish', 'COM_DECAROCOURSES_ACTION_PUBLISH', true);
                 ToolbarHelper::unpublish('courses.unpublish', 'COM_DECAROCOURSES_ACTION_SUSPEND', true);
                 ToolbarHelper::trash('courses.trash', 'COM_DECAROCOURSES_ACTION_TRASH', true);
             }
@@ -51,7 +52,9 @@ final class AdminToolbarHelper
 
     public static function editions(
         bool $canCreate,
-        bool $canEditState
+        bool $canEditState,
+        bool $canDelete,
+        bool $isTrashFilter
     ): void {
         ToolbarHelper::link(
             Route::_('index.php?option=com_decarocourses&view=courses'),
@@ -64,9 +67,17 @@ final class AdminToolbarHelper
         }
 
         if ($canEditState) {
-            ToolbarHelper::publish('editions.publish', 'COM_DECAROCOURSES_ACTION_PUBLISH', true);
-            ToolbarHelper::unpublish('editions.unpublish', 'COM_DECAROCOURSES_ACTION_SUSPEND', true);
-            ToolbarHelper::trash('editions.trash', 'COM_DECAROCOURSES_ACTION_TRASH', true);
+            if ($isTrashFilter) {
+                ToolbarHelper::publish('editions.publish', 'COM_DECAROCOURSES_ACTION_RESTORE', true);
+            } else {
+                ToolbarHelper::publish('editions.publish', 'COM_DECAROCOURSES_ACTION_PUBLISH', true);
+                ToolbarHelper::unpublish('editions.unpublish', 'COM_DECAROCOURSES_ACTION_SUSPEND', true);
+                ToolbarHelper::trash('editions.trash', 'COM_DECAROCOURSES_ACTION_TRASH', true);
+            }
+        }
+
+        if ($isTrashFilter && $canDelete) {
+            ToolbarHelper::deleteList('', 'editions.delete', 'COM_DECAROCOURSES_ACTION_DELETE_PERMANENTLY');
         }
     }
 
