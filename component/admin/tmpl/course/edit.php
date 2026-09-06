@@ -16,9 +16,9 @@ $isNew = empty($this->item->id);
       <p>Qui salvi le informazioni generali del corso. Anno accademico, date, capienza e iscrizioni vengono gestiti nelle singole edizioni.</p>
     </div>
     <div class="dc-page-actions">
-      <a class="btn btn-outline-secondary" href="<?php echo Route::_('index.php?option=com_decarocourses&view=courses'); ?>">← Elenco corsi</a>
+      <a class="btn dc-btn dc-btn-secondary" href="<?php echo Route::_('index.php?option=com_decarocourses&view=courses'); ?>">← Elenco corsi</a>
       <?php if (!$isNew) : ?>
-        <a class="btn btn-outline-primary" href="<?php echo Route::_('index.php?option=com_decarocourses&view=editions&filter_search=&filter_course_id=' . (int) $this->item->id); ?>">Apri edizioni</a>
+        <a class="btn dc-btn dc-btn-primary" href="<?php echo Route::_('index.php?option=com_decarocourses&view=editions&filter_search=&filter_course_id=' . (int) $this->item->id); ?>">Apri edizioni</a>
       <?php endif; ?>
     </div>
   </header>
@@ -47,7 +47,7 @@ $isNew = empty($this->item->id);
 
     <aside class="dc-editor-side">
       <section class="dc-card dc-form-section">
-        <div class="dc-section-head"><div><span class="dc-eyebrow">PUBBLICAZIONE</span><h2>Stato</h2></div></div>
+        <div class="dc-section-head"><div><span class="dc-eyebrow">VISIBILITÀ</span><h2>Pubblicazione</h2></div></div>
         <?php echo $this->form->renderField('state'); ?>
         <?php echo $this->form->renderField('ordering'); ?>
       </section>
@@ -61,10 +61,10 @@ $isNew = empty($this->item->id);
 
   <div class="dc-form-actions" aria-label="Azioni corso">
     <?php if ($this->canSave) : ?>
-      <button class="btn btn-primary" type="submit" onclick="document.getElementById('dc-task').value='course.apply'">Salva</button>
-      <button class="btn btn-outline-primary" type="submit" onclick="document.getElementById('dc-task').value='course.save'">Salva e chiudi</button>
+      <button class="btn dc-btn dc-btn-primary" type="submit" onclick="document.getElementById('dc-task').value='course.apply'">Salva</button>
+      <button class="btn dc-btn dc-btn-secondary" type="submit" onclick="document.getElementById('dc-task').value='course.save'">Salva e chiudi</button>
     <?php endif; ?>
-    <button class="btn btn-outline-secondary" type="submit" formnovalidate onclick="document.getElementById('dc-task').value='course.cancel'">Annulla</button>
+    <button class="btn dc-btn dc-btn-neutral" type="submit" formnovalidate onclick="document.getElementById('dc-task').value='course.cancel'">Annulla</button>
   </div>
 </div>
 <?php echo $this->form->getInput('id'); ?>
