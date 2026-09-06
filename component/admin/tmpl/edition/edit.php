@@ -24,15 +24,12 @@ if (preg_match('/^(\d{4})/', $periodValue, $periodMatches) === 1) {
     }
 }
 
-$periodYears = range($currentYear - 5, $currentYear + 10);
-
-if (!in_array($selectedYear, $periodYears, true)) {
-    $periodYears[] = $selectedYear;
-    sort($periodYears, SORT_NUMERIC);
-}
+// Keep the selector intentionally compact: for a new edition Joomla's current
+// year is the only initial option; when editing, preserve the saved year.
+$periodYears = [$selectedYear];
 ?>
 <form action="<?php echo Route::_('index.php?option=com_decarocourses&layout=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
-<div class="dc-app">
+<div class="dc-app dc-edition-page">
   <header class="dc-page-head">
     <div>
       <span class="dc-eyebrow"><?php echo Text::_('COM_DECAROCOURSES_EDITION_EYEBROW'); ?></span>
@@ -82,20 +79,10 @@ if (!in_array($selectedYear, $periodYears, true)) {
                     <option value="<?php echo (int) $year; ?>"<?php echo $year === $selectedYear ? ' selected' : ''; ?>><?php echo $escape($label); ?></option>
                   <?php endforeach; ?>
                 </select>
-                <button class="btn dc-btn dc-btn-secondary dc-period-new-toggle" type="button" data-dc-period-new-toggle aria-expanded="false">
+                <button class="btn dc-btn dc-btn-secondary dc-period-new-toggle" type="button" data-dc-period-new-toggle>
                   <?php echo Text::_('COM_DECAROCOURSES_ACTION_NEW_YEAR'); ?>
                 </button>
               </div>
-            </div>
-
-            <div class="dc-period-new-panel" data-dc-period-new hidden>
-              <label for="dc-period-new-year"><?php echo Text::_('COM_DECAROCOURSES_FIELD_NEW_YEAR'); ?></label>
-              <div class="dc-period-new-row">
-                <input id="dc-period-new-year" class="form-control" type="number" min="1900" max="2200" step="1" inputmode="numeric" data-dc-period-new-year>
-                <button class="btn dc-btn dc-btn-primary" type="button" data-dc-period-add><?php echo Text::_('COM_DECAROCOURSES_ACTION_ADD'); ?></button>
-                <button class="btn dc-btn dc-btn-neutral" type="button" data-dc-period-new-cancel><?php echo Text::_('COM_DECAROCOURSES_ACTION_CANCEL'); ?></button>
-              </div>
-              <p class="dc-period-new-help" data-dc-period-new-help></p>
             </div>
 
             <?php echo $this->form->getInput('academic_year'); ?>
@@ -166,7 +153,31 @@ if (!in_array($selectedYear, $periodYears, true)) {
     </aside>
   </div>
 
-  <div class="dc-form-actions" aria-label="<?php echo $escape(Text::_('COM_DECAROCOURSES_EDITION_ACTIONS_ARIA')); ?>">
+  <dialog class="dc-period-modal" data-dc-period-modal aria-labelledby="dc-period-modal-title">
+    <div class="dc-period-modal-card">
+      <div class="dc-period-modal-head">
+        <div>
+          <span class="dc-eyebrow"><?php echo Text::_('COM_DECAROCOURSES_FIELD_PERIOD'); ?></span>
+          <h2 id="dc-period-modal-title"><?php echo Text::_('COM_DECAROCOURSES_FIELD_NEW_YEAR'); ?></h2>
+        </div>
+        <button class="dc-period-modal-close" type="button" data-dc-period-modal-close aria-label="<?php echo $escape(Text::_('JCLOSE')); ?>">×</button>
+      </div>
+      <div class="dc-period-modal-body">
+        <label for="dc-period-new-year"><?php echo Text::_('COM_DECAROCOURSES_FIELD_PERIOD_YEAR'); ?></label>
+        <input id="dc-period-new-year" class="form-control" type="number" min="1900" max="2200" step="1" inputmode="numeric" placeholder="<?php echo $currentYear + 1; ?>" data-dc-period-new-year>
+        <p class="dc-period-modal-preview" aria-live="polite">
+          <span><?php echo Text::_('COM_DECAROCOURSES_FIELD_PERIOD'); ?>:</span>
+          <strong data-dc-period-preview></strong>
+        </p>
+      </div>
+      <div class="dc-period-modal-actions">
+        <button class="btn dc-btn dc-btn-neutral" type="button" data-dc-period-new-cancel><?php echo Text::_('COM_DECAROCOURSES_ACTION_CANCEL'); ?></button>
+        <button class="btn dc-btn dc-btn-primary" type="button" data-dc-period-add><?php echo Text::_('COM_DECAROCOURSES_ACTION_ADD'); ?></button>
+      </div>
+    </div>
+  </dialog>
+
+  <div class="dc-form-actions dc-edition-form-actions" data-dc-edition-actions aria-label="<?php echo $escape(Text::_('COM_DECAROCOURSES_EDITION_ACTIONS_ARIA')); ?>">
     <?php if ($this->canSave) : ?>
       <button class="btn dc-btn dc-btn-primary" type="submit" onclick="document.getElementById('dc-task').value='edition.apply'"><?php echo Text::_('COM_DECAROCOURSES_ACTION_SAVE'); ?></button>
       <button class="btn dc-btn dc-btn-secondary" type="submit" onclick="document.getElementById('dc-task').value='edition.save'"><?php echo Text::_('COM_DECAROCOURSES_ACTION_SAVE_CLOSE'); ?></button>
