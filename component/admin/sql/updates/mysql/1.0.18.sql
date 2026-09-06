@@ -1,0 +1,1 @@
+-- Courses 1.0.18: schema repair is handled by the hardened 1.0.14 migration.
