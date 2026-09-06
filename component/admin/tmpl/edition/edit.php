@@ -16,7 +16,7 @@ $isNew = empty($this->item->id);
       <p>Una edizione rappresenta una specifica annualità o sessione del corso e può essere collegata a Forms by xdecaro.</p>
     </div>
     <div class="dc-page-actions">
-      <a class="btn btn-outline-secondary" href="<?php echo Route::_('index.php?option=com_decarocourses&view=editions'); ?>">← Elenco edizioni</a>
+      <a class="btn dc-btn dc-btn-secondary" href="<?php echo Route::_('index.php?option=com_decarocourses&view=editions'); ?>">← Elenco edizioni</a>
     </div>
   </header>
 
@@ -30,10 +30,10 @@ $isNew = empty($this->item->id);
 
   <div class="dc-form-actions" aria-label="Azioni edizione">
     <?php if ($this->canSave) : ?>
-      <button class="btn btn-primary" type="submit" onclick="document.getElementById('dc-task').value='edition.apply'">Salva</button>
-      <button class="btn btn-outline-primary" type="submit" onclick="document.getElementById('dc-task').value='edition.save'">Salva e chiudi</button>
+      <button class="btn dc-btn dc-btn-primary" type="submit" onclick="document.getElementById('dc-task').value='edition.apply'">Salva</button>
+      <button class="btn dc-btn dc-btn-secondary" type="submit" onclick="document.getElementById('dc-task').value='edition.save'">Salva e chiudi</button>
     <?php endif; ?>
-    <button class="btn btn-outline-secondary" type="submit" formnovalidate onclick="document.getElementById('dc-task').value='edition.cancel'">Annulla</button>
+    <button class="btn dc-btn dc-btn-neutral" type="submit" formnovalidate onclick="document.getElementById('dc-task').value='edition.cancel'">Annulla</button>
   </div>
 </div>
 <input type="hidden" name="task" id="dc-task" value="edition.apply">
