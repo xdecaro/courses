@@ -258,10 +258,68 @@
     refreshYearLabels();
   };
 
+  const initJoomlaStickyOffset = () => {
+    const app = document.querySelector('.dc-app');
+    const stickySide = document.querySelector('.dc-edition-sticky-side');
+
+    if (!(app instanceof HTMLElement) || !(stickySide instanceof HTMLElement)) {
+      return;
+    }
+
+    const candidates = [...new Set(document.querySelectorAll('#subhead-container, .subhead, #header, .header'))]
+      .filter((element) => element instanceof HTMLElement);
+    let frame = 0;
+
+    const updateOffset = () => {
+      frame = 0;
+      let offset = 0;
+
+      candidates.forEach((element) => {
+        const style = window.getComputedStyle(element);
+
+        if (!['fixed', 'sticky'].includes(style.position)
+          || style.display === 'none'
+          || style.visibility === 'hidden') {
+          return;
+        }
+
+        const rect = element.getBoundingClientRect();
+
+        if (rect.height <= 0) {
+          return;
+        }
+
+        const parsedTop = Number.parseFloat(style.top);
+        const top = Number.isFinite(parsedTop) ? Math.max(0, parsedTop) : 0;
+        offset = Math.max(offset, top + rect.height);
+      });
+
+      app.style.setProperty('--dc-joomla-sticky-offset', `${Math.ceil(offset)}px`);
+    };
+
+    const queueUpdate = () => {
+      if (frame) {
+        return;
+      }
+
+      frame = window.requestAnimationFrame(updateOffset);
+    };
+
+    window.addEventListener('resize', queueUpdate, { passive: true });
+
+    if ('ResizeObserver' in window) {
+      const observer = new ResizeObserver(queueUpdate);
+      candidates.forEach((element) => observer.observe(element));
+    }
+
+    updateOffset();
+  };
+
   const init = () => {
     initBulkActions();
     initEditionCustomFormat();
     initEditionPeriodBuilder();
+    initJoomlaStickyOffset();
   };
 
   if (document.readyState === 'loading') {
