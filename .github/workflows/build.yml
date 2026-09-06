@@ -55,7 +55,9 @@ jobs:
           unzip -p "dist/pkg_decarocourses_${VERSION}.zip" pkg_decarocourses.xml | grep -F "<version>${VERSION}</version>"
           unzip -l "dist/com_decarocourses_${VERSION}.zip" | grep -F "media/joomla.asset.json"
           unzip -l "dist/com_decarocourses_${VERSION}.zip" | grep -F "media/css/design-system.css"
+          unzip -l "dist/com_decarocourses_${VERSION}.zip" | grep -F "media/css/editions.css"
           unzip -p "dist/com_decarocourses_${VERSION}.zip" media/joomla.asset.json | grep -F '"com_decarocourses.design"'
+          unzip -p "dist/com_decarocourses_${VERSION}.zip" media/joomla.asset.json | grep -F '"com_decarocourses.editions"'
 
       - name: Publish update channel files
         run: php tools/publish-update.php
