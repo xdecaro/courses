@@ -38,7 +38,12 @@ class HtmlView extends BaseHtmlView
         $this->canEditState = $identity->authorise('core.edit.state', 'com_decarocourses');
         $this->canDelete = $identity->authorise('core.delete', 'com_decarocourses');
 
-        AdminToolbarHelper::editions($this->canCreate, $this->canEditState);
+        AdminToolbarHelper::editions(
+            $this->canCreate,
+            $this->canEditState,
+            $this->canDelete,
+            (string) $this->state->get('filter.state', '') === '-2'
+        );
 
         parent::display($tpl);
     }
