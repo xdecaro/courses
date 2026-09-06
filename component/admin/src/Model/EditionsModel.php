@@ -94,6 +94,43 @@ class EditionsModel extends ListModel
         return (string) ($db->setQuery($query)->loadResult() ?? '');
     }
 
+    public function getStats(): object
+    {
+        $db = $this->getDatabase();
+        $statusColumn = $db->quoteName('status');
+        $query = $db->getQuery(true)
+            ->select('COUNT(*) AS ' . $db->quoteName('total'))
+            ->select(
+                'SUM(CASE WHEN ' . $statusColumn . ' = ' . $db->quote('registrations_open')
+                . ' THEN 1 ELSE 0 END) AS ' . $db->quoteName('registrations_open')
+            )
+            ->select(
+                'SUM(CASE WHEN ' . $statusColumn . ' = ' . $db->quote('scheduled')
+                . ' THEN 1 ELSE 0 END) AS ' . $db->quoteName('scheduled')
+            )
+            ->select(
+                'SUM(CASE WHEN ' . $statusColumn . ' = ' . $db->quote('active')
+                . ' THEN 1 ELSE 0 END) AS ' . $db->quoteName('active')
+            )
+            ->from($db->quoteName('#__decarocourses_editions'));
+
+        $courseId = (int) $this->getState('filter.course_id', 0);
+
+        if ($courseId > 0) {
+            $query->where($db->quoteName('course_id') . ' = :statsCourseId')
+                ->bind(':statsCourseId', $courseId, ParameterType::INTEGER);
+        }
+
+        $stats = $db->setQuery($query)->loadObject();
+
+        return $stats ?: (object) [
+            'total' => 0,
+            'registrations_open' => 0,
+            'scheduled' => 0,
+            'active' => 0,
+        ];
+    }
+
     protected function populateState($ordering = 'e.id', $direction = 'DESC'): void
     {
         $search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search', '', 'string');
