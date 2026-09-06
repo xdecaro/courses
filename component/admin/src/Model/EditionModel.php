@@ -46,12 +46,23 @@ class EditionModel extends AdminModel
         }
 
         $courseId = $app->input->getInt('course_id', 0);
+        $currentYear = Factory::getDate()->format('Y');
 
-        if ($courseId > 0) {
-            if (is_object($data) && empty($data->id) && empty($data->course_id)) {
+        if (is_object($data) && empty($data->id)) {
+            if ($courseId > 0 && empty($data->course_id)) {
                 $data->course_id = $courseId;
-            } elseif (is_array($data) && empty($data['id']) && empty($data['course_id'])) {
+            }
+
+            if (empty($data->academic_year)) {
+                $data->academic_year = $currentYear;
+            }
+        } elseif (is_array($data) && empty($data['id'])) {
+            if ($courseId > 0 && empty($data['course_id'])) {
                 $data['course_id'] = $courseId;
+            }
+
+            if (empty($data['academic_year'])) {
+                $data['academic_year'] = $currentYear;
             }
         }
 
