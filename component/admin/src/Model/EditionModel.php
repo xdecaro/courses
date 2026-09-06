@@ -27,6 +27,16 @@ class EditionModel extends AdminModel
             $data = $this->getItem();
         }
 
+        $courseId = $app->input->getInt('course_id', 0);
+
+        if ($courseId > 0) {
+            if (is_object($data) && empty($data->id) && empty($data->course_id)) {
+                $data->course_id = $courseId;
+            } elseif (is_array($data) && empty($data['id']) && empty($data['course_id'])) {
+                $data['course_id'] = $courseId;
+            }
+        }
+
         return $data;
     }
 }
