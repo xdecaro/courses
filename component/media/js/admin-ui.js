@@ -108,11 +108,12 @@
     const yearSelect = document.querySelector('[data-dc-period-year]');
     const typeInputs = [...document.querySelectorAll('input[name="dc_period_type"]')];
     const toggle = document.querySelector('[data-dc-period-new-toggle]');
-    const panel = document.querySelector('[data-dc-period-new]');
+    const modal = document.querySelector('[data-dc-period-modal]');
+    const modalClose = document.querySelector('[data-dc-period-modal-close]');
     const newYear = document.querySelector('[data-dc-period-new-year]');
     const addButton = document.querySelector('[data-dc-period-add]');
     const cancelButton = document.querySelector('[data-dc-period-new-cancel]');
-    const help = document.querySelector('[data-dc-period-new-help]');
+    const preview = document.querySelector('[data-dc-period-preview]');
     const form = builder?.closest('form');
 
     if (!(builder instanceof HTMLElement)
@@ -138,6 +139,17 @@
       }
     };
 
+    const refreshPreview = () => {
+      if (!(newYear instanceof HTMLInputElement) || !(preview instanceof HTMLElement)) {
+        return;
+      }
+
+      const year = Number.parseInt(newYear.value, 10);
+      preview.textContent = Number.isInteger(year) && year >= 1900 && year <= 2200
+        ? formatPeriod(year)
+        : '';
+    };
+
     const refreshYearLabels = () => {
       const type = getType();
 
@@ -150,31 +162,38 @@
       });
 
       syncHidden();
-      refreshNewYearHelp();
+      refreshPreview();
     };
 
-    const refreshNewYearHelp = () => {
-      if (!(newYear instanceof HTMLInputElement) || !(help instanceof HTMLElement)) {
+    const resetModal = () => {
+      if (newYear instanceof HTMLInputElement) {
+        newYear.value = '';
+        newYear.required = false;
+        newYear.setCustomValidity('');
+      }
+
+      if (preview instanceof HTMLElement) {
+        preview.textContent = '';
+      }
+    };
+
+    const openModal = () => {
+      if (!(modal instanceof HTMLDialogElement)) {
         return;
       }
 
-      const year = Number.parseInt(newYear.value, 10);
-      help.textContent = Number.isInteger(year) && year >= 1900 && year <= 2200
-        ? formatPeriod(year)
-        : '';
+      resetModal();
+      modal.showModal();
+      window.requestAnimationFrame(() => newYear instanceof HTMLInputElement && newYear.focus());
     };
 
-    const setPanelOpen = (open) => {
-      if (!(panel instanceof HTMLElement) || !(toggle instanceof HTMLButtonElement)) {
-        return;
+    const closeModal = () => {
+      if (modal instanceof HTMLDialogElement && modal.open) {
+        modal.close();
       }
 
-      panel.hidden = !open;
-      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-
-      if (open && newYear instanceof HTMLInputElement) {
-        window.requestAnimationFrame(() => newYear.focus());
-      }
+      resetModal();
+      toggle instanceof HTMLButtonElement && toggle.focus();
     };
 
     typeInputs.forEach((input) => {
@@ -184,27 +203,36 @@
     yearSelect.addEventListener('change', syncHidden);
 
     if (toggle instanceof HTMLButtonElement) {
-      toggle.addEventListener('click', () => {
-        setPanelOpen(panel instanceof HTMLElement ? panel.hidden : false);
-      });
+      toggle.addEventListener('click', openModal);
+    }
+
+    if (modalClose instanceof HTMLButtonElement) {
+      modalClose.addEventListener('click', closeModal);
     }
 
     if (newYear instanceof HTMLInputElement) {
-      newYear.addEventListener('input', refreshNewYearHelp);
+      newYear.addEventListener('input', refreshPreview);
+      newYear.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+          event.preventDefault();
+          addButton instanceof HTMLButtonElement && addButton.click();
+        }
+      });
     }
 
     if (cancelButton instanceof HTMLButtonElement) {
-      cancelButton.addEventListener('click', () => {
-        if (newYear instanceof HTMLInputElement) {
-          newYear.value = '';
-          newYear.setCustomValidity('');
-        }
+      cancelButton.addEventListener('click', closeModal);
+    }
 
-        if (help instanceof HTMLElement) {
-          help.textContent = '';
-        }
+    if (modal instanceof HTMLDialogElement) {
+      modal.addEventListener('cancel', () => {
+        resetModal();
+      });
 
-        setPanelOpen(false);
+      modal.addEventListener('click', (event) => {
+        if (event.target === modal) {
+          closeModal();
+        }
       });
     }
 
@@ -213,11 +241,9 @@
         newYear.required = true;
 
         if (!newYear.reportValidity()) {
-          newYear.required = false;
           return;
         }
 
-        newYear.required = false;
         const year = Number.parseInt(newYear.value, 10);
 
         if (!Number.isInteger(year) || year < 1900 || year > 2200) {
@@ -231,22 +257,14 @@
           option.value = String(year);
           yearSelect.append(option);
 
-          const sorted = [...yearSelect.options].sort(
-            (a, b) => Number.parseInt(a.value, 10) - Number.parseInt(b.value, 10)
-          );
-          sorted.forEach((item) => yearSelect.append(item));
+          [...yearSelect.options]
+            .sort((a, b) => Number.parseInt(a.value, 10) - Number.parseInt(b.value, 10))
+            .forEach((item) => yearSelect.append(item));
         }
 
         option.selected = true;
         refreshYearLabels();
-        newYear.value = '';
-        newYear.setCustomValidity('');
-
-        if (help instanceof HTMLElement) {
-          help.textContent = '';
-        }
-
-        setPanelOpen(false);
+        closeModal();
         yearSelect.focus();
       });
     }
@@ -258,23 +276,27 @@
     refreshYearLabels();
   };
 
-  const initJoomlaStickyOffset = () => {
-    const app = document.querySelector('.dc-app');
+  const initJoomlaLayoutOffsets = () => {
+    const app = document.querySelector('.dc-edition-page');
     const stickySide = document.querySelector('.dc-edition-sticky-side');
+    const actions = document.querySelector('[data-dc-edition-actions]');
 
-    if (!(app instanceof HTMLElement) || !(stickySide instanceof HTMLElement)) {
+    if (!(app instanceof HTMLElement)) {
       return;
     }
 
-    const candidates = [...new Set(document.querySelectorAll('#subhead-container, .subhead, #header, .header'))]
+    const topCandidates = [...new Set(document.querySelectorAll('#subhead-container, .subhead, #header, .header'))]
+      .filter((element) => element instanceof HTMLElement);
+    const bottomCandidates = [...new Set(document.querySelectorAll('#header .header-items, .header-items'))]
       .filter((element) => element instanceof HTMLElement);
     let frame = 0;
 
-    const updateOffset = () => {
+    const updateLayout = () => {
       frame = 0;
-      let offset = 0;
+      let topOffset = 0;
+      let bottomOffset = 0;
 
-      candidates.forEach((element) => {
+      topCandidates.forEach((element) => {
         const style = window.getComputedStyle(element);
 
         if (!['fixed', 'sticky'].includes(style.position)
@@ -291,10 +313,38 @@
 
         const parsedTop = Number.parseFloat(style.top);
         const top = Number.isFinite(parsedTop) ? Math.max(0, parsedTop) : 0;
-        offset = Math.max(offset, top + rect.height);
+        topOffset = Math.max(topOffset, top + rect.height);
       });
 
-      app.style.setProperty('--dc-joomla-sticky-offset', `${Math.ceil(offset)}px`);
+      bottomCandidates.forEach((element) => {
+        const style = window.getComputedStyle(element);
+
+        if (style.position !== 'fixed'
+          || style.display === 'none'
+          || style.visibility === 'hidden') {
+          return;
+        }
+
+        const rect = element.getBoundingClientRect();
+
+        if (rect.height <= 0 || rect.top >= window.innerHeight || rect.bottom < window.innerHeight - 2) {
+          return;
+        }
+
+        bottomOffset = Math.max(bottomOffset, window.innerHeight - rect.top);
+      });
+
+      app.style.setProperty('--dc-joomla-sticky-offset', `${Math.ceil(topOffset)}px`);
+      app.style.setProperty('--dc-joomla-bottom-offset', `${Math.ceil(bottomOffset)}px`);
+
+      if (actions instanceof HTMLElement) {
+        const appRect = app.getBoundingClientRect();
+        const actionHeight = Math.ceil(actions.getBoundingClientRect().height);
+
+        app.style.setProperty('--dc-edition-actions-left', `${Math.max(0, Math.round(appRect.left))}px`);
+        app.style.setProperty('--dc-edition-actions-width', `${Math.max(0, Math.round(appRect.width))}px`);
+        app.style.setProperty('--dc-edition-actions-height', `${actionHeight}px`);
+      }
     };
 
     const queueUpdate = () => {
@@ -302,24 +352,26 @@
         return;
       }
 
-      frame = window.requestAnimationFrame(updateOffset);
+      frame = window.requestAnimationFrame(updateLayout);
     };
 
     window.addEventListener('resize', queueUpdate, { passive: true });
 
     if ('ResizeObserver' in window) {
       const observer = new ResizeObserver(queueUpdate);
-      candidates.forEach((element) => observer.observe(element));
+      [app, stickySide, actions, ...topCandidates, ...bottomCandidates]
+        .filter((element) => element instanceof HTMLElement)
+        .forEach((element) => observer.observe(element));
     }
 
-    updateOffset();
+    updateLayout();
   };
 
   const init = () => {
     initBulkActions();
     initEditionCustomFormat();
     initEditionPeriodBuilder();
-    initJoomlaStickyOffset();
+    initJoomlaLayoutOffsets();
   };
 
   if (document.readyState === 'loading') {
