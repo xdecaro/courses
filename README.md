@@ -7,9 +7,9 @@
 - Pacchetto Joomla: `pkg_decarocourses`
 - Repository GitHub: `xdecaro/courses`
 - Versione iniziale: `1.0.0`
-- Versione corrente: `1.0.21`
-- ZIP componente: `com_decarocourses_1.0.21.zip`
-- ZIP completo: `pkg_decarocourses_1.0.21.zip`
+- Versione corrente: `1.0.22`
+- ZIP componente: `com_decarocourses_1.0.22.zip`
+- ZIP completo: `pkg_decarocourses_1.0.22.zip`
 
 ## Obiettivo
 
@@ -32,6 +32,10 @@ La UI adotta un design system unico per font, titoli, pulsanti, campi, card, bad
 ## Integrazione Forms by xdecaro
 
 L'integrazione è opzionale. Ogni edizione può memorizzare l'ID di un modulo di `com_decaroforms`; in assenza di Forms, Courses continua a funzionare normalmente.
+
+## 1.0.22
+
+Rifinitura finale della lista Edizioni su smartphone dopo il test reale iPhone SE 375×667. Il rilevamento della barra inferiore Joomla ora cerca dinamicamente gli elementi Atum anche quando vengono aggiornati dopo il caricamento iniziale, riallineando `--dc-joomla-bottom-offset` all'altezza effettiva della barra invece di dipendere dal solo fallback CSS. Aggiunti ricalcolo su resize/orientamento/load e osservazione delle modifiche dell'header. Nelle card mobile il titolo del corso e l'ID sono ora esplicitamente allineati a sinistra, mentre la checkbox resta in alto a destra; Periodo, Formula, Stato e Forms restano compatti con valori a destra. Nessuna modifica a dati, database o comportamento tablet/desktop.
 
 ## 1.0.21
 
