@@ -1,0 +1,2 @@
+-- Courses 1.0.26
+-- Component-wide live refresh for dynamic option sources; no database changes.
