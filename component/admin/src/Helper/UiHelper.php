@@ -20,7 +20,7 @@ final class UiHelper
             $wa->registerStyle(
                 'com_decarocourses.design',
                 'com_decarocourses/design-system.css',
-                ['version' => '1.0.11']
+                ['version' => '1.0.12']
             );
         }
 
@@ -28,7 +28,7 @@ final class UiHelper
             $wa->registerStyle(
                 'com_decarocourses.responsive',
                 'com_decarocourses/responsive.css',
-                ['version' => '1.0.11']
+                ['version' => '1.0.12']
             );
         }
 
@@ -36,7 +36,7 @@ final class UiHelper
             $wa->registerScript(
                 'com_decarocourses.admin-ui',
                 'com_decarocourses/admin-ui.js',
-                ['version' => '1.0.11'],
+                ['version' => '1.0.12'],
                 ['defer' => true]
             );
         }
