@@ -1,0 +1,75 @@
+/* Reusable live-refresh controls for dynamic Courses data sources. */
+
+.dc-live-field .controls {
+  min-width: 0;
+}
+
+.dc-live-select-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.dc-live-select-row > select {
+  min-width: 0;
+}
+
+.dc-live-refresh-button {
+  min-height: 42px;
+  border-radius: 9px;
+  white-space: nowrap;
+}
+
+.dc-live-refresh-button .icon-refresh {
+  margin-right: 5px;
+}
+
+.dc-live-refresh-button[aria-busy="true"] .icon-refresh {
+  animation: dc-live-spin .8s linear infinite;
+}
+
+.dc-live-status {
+  display: block;
+  min-height: 18px;
+  margin-top: 6px;
+  color: var(--dc-muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.dc-live-status[hidden] {
+  display: none;
+}
+
+.dc-live-status.is-success {
+  color: var(--dc-success);
+}
+
+.dc-live-status.is-warning {
+  color: var(--dc-warning);
+}
+
+.dc-live-status.is-error {
+  color: var(--dc-danger);
+}
+
+@keyframes dc-live-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dc-live-refresh-button[aria-busy="true"] .icon-refresh {
+    animation: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .dc-live-select-row {
+    grid-template-columns: 1fr;
+  }
+
+  .dc-live-refresh-button {
+    width: 100%;
+  }
+}
