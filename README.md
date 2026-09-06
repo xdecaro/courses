@@ -7,9 +7,9 @@
 - Pacchetto Joomla: `pkg_decarocourses`
 - Repository GitHub: `xdecaro/courses`
 - Versione iniziale: `1.0.0`
-- Versione corrente: `1.0.20`
-- ZIP componente: `com_decarocourses_1.0.20.zip`
-- ZIP completo: `pkg_decarocourses_1.0.20.zip`
+- Versione corrente: `1.0.21`
+- ZIP componente: `com_decarocourses_1.0.21.zip`
+- ZIP completo: `pkg_decarocourses_1.0.21.zip`
 
 ## Obiettivo
 
@@ -32,6 +32,10 @@ La UI adotta un design system unico per font, titoli, pulsanti, campi, card, bad
 ## Integrazione Forms by xdecaro
 
 L'integrazione è opzionale. Ogni edizione può memorizzare l'ID di un modulo di `com_decaroforms`; in assenza di Forms, Courses continua a funzionare normalmente.
+
+## 1.0.21
+
+Rifinitura responsive smartphone di Edizioni dopo i test reali su iPhone SE 375×667 e iPad Air 820×1180. Le righe mobile Periodo, Formula, Stato e Forms sono ora più compatte e uniformi, con label a sinistra e valore allineato a destra. Aumentata la safe area inferiore della lista per evitare che la barra mobile fissa di Joomla copra le card. Nell'editor la barra `Salva / Salva e chiudi / Annulla` è stata compattata su una sola riga su smartphone e viene mantenuta sopra la barra Joomla. Aggiunto inoltre un controllo mobile dedicato che calcola l'offset inferiore reale di Joomla, imposta lo spazio di scorrimento necessario e porta automaticamente sopra la barra azioni il campo che riceve il focus, evitando che radio, select o altri controlli restino nascosti durante la compilazione. Tablet invariato. Nessuna modifica ai dati o allo schema database.
 
 ## 1.0.20
 
