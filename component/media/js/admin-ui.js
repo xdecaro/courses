@@ -68,6 +68,17 @@
       return;
     }
 
+    const label = wrapper.querySelector('label');
+    let requiredMarker = label?.querySelector('.dc-dynamic-required') || null;
+
+    if (label && !requiredMarker) {
+      requiredMarker = document.createElement('span');
+      requiredMarker.className = 'star dc-dynamic-required';
+      requiredMarker.setAttribute('aria-hidden', 'true');
+      requiredMarker.textContent = ' *';
+      label.append(requiredMarker);
+    }
+
     const updateState = () => {
       const isCustom = format.value === 'custom';
 
@@ -75,6 +86,10 @@
       wrapper.setAttribute('aria-hidden', isCustom ? 'false' : 'true');
       custom.required = isCustom;
       custom.classList.toggle('required', isCustom);
+
+      if (requiredMarker instanceof HTMLElement) {
+        requiredMarker.hidden = !isCustom;
+      }
 
       if (isCustom) {
         custom.setAttribute('aria-required', 'true');
