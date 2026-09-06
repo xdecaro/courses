@@ -14,6 +14,20 @@
     );
   }
 
+  /* Keep course title and ID visually anchored on the left. */
+  .dc-editions-table .dc-col-edition-course,
+  .dc-editions-table .dc-edition-course-title,
+  .dc-editions-table .dc-col-edition-course .dc-row-subtitle {
+    text-align: left;
+  }
+
+  .dc-editions-table .dc-edition-course-title,
+  .dc-editions-table .dc-col-edition-course .dc-row-subtitle {
+    display: block;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
   /* Compact and align the information rows inside edition cards. */
   .dc-editions-table td {
     min-height: 56px;
@@ -24,6 +38,10 @@
     align-items: center;
     justify-self: stretch;
     text-align: right;
+  }
+
+  .dc-editions-table .dc-col-edition-course {
+    text-align: left;
   }
 
   .dc-editions-table td::before {
