@@ -110,10 +110,10 @@ $backUrl = Route::_('index.php?option=com_decarocourses&view=editions&filter_sea
 
   <div class="dc-form-actions" aria-label="<?php echo $escape(Text::_('COM_DECAROCOURSES_EDITION_ACTIONS_ARIA')); ?>">
     <?php if ($this->canSave) : ?>
-      <button class="btn dc-btn dc-btn-primary" type="submit" onclick="document.getElementById('dc-task').value='edition.apply'\"><?php echo Text::_('COM_DECAROCOURSES_ACTION_SAVE'); ?></button>
-      <button class="btn dc-btn dc-btn-secondary" type="submit" onclick="document.getElementById('dc-task').value='edition.save'\"><?php echo Text::_('COM_DECAROCOURSES_ACTION_SAVE_CLOSE'); ?></button>
+      <button class="btn dc-btn dc-btn-primary" type="submit" onclick="document.getElementById('dc-task').value='edition.apply'"><?php echo Text::_('COM_DECAROCOURSES_ACTION_SAVE'); ?></button>
+      <button class="btn dc-btn dc-btn-secondary" type="submit" onclick="document.getElementById('dc-task').value='edition.save'"><?php echo Text::_('COM_DECAROCOURSES_ACTION_SAVE_CLOSE'); ?></button>
     <?php endif; ?>
-    <button class="btn dc-btn dc-btn-neutral" type="submit" formnovalidate onclick="document.getElementById('dc-task').value='edition.cancel'\"><?php echo Text::_('COM_DECAROCOURSES_ACTION_CANCEL'); ?></button>
+    <button class="btn dc-btn dc-btn-neutral" type="submit" formnovalidate onclick="document.getElementById('dc-task').value='edition.cancel'"><?php echo Text::_('COM_DECAROCOURSES_ACTION_CANCEL'); ?></button>
   </div>
 </div>
 <?php echo $this->form->getInput('id'); ?>
