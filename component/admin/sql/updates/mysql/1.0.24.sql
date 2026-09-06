@@ -1,2 +1,2 @@
--- Courses 1.0.24: native Joomla administrator toolbar and ACL/UI consolidation.
--- No database schema changes are required for this release.
+-- Courses 1.0.24
+-- Native Joomla toolbar migration; no database changes.
