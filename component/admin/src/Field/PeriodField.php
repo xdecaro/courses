@@ -15,6 +15,8 @@ class PeriodField extends ListField
     protected function getOptions(): array
     {
         $options = parent::getOptions();
+        $options[] = HTMLHelper::_('select.option', '', Text::_('COM_DECAROCOURSES_PERIOD_SELECT'));
+
         $currentYear = (int) Factory::getDate()->format('Y');
         $startYear = $currentYear - 5;
         $endYear = $currentYear + 10;
@@ -30,7 +32,7 @@ class PeriodField extends ListField
             }
         }
 
-        $options[] = HTMLHelper::_('select.option', '', Text::_('COM_DECAROCOURSES_PERIOD_GROUP_SINGLE'), 'value', 'text', true);
+        $options[] = HTMLHelper::_('select.option', '__single', Text::_('COM_DECAROCOURSES_PERIOD_GROUP_SINGLE'), 'value', 'text', true);
 
         for ($year = $startYear; $year <= $endYear; $year++) {
             $value = (string) $year;
@@ -41,7 +43,7 @@ class PeriodField extends ListField
             }
         }
 
-        $options[] = HTMLHelper::_('select.option', '', Text::_('COM_DECAROCOURSES_PERIOD_GROUP_ACADEMIC'), 'value', 'text', true);
+        $options[] = HTMLHelper::_('select.option', '__academic', Text::_('COM_DECAROCOURSES_PERIOD_GROUP_ACADEMIC'), 'value', 'text', true);
 
         for ($year = $startYear; $year <= $endYear; $year++) {
             $value = $year . '/' . ($year + 1);
