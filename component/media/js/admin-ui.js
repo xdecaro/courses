@@ -277,7 +277,7 @@
   };
 
   const initJoomlaLayoutOffsets = () => {
-    const app = document.querySelector('.dc-edition-page');
+    const app = document.querySelector('.dc-app');
     const stickySide = document.querySelector('.dc-edition-sticky-side');
     const actions = document.querySelector('[data-dc-edition-actions]');
 
@@ -285,10 +285,12 @@
       return;
     }
 
-    const topCandidates = [...new Set(document.querySelectorAll('#subhead-container, .subhead, #header, .header'))]
+    const getTopCandidates = () => [...new Set(document.querySelectorAll('#subhead-container, .subhead, #header, .header'))]
       .filter((element) => element instanceof HTMLElement);
-    const bottomCandidates = [...new Set(document.querySelectorAll('#header .header-items, .header-items'))]
+
+    const getBottomCandidates = () => [...new Set(document.querySelectorAll('#header .header-items, .header-items'))]
       .filter((element) => element instanceof HTMLElement);
+
     let frame = 0;
 
     const updateLayout = () => {
@@ -296,7 +298,7 @@
       let topOffset = 0;
       let bottomOffset = 0;
 
-      topCandidates.forEach((element) => {
+      getTopCandidates().forEach((element) => {
         const style = window.getComputedStyle(element);
 
         if (!['fixed', 'sticky'].includes(style.position)
@@ -316,7 +318,7 @@
         topOffset = Math.max(topOffset, top + rect.height);
       });
 
-      bottomCandidates.forEach((element) => {
+      getBottomCandidates().forEach((element) => {
         const style = window.getComputedStyle(element);
 
         if (style.position !== 'fixed'
@@ -327,15 +329,20 @@
 
         const rect = element.getBoundingClientRect();
 
-        if (rect.height <= 0 || rect.top >= window.innerHeight || rect.bottom < window.innerHeight - 2) {
+        if (rect.height <= 0
+          || rect.top >= window.innerHeight
+          || rect.bottom < window.innerHeight - 2) {
           return;
         }
 
         bottomOffset = Math.max(bottomOffset, window.innerHeight - rect.top);
       });
 
-      app.style.setProperty('--dc-joomla-sticky-offset', `${Math.ceil(topOffset)}px`);
-      app.style.setProperty('--dc-joomla-bottom-offset', `${Math.ceil(bottomOffset)}px`);
+      const roundedTop = Math.ceil(topOffset);
+      const roundedBottom = Math.ceil(bottomOffset);
+
+      app.style.setProperty('--dc-joomla-sticky-offset', `${roundedTop}px`);
+      app.style.setProperty('--dc-joomla-bottom-offset', `${roundedBottom}px`);
 
       if (actions instanceof HTMLElement) {
         const appRect = app.getBoundingClientRect();
@@ -345,6 +352,13 @@
         app.style.setProperty('--dc-edition-actions-width', `${Math.max(0, Math.round(appRect.width))}px`);
         app.style.setProperty('--dc-edition-actions-height', `${actionHeight}px`);
       }
+
+      document.dispatchEvent(new CustomEvent('decarocourses:layoutoffsets', {
+        detail: {
+          top: roundedTop,
+          bottom: roundedBottom
+        }
+      }));
     };
 
     const queueUpdate = () => {
@@ -356,12 +370,30 @@
     };
 
     window.addEventListener('resize', queueUpdate, { passive: true });
+    window.addEventListener('orientationchange', queueUpdate, { passive: true });
+    window.addEventListener('load', queueUpdate, { once: true });
 
     if ('ResizeObserver' in window) {
       const observer = new ResizeObserver(queueUpdate);
-      [app, stickySide, actions, ...topCandidates, ...bottomCandidates]
+      [app, stickySide, actions, ...getTopCandidates(), ...getBottomCandidates()]
         .filter((element) => element instanceof HTMLElement)
         .forEach((element) => observer.observe(element));
+    }
+
+    const header = document.getElementById('header');
+    const subhead = document.getElementById('subhead-container');
+
+    if ('MutationObserver' in window) {
+      const observer = new MutationObserver(queueUpdate);
+
+      [header, subhead]
+        .filter((element) => element instanceof HTMLElement)
+        .forEach((element) => observer.observe(element, {
+          childList: true,
+          subtree: true,
+          attributes: true,
+          attributeFilter: ['class', 'style', 'hidden']
+        }));
     }
 
     updateLayout();
