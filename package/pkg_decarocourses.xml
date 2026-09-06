@@ -2,14 +2,14 @@
 <extension type="package" method="upgrade">
   <name>PKG_DECAROCOURSES</name>
   <packagename>decarocourses</packagename>
-  <version>1.0.12</version>
+  <version>1.0.13</version>
   <creationDate>2026-09</creationDate>
   <author>Luca De Caro</author>
   <copyright>Copyright (C) 2026 Luca De Caro. All rights reserved.</copyright>
   <license>GNU General Public License version 2 or later</license>
   <description>Courses by xdecaro - Joomla school and course management package.</description>
   <files folder="packages">
-    <file type="component" id="com_decarocourses">com_decarocourses_1.0.12.zip</file>
+    <file type="component" id="com_decarocourses">com_decarocourses_1.0.13.zip</file>
   </files>
   <updateservers>
     <server type="extension" priority="1" name="Courses Package Updates">https://raw.githubusercontent.com/xdecaro/courses/main/updates/pkg_decarocourses.xml</server>
