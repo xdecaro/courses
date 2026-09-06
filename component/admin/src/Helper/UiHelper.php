@@ -4,6 +4,7 @@ namespace Xdecaro\Component\Decarocourses\Administrator\Helper;
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 
 final class UiHelper
 {
@@ -20,7 +21,7 @@ final class UiHelper
             $wa->registerStyle(
                 'com_decarocourses.design',
                 'com_decarocourses/design-system.css',
-                ['version' => '1.0.13']
+                ['version' => '1.0.14']
             );
         }
 
@@ -28,7 +29,7 @@ final class UiHelper
             $wa->registerStyle(
                 'com_decarocourses.responsive',
                 'com_decarocourses/responsive.css',
-                ['version' => '1.0.13']
+                ['version' => '1.0.14']
             );
         }
 
@@ -36,7 +37,7 @@ final class UiHelper
             $wa->registerScript(
                 'com_decarocourses.admin-ui',
                 'com_decarocourses/admin-ui.js',
-                ['version' => '1.0.13'],
+                ['version' => '1.0.14'],
                 ['defer' => true]
             );
         }
@@ -49,12 +50,12 @@ final class UiHelper
     public static function statusLabel(string $status): string
     {
         return match ($status) {
-            'registrations_open' => 'Iscrizioni aperte',
-            'scheduled' => 'Programmato',
-            'active' => 'In corso',
-            'completed' => 'Concluso',
-            'archived' => 'Archiviato',
-            default => 'Bozza',
+            'registrations_open' => Text::_('COM_DECAROCOURSES_STATUS_REGISTRATIONS_OPEN'),
+            'scheduled' => Text::_('COM_DECAROCOURSES_STATUS_SCHEDULED'),
+            'active' => Text::_('COM_DECAROCOURSES_STATUS_ACTIVE'),
+            'completed' => Text::_('COM_DECAROCOURSES_STATUS_COMPLETED'),
+            'archived' => Text::_('COM_DECAROCOURSES_STATUS_ARCHIVED'),
+            default => Text::_('COM_DECAROCOURSES_STATUS_DRAFT'),
         };
     }
 
@@ -67,6 +68,17 @@ final class UiHelper
             'completed' => 'is-completed',
             'archived' => 'is-archived',
             default => 'is-draft',
+        };
+    }
+
+    public static function formatLabel(string $format, string $custom = ''): string
+    {
+        return match ($format) {
+            'intensive' => Text::_('COM_DECAROCOURSES_FORMAT_INTENSIVE'),
+            'evening' => Text::_('COM_DECAROCOURSES_FORMAT_EVENING'),
+            'weekend' => Text::_('COM_DECAROCOURSES_FORMAT_WEEKEND'),
+            'custom' => Text::_('COM_DECAROCOURSES_FORMAT_CUSTOM') . ($custom !== '' ? ' — ' . $custom : ''),
+            default => Text::_('COM_DECAROCOURSES_FORMAT_ANNUAL'),
         };
     }
 }
