@@ -3,19 +3,20 @@
   <fieldset name="details" label="COM_DECAROCOURSES_FIELDSET_DETAILS">
     <field name="id" type="hidden" filter="integer" />
     <field name="course_id" type="sql" label="COM_DECAROCOURSES_FIELD_COURSE" required="true" query="SELECT id AS value, title AS text FROM #__decarocourses_courses WHERE state &gt;= 0 ORDER BY title ASC" key_field="value" value_field="text" filter="integer" />
-    <field name="title" type="text" label="COM_DECAROCOURSES_FIELD_EDITION_TITLE" required="true" maxlength="255" filter="string" />
-    <field name="academic_year" type="text" label="COM_DECAROCOURSES_FIELD_ACADEMIC_YEAR" placeholder="2026/2027" maxlength="20" filter="string" />
+    <field name="academic_year" type="period" label="COM_DECAROCOURSES_FIELD_PERIOD" required="true" filter="string" />
     <field name="format" type="list" label="COM_DECAROCOURSES_FIELD_FORMAT" default="annual" filter="cmd">
       <option value="annual">COM_DECAROCOURSES_FORMAT_ANNUAL</option>
       <option value="intensive">COM_DECAROCOURSES_FORMAT_INTENSIVE</option>
       <option value="evening">COM_DECAROCOURSES_FORMAT_EVENING</option>
+      <option value="weekend">COM_DECAROCOURSES_FORMAT_WEEKEND</option>
       <option value="custom">COM_DECAROCOURSES_FORMAT_CUSTOM</option>
     </field>
+    <field name="format_custom" type="text" label="COM_DECAROCOURSES_FIELD_FORMAT_CUSTOM" description="COM_DECAROCOURSES_FIELD_FORMAT_CUSTOM_DESC" hint="COM_DECAROCOURSES_FIELD_FORMAT_CUSTOM_HINT" maxlength="120" filter="string" />
     <field name="start_date" type="calendar" label="COM_DECAROCOURSES_FIELD_START_DATE" format="%Y-%m-%d" showtime="false" translateformat="true" filter="string" />
     <field name="end_date" type="calendar" label="COM_DECAROCOURSES_FIELD_END_DATE" format="%Y-%m-%d" showtime="false" translateformat="true" filter="string" />
     <field name="registration_start" type="calendar" label="COM_DECAROCOURSES_FIELD_REGISTRATION_START" format="%Y-%m-%d" showtime="false" translateformat="true" filter="string" />
     <field name="registration_end" type="calendar" label="COM_DECAROCOURSES_FIELD_REGISTRATION_END" format="%Y-%m-%d" showtime="false" translateformat="true" filter="string" />
-    <field name="capacity" type="number" label="COM_DECAROCOURSES_FIELD_CAPACITY" min="0" default="0" filter="integer" />
+    <field name="capacity" type="number" label="COM_DECAROCOURSES_FIELD_CAPACITY" description="COM_DECAROCOURSES_FIELD_CAPACITY_DESC" min="0" default="0" filter="integer" />
     <field name="status" type="list" label="COM_DECAROCOURSES_FIELD_STATUS" default="draft" filter="cmd">
       <option value="draft">COM_DECAROCOURSES_STATUS_DRAFT</option>
       <option value="registrations_open">COM_DECAROCOURSES_STATUS_REGISTRATIONS_OPEN</option>
