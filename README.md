@@ -7,9 +7,9 @@
 - Pacchetto Joomla: `pkg_decarocourses`
 - Repository GitHub: `xdecaro/courses`
 - Versione iniziale: `1.0.0`
-- Versione corrente: `1.0.17`
-- ZIP componente: `com_decarocourses_1.0.17.zip`
-- ZIP completo: `pkg_decarocourses_1.0.17.zip`
+- Versione corrente: `1.0.18`
+- ZIP componente: `com_decarocourses_1.0.18.zip`
+- ZIP completo: `pkg_decarocourses_1.0.18.zip`
 
 ## Obiettivo
 
@@ -32,6 +32,10 @@ La UI adotta un design system unico per font, titoli, pulsanti, campi, card, bad
 ## Integrazione Forms by xdecaro
 
 L'integrazione è opzionale. Ogni edizione può memorizzare l'ID di un modulo di `com_decaroforms`; in assenza di Forms, Courses continua a funzionare normalmente.
+
+## 1.0.18
+
+Corretto l'aggiornamento da installazioni iniziali o parziali nelle quali poteva mancare la tabella `#__decarocourses_editions`. La migrazione storica 1.0.14 ora ricrea in modo non distruttivo le tabelle base mancanti con `CREATE TABLE IF NOT EXISTS` prima di aggiungere `format_custom`, così un aggiornamento da 1.0.2 non si interrompe più con `Table ... decarocourses_editions doesn't exist`. Le tabelle già presenti e i relativi dati non vengono cancellati o sovrascritti. Aggiunto inoltre il marker schema 1.0.18 per mantenere allineata la versione database Joomla. Nessuna modifica alla UI o ai dati esistenti.
 
 ## 1.0.17
 
