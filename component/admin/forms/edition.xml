@@ -3,7 +3,7 @@
   <fieldset name="details" label="COM_DECAROCOURSES_FIELDSET_DETAILS">
     <field name="id" type="hidden" filter="integer" />
     <field name="course_id" type="sql" label="COM_DECAROCOURSES_FIELD_COURSE" required="true" query="SELECT id AS value, title AS text FROM #__decarocourses_courses WHERE state &gt;= 0 ORDER BY title ASC" key_field="value" value_field="text" filter="integer" />
-    <field name="academic_year" type="period" label="COM_DECAROCOURSES_FIELD_PERIOD" required="true" filter="string" />
+    <field name="academic_year" type="hidden" filter="string" />
     <field name="format" type="list" label="COM_DECAROCOURSES_FIELD_FORMAT" default="annual" filter="cmd">
       <option value="annual">COM_DECAROCOURSES_FORMAT_ANNUAL</option>
       <option value="intensive">COM_DECAROCOURSES_FORMAT_INTENSIVE</option>
@@ -27,7 +27,7 @@
     </field>
     <field name="forms_form_id" type="formslist" label="COM_DECAROCOURSES_FIELD_FORMS_FORM" description="COM_DECAROCOURSES_FIELD_FORMS_FORM_DESC" filter="integer" />
     <field name="notes" type="textarea" label="COM_DECAROCOURSES_FIELD_NOTES" rows="5" filter="safehtml" />
-    <field name="state" type="list" label="JSTATUS" default="1" filter="integer">
+    <field name="state" type="list" label="COM_DECAROCOURSES_PUBLICATION" default="1" filter="integer">
       <option value="1">JPUBLISHED</option>
       <option value="0">JUNPUBLISHED</option>
       <option value="-2">JTRASHED</option>
