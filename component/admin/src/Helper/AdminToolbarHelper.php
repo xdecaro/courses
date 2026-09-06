@@ -22,7 +22,7 @@ final class AdminToolbarHelper
         bool $isTrashFilter
     ): void {
         if ($canCreate) {
-            ToolbarHelper::addNew('course.add', 'COM_DECAROCOURSES_ACTION_NEW_COURSE');
+            ToolbarHelper::addNew('course.add', 'COM_DECAROCOURSES_COURSE_NEW');
         }
 
         if ($canEditState) {
@@ -55,12 +55,12 @@ final class AdminToolbarHelper
     ): void {
         ToolbarHelper::link(
             Route::_('index.php?option=com_decarocourses&view=courses'),
-            'COM_DECAROCOURSES_BACK_TO_COURSES_SHORT',
+            'COM_DECAROCOURSES_COURSES',
             'arrow-left'
         );
 
         if ($canCreate) {
-            ToolbarHelper::addNew('edition.add', 'COM_DECAROCOURSES_ACTION_NEW_EDITION');
+            ToolbarHelper::addNew('edition.add', 'COM_DECAROCOURSES_EDITION_NEW');
         }
 
         if ($canEditState) {
