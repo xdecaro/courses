@@ -220,6 +220,209 @@
     refreshYearLabels();
   };
 
+  const initLiveRefresh = () => {
+    const widgets = [...document.querySelectorAll('[data-dc-live-refresh]')]
+      .filter((element) => element instanceof HTMLElement);
+
+    if (!widgets.length) {
+      return;
+    }
+
+    const config = window.Joomla?.getOptions?.('com_decarocourses.liveRefresh', {}) || {};
+    const endpoint = String(config.url || '');
+    const token = String(config.token || '');
+    const labels = config.labels || {};
+
+    if (!endpoint || !token) {
+      return;
+    }
+
+    const statusTimers = new WeakMap();
+
+    const selectSignature = (select) => JSON.stringify(
+      [...select.options].map((option) => [option.value, option.textContent || '', option.disabled])
+    );
+
+    const setStatus = (widget, message, state = 'success', autoHide = true) => {
+      const status = widget.querySelector('[data-dc-live-status]');
+
+      if (!(status instanceof HTMLElement)) {
+        return;
+      }
+
+      const oldTimer = statusTimers.get(status);
+
+      if (oldTimer) {
+        window.clearTimeout(oldTimer);
+        statusTimers.delete(status);
+      }
+
+      status.textContent = String(message || '');
+      status.classList.remove('is-success', 'is-warning', 'is-error');
+      status.classList.add(`is-${state}`);
+      status.hidden = !message;
+
+      if (message && autoHide) {
+        statusTimers.set(status, window.setTimeout(() => {
+          status.hidden = true;
+          status.textContent = '';
+          status.classList.remove('is-success', 'is-warning', 'is-error');
+          statusTimers.delete(status);
+        }, 2400));
+      }
+    };
+
+    const applyOptions = (select, options) => {
+      const oldSignature = selectSignature(select);
+      const previousValue = select.value;
+      const previousText = select.selectedOptions[0]?.textContent?.trim() || previousValue;
+      const values = new Set(options.map((option) => String(option.value ?? '')));
+      const fragment = document.createDocumentFragment();
+
+      options.forEach((item) => {
+        const option = document.createElement('option');
+        option.value = String(item.value ?? '');
+        option.textContent = String(item.text ?? '');
+        option.disabled = Boolean(item.disabled);
+        fragment.append(option);
+      });
+
+      let stale = false;
+
+      if (previousValue !== '' && !values.has(previousValue)) {
+        const staleOption = document.createElement('option');
+        staleOption.value = previousValue;
+        staleOption.textContent = `${previousText} — ${String(labels.staleSuffix || 'not available')}`;
+        staleOption.dataset.dcStaleOption = '1';
+        fragment.append(staleOption);
+        stale = true;
+      }
+
+      select.replaceChildren(fragment);
+
+      if (previousValue !== '' && (values.has(previousValue) || stale)) {
+        select.value = previousValue;
+      }
+
+      return {
+        changed: oldSignature !== selectSignature(select),
+        stale,
+      };
+    };
+
+    const refreshWidget = async (widget) => {
+      const source = String(widget.dataset.dcSource || '');
+      const select = widget.querySelector('select');
+      const button = widget.querySelector('[data-dc-live-refresh-button]');
+
+      if (!source || !(select instanceof HTMLSelectElement) || widget.dataset.dcLiveBusy === '1') {
+        return;
+      }
+
+      widget.dataset.dcLiveBusy = '1';
+      widget.setAttribute('aria-busy', 'true');
+
+      if (button instanceof HTMLButtonElement) {
+        button.disabled = true;
+        button.setAttribute('aria-busy', 'true');
+      }
+
+      setStatus(widget, labels.refreshing || '', 'success', false);
+
+      try {
+        const url = new URL(endpoint, window.location.href);
+        url.searchParams.set('source', source);
+        url.searchParams.set(token, '1');
+
+        const response = await fetch(url, {
+          method: 'GET',
+          credentials: 'same-origin',
+          cache: 'no-store',
+          headers: {
+            Accept: 'application/json',
+            'X-Requested-With': 'XMLHttpRequest',
+          },
+        });
+
+        const payload = await response.json();
+
+        if (!response.ok
+          || payload?.success !== true
+          || !payload.data
+          || !Array.isArray(payload.data.options)) {
+          throw new Error(payload?.message || labels.error || 'Live refresh failed.');
+        }
+
+        const result = applyOptions(select, payload.data.options);
+        widget.dataset.dcRevision = String(payload.data.revision || '');
+
+        if (result.stale) {
+          setStatus(widget, labels.stale || labels.error || '', 'warning', false);
+        } else {
+          setStatus(
+            widget,
+            result.changed ? (labels.updated || '') : (labels.unchanged || ''),
+            'success',
+            true
+          );
+        }
+
+        widget.dispatchEvent(new CustomEvent('decarocourses:live-refreshed', {
+          bubbles: true,
+          detail: {
+            source,
+            changed: result.changed,
+            stale: result.stale,
+            revision: String(payload.data.revision || ''),
+          },
+        }));
+      } catch (error) {
+        console.error('Courses live refresh:', error);
+        setStatus(widget, labels.error || 'Unable to refresh data.', 'error', false);
+      } finally {
+        widget.dataset.dcLiveBusy = '0';
+        widget.removeAttribute('aria-busy');
+
+        if (button instanceof HTMLButtonElement) {
+          button.disabled = false;
+          button.removeAttribute('aria-busy');
+        }
+      }
+    };
+
+    const refreshAll = () => {
+      widgets.forEach((widget) => refreshWidget(widget));
+    };
+
+    widgets.forEach((widget) => {
+      const button = widget.querySelector('[data-dc-live-refresh-button]');
+
+      if (button instanceof HTMLButtonElement) {
+        button.addEventListener('click', () => refreshWidget(widget));
+      }
+    });
+
+    let wasHidden = false;
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        wasHidden = true;
+        return;
+      }
+
+      if (wasHidden) {
+        wasHidden = false;
+        refreshAll();
+      }
+    });
+
+    window.addEventListener('pageshow', (event) => {
+      if (event.persisted) {
+        refreshAll();
+      }
+    });
+  };
+
   const initJoomlaLayoutOffsets = () => {
     const app = document.querySelector('.dc-app');
     const stickySide = document.querySelector('.dc-edition-sticky-side');
@@ -326,6 +529,7 @@
   const init = () => {
     initEditionCustomFormat();
     initEditionPeriodBuilder();
+    initLiveRefresh();
     initJoomlaLayoutOffsets();
   };
 
