@@ -4,7 +4,10 @@ namespace Xdecaro\Component\Decarocourses\Administrator\Model;
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\Database\ParameterType;
+use Joomla\Utilities\ArrayHelper;
 
 class EditionModel extends AdminModel
 {
@@ -28,12 +31,50 @@ class EditionModel extends AdminModel
             if ($id > 0) {
                 $current = $this->getItem($id);
                 $data['state'] = (int) ($current->state ?? 0);
+                $data['featured'] = (int) ($current->featured ?? 0);
             } else {
                 $data['state'] = 0;
+                $data['featured'] = 0;
             }
         }
 
         return parent::save($data);
+    }
+
+    public function featured($pks, $value = 0): bool
+    {
+        $pks = array_values(array_filter(ArrayHelper::toInteger((array) $pks)));
+        $value = (int) ((int) $value === 1);
+
+        if (!$pks) {
+            $this->setError(Text::_('COM_DECAROCOURSES_NO_ITEM_SELECTED'));
+            return false;
+        }
+
+        $db = $this->getDatabase();
+        $modified = Factory::getDate()->toSql();
+        $modifiedBy = (int) Factory::getApplication()->getIdentity()->id;
+
+        try {
+            $query = $db->getQuery(true)
+                ->update($db->quoteName('#__decarocourses_editions'))
+                ->set($db->quoteName('featured') . ' = :featured')
+                ->set($db->quoteName('modified') . ' = :modified')
+                ->set($db->quoteName('modified_by') . ' = :modifiedBy')
+                ->whereIn($db->quoteName('id'), $pks)
+                ->where($db->quoteName('state') . ' <> -2')
+                ->bind(':featured', $value, ParameterType::INTEGER)
+                ->bind(':modified', $modified, ParameterType::STRING)
+                ->bind(':modifiedBy', $modifiedBy, ParameterType::INTEGER);
+
+            $db->setQuery($query)->execute();
+            $this->cleanCache();
+        } catch (\Throwable $e) {
+            $this->setError($e->getMessage());
+            return false;
+        }
+
+        return true;
     }
 
     protected function loadFormData()
@@ -56,6 +97,8 @@ class EditionModel extends AdminModel
             if (empty($data->academic_year)) {
                 $data->academic_year = $currentYear;
             }
+
+            $data->featured = (int) ($data->featured ?? 0);
         } elseif (is_array($data) && empty($data['id'])) {
             if ($courseId > 0 && empty($data['course_id'])) {
                 $data['course_id'] = $courseId;
@@ -64,6 +107,8 @@ class EditionModel extends AdminModel
             if (empty($data['academic_year'])) {
                 $data['academic_year'] = $currentYear;
             }
+
+            $data['featured'] = (int) ($data['featured'] ?? 0);
         }
 
         return $data;
