@@ -18,6 +18,7 @@ final class AdminToolbarHelper
 
     public static function courses(
         bool $canCreate,
+        bool $canEdit,
         bool $canEditState,
         bool $canDelete,
         bool $isTrashFilter
@@ -26,6 +27,10 @@ final class AdminToolbarHelper
 
         if ($canCreate) {
             $toolbar->addNew('course.add', 'COM_DECAROCOURSES_COURSE_NEW');
+        }
+
+        if ($canEdit) {
+            ToolbarHelper::editList('course.edit', 'COM_DECAROCOURSES_ACTION_EDIT');
         }
 
         self::addStateActions('courses', $canEditState, $isTrashFilter, false);
@@ -49,6 +54,7 @@ final class AdminToolbarHelper
 
     public static function editions(
         bool $canCreate,
+        bool $canEdit,
         bool $canEditState,
         bool $canDelete,
         bool $isTrashFilter
@@ -63,6 +69,10 @@ final class AdminToolbarHelper
 
         if ($canCreate) {
             $toolbar->addNew('edition.add', 'COM_DECAROCOURSES_EDITION_NEW');
+        }
+
+        if ($canEdit) {
+            ToolbarHelper::editList('edition.edit', 'COM_DECAROCOURSES_ACTION_EDIT');
         }
 
         self::addStateActions('editions', $canEditState, $isTrashFilter, true);
