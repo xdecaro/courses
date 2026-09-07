@@ -8,6 +8,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\AdminController;
 use Joomla\CMS\Router\Route;
 use Joomla\Utilities\ArrayHelper;
+use Xdecaro\Component\Decarocourses\Administrator\Helper\UiHelper;
 
 class EditionsController extends AdminController
 {
@@ -77,6 +78,8 @@ class EditionsController extends AdminController
 
     private function assertAuthorised(string $action): void
     {
+        UiHelper::loadLanguage();
+
         if (!Factory::getApplication()->getIdentity()->authorise($action, 'com_decarocourses')) {
             throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
         }
