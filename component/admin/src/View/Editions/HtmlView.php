@@ -40,6 +40,7 @@ class HtmlView extends BaseHtmlView
 
         AdminToolbarHelper::editions(
             $this->canCreate,
+            $this->canEdit,
             $this->canEditState,
             $this->canDelete,
             (string) $this->state->get('filter.state', '') === '-2'
