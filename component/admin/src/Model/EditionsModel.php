@@ -30,6 +30,7 @@ class EditionsModel extends ListModel
             'format', 'e.format',
             'status', 'e.status',
             'state', 'e.state',
+            'featured', 'e.featured',
         ];
 
         parent::__construct($config);
@@ -73,14 +74,10 @@ class EditionsModel extends ListModel
                 ->bind(':status', $status, ParameterType::STRING);
         }
 
-        $state = $this->getState('filter.state');
+        $this->applyPublicationFilter($query, 'e.state', 'listState');
 
-        if ($state !== '' && $state !== null) {
-            $query->where($db->quoteName('e.state') . ' = :state')
-                ->bind(':state', (int) $state, ParameterType::INTEGER);
-        }
-
-        $query->order($db->quoteName('e.id') . ' DESC');
+        $query->order($db->quoteName('e.featured') . ' DESC')
+            ->order($db->quoteName('e.id') . ' DESC');
 
         return $query;
     }
@@ -130,6 +127,8 @@ class EditionsModel extends ListModel
                 ->bind(':statsCourseId', $courseId, ParameterType::INTEGER);
         }
 
+        $this->applyPublicationFilter($query, 'state', 'statsState');
+
         $stats = $db->setQuery($query)->loadObject();
 
         return $stats ?: (object) [
@@ -138,6 +137,24 @@ class EditionsModel extends ListModel
             'scheduled' => 0,
             'active' => 0,
         ];
+    }
+
+    private function applyPublicationFilter(QueryInterface $query, string $column, string $parameter): void
+    {
+        $db = $this->getDatabase();
+        $state = (string) $this->getState('filter.state', '');
+
+        if (in_array($state, self::FILTER_STATES, true)) {
+            $placeholder = ':' . $parameter;
+            $query->where($db->quoteName($column) . ' = ' . $placeholder)
+                ->bind($placeholder, (int) $state, ParameterType::INTEGER);
+
+            return;
+        }
+
+        // The normal list deliberately excludes the trash. Trashed records
+        // are shown only when the explicit Cestino filter is selected.
+        $query->where($db->quoteName($column) . ' IN (0, 1)');
     }
 
     protected function populateState($ordering = 'e.id', $direction = 'DESC'): void
