@@ -1,0 +1,130 @@
+name: Prepare Courses 1.0.40 diagnostics footer alignment
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/prepare-1.0.40.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Apply diagnostics footer alignment and bump version
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          old = '1.0.39'
+          new = '1.0.40'
+
+          def read(path):
+              return Path(path).read_text(encoding='utf-8')
+
+          def write(path, text):
+              Path(path).write_text(text, encoding='utf-8')
+
+          # 1) Sposta il feedback fuori dalla riga pulsanti, come Forms.
+          path = 'component/admin/tmpl/information/default.php'
+          text = read(path)
+          old_block = '''                <span class="dci-action-status" data-dci-status aria-live="polite"></span>\n            </div>\n\n            <script type="application/json" id="dci-diagnostics-data">'''
+          new_block = '''            </div>\n            <div class="dci-feedback" data-dci-status aria-live="polite"></div>\n\n            <script type="application/json" id="dci-diagnostics-data">'''
+          if old_block not in text:
+              raise SystemExit('Blocco feedback diagnostica non trovato nel template')
+          text = text.replace(old_block, new_block, 1)
+          write(path, text)
+
+          # 2) Riserva lo stesso spazio finale di Forms per il feedback.
+          path = 'component/media/css/information.css'
+          text = read(path)
+          old_css = '''.dci-action-status {\n  color: var(--dc-muted);\n  font-size: 11px;\n}\n'''
+          new_css = '''.dci-feedback {\n  min-height: 18px;\n  margin-top: 7px;\n  color: var(--dc-muted);\n  font-size: 11px;\n}\n'''
+          if old_css not in text:
+              raise SystemExit('Regola dci-action-status non trovata nel CSS')
+          text = text.replace(old_css, new_css, 1)
+          text = text.replace('  .dci-action-status { grid-column: 1; }\n', '')
+          write(path, text)
+
+          # 3) Versioni coerenti.
+          path = 'component/decarocourses.xml'
+          text = read(path)
+          text = text.replace('<version>1.0.39</version>', '<version>1.0.40</version>', 1)
+          text = text.replace(
+              '<!-- Release 1.0.39: Information typography and vertical rhythm aligned with Forms 1.3.71. -->',
+              '<!-- Release 1.0.40: Diagnostics footer spacing aligned with Forms 1.3.71. -->',
+              1
+          )
+          write(path, text)
+
+          path = 'package/pkg_decarocourses.xml'
+          text = read(path)
+          text = text.replace('<version>1.0.39</version>', '<version>1.0.40</version>', 1)
+          text = text.replace('com_decarocourses_1.0.39.zip', 'com_decarocourses_1.0.40.zip', 1)
+          write(path, text)
+
+          path = 'component/admin/src/Helper/InformationHelper.php'
+          text = read(path)
+          if "public const VERSION = '1.0.39';" not in text:
+              raise SystemExit('VERSION 1.0.39 non trovata in InformationHelper')
+          write(path, text.replace("public const VERSION = '1.0.39';", "public const VERSION = '1.0.40';", 1))
+
+          path = 'component/admin/src/Helper/UiHelper.php'
+          text = read(path)
+          if old not in text:
+              raise SystemExit('Versione asset 1.0.39 non trovata in UiHelper')
+          write(path, text.replace(old, new))
+
+          path = 'component/media/joomla.asset.json'
+          text = read(path)
+          if old not in text:
+              raise SystemExit('Versione 1.0.39 non trovata in joomla.asset.json')
+          write(path, text.replace(old, new))
+
+          # 4) README senza alterare lo storico delle release precedenti.
+          path = 'README.md'
+          text = read(path)
+          text = text.replace('- Versione corrente: `1.0.39`', '- Versione corrente: `1.0.40`', 1)
+          text = text.replace('- ZIP componente: `com_decarocourses_1.0.39.zip`', '- ZIP componente: `com_decarocourses_1.0.40.zip`', 1)
+          text = text.replace('- ZIP completo: `pkg_decarocourses_1.0.39.zip`', '- ZIP completo: `pkg_decarocourses_1.0.40.zip`', 1)
+          marker = '\n## 1.0.39\n'
+          entry = '''\n## 1.0.40\n\nAllineata la parte finale della **Diagnostica** nella vista **Informazioni** a Forms 1.3.71. Il messaggio di feedback di `Copia diagnostica` / `Scarica .txt` non è più inserito nella stessa riga dei pulsanti: ora occupa una riga dedicata con `min-height: 18px` e `margin-top: 7px`, preservando lo stesso spazio inferiore e lo stesso ritmo verticale di Forms anche quando non è visualizzato alcun messaggio. Funzioni JavaScript, dati, Corsi, Edizioni, database e ACL restano invariati.\n\n## 1.0.39\n'''
+          if marker not in text:
+              raise SystemExit('Punto inserimento changelog 1.0.39 non trovato')
+          text = text.replace(marker, entry, 1)
+          write(path, text)
+          PY
+
+      - name: Validate prepared sources
+        shell: bash
+        run: |
+          set -euo pipefail
+          php -l component/admin/tmpl/information/default.php
+          php -l component/admin/src/Helper/InformationHelper.php
+          php -l component/admin/src/Helper/UiHelper.php
+          php -r 'libxml_use_internal_errors(true); foreach (["component/decarocourses.xml", "package/pkg_decarocourses.xml"] as $f) { if (simplexml_load_file($f) === false) { fwrite(STDERR, "XML non valido: $f\n"); exit(1); }}'
+          php -r '$d=json_decode(file_get_contents("component/media/joomla.asset.json"), true); if (!is_array($d) || json_last_error() !== JSON_ERROR_NONE) { exit(1); }'
+          grep -F 'class="dci-feedback" data-dci-status' component/admin/tmpl/information/default.php
+          grep -F '.dci-feedback {' component/media/css/information.css
+          grep -F 'min-height: 18px;' component/media/css/information.css
+          grep -F 'margin-top: 7px;' component/media/css/information.css
+          ! grep -F 'dci-action-status' component/admin/tmpl/information/default.php
+          ! grep -F 'dci-action-status' component/media/css/information.css
+          grep -F '<version>1.0.40</version>' component/decarocourses.xml
+          grep -F '<version>1.0.40</version>' package/pkg_decarocourses.xml
+
+      - name: Commit prepared release
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add component package README.md
+          git commit -m "Prepare Courses 1.0.40 diagnostics footer alignment"
+          git push
