@@ -10,10 +10,13 @@ use Throwable;
 
 final class InformationHelper
 {
-    public const VERSION = '1.0.33';
+    public const VERSION = '1.0.34';
+    public const MINIMUM_JOOMLA = '6.0.0';
+    public const MINIMUM_PHP = '8.3.0';
 
     public static function getData(): array
     {
+        /** @var DatabaseInterface $db */
         $db = Factory::getContainer()->get(DatabaseInterface::class);
         $tables = $db->getTableList();
         $prefix = $db->getPrefix();
@@ -28,7 +31,33 @@ final class InformationHelper
         $formsExtension = self::getExtension($db, 'component', 'com_decaroforms');
 
         $componentVersion = self::manifestVersion($component) ?: self::VERSION;
-        $packageVersion = self::manifestVersion($package) ?: self::VERSION;
+        $packageVersion = self::manifestVersion($package);
+        $schemaVersion = self::getSchemaVersion($db, (int) ($component->extension_id ?? 0));
+
+        $coursesPresent = in_array($coursesTable, $tables, true);
+        $editionsPresent = in_array($editionsTable, $tables, true);
+        $schemaAligned = $schemaVersion !== '' && version_compare($schemaVersion, $componentVersion, '>=');
+        $packageDetected = $package !== null && $packageVersion !== '';
+        $installationConsistent = $packageDetected
+            && version_compare($componentVersion, $packageVersion, '==')
+            && $schemaAligned;
+
+        $joomlaVersion = defined('JVERSION') ? (string) JVERSION : '';
+        $phpVersion = PHP_VERSION;
+        $environmentCompatible = version_compare($joomlaVersion, self::MINIMUM_JOOMLA, '>=')
+            && version_compare($phpVersion, self::MINIMUM_PHP, '>=');
+
+        $databaseType = '';
+        $databaseVersion = '';
+
+        try {
+            $databaseType = method_exists($db, 'getServerType') ? (string) $db->getServerType() : '';
+            $databaseVersion = method_exists($db, 'getVersion') ? (string) $db->getVersion() : '';
+        } catch (Throwable) {
+            $databaseType = '';
+            $databaseVersion = '';
+        }
+
         $formsInstalled = $formsExtension !== null || in_array($formsTable, $tables, true);
         $formsCount = 0;
 
@@ -44,30 +73,60 @@ final class InformationHelper
             }
         }
 
-        $schemaVersion = self::getSchemaVersion($db, (int) ($component->extension_id ?? 0));
         $updateSite = self::getUpdateSiteStatus($db, (int) ($package->extension_id ?? 0));
         $availableVersion = self::getAvailableUpdate($db);
 
+        $updateAvailable = $availableVersion !== ''
+            && version_compare($availableVersion, $componentVersion, '>');
+
+        $updateState = !$updateSite['configured'] || !$updateSite['enabled']
+            ? 'inactive'
+            : ($updateAvailable ? 'available' : 'current');
+
+        $criticalChecks = [
+            'coursesTable' => $coursesPresent,
+            'editionsTable' => $editionsPresent,
+            'schemaAligned' => $schemaAligned,
+            'packageDetected' => $packageDetected,
+            'installationConsistent' => $installationConsistent,
+            'environmentCompatible' => $environmentCompatible,
+        ];
+
+        $criticalCount = count(array_filter(
+            $criticalChecks,
+            static fn (bool $ok): bool => !$ok
+        ));
+
         $diagnostics = [
-            'coursesTable' => in_array($coursesTable, $tables, true),
-            'editionsTable' => in_array($editionsTable, $tables, true),
-            'schemaAligned' => $schemaVersion === '' || version_compare($schemaVersion, $componentVersion, '>='),
-            'formsAvailable' => $formsInstalled,
+            ...$criticalChecks,
+            'tablesPresent' => $coursesPresent && $editionsPresent,
             'updateSiteEnabled' => $updateSite['configured'] && $updateSite['enabled'],
+            'formsAvailable' => $formsInstalled,
         ];
 
         return [
             'componentVersion' => $componentVersion,
             'packageVersion' => $packageVersion,
-            'joomlaVersion' => defined('JVERSION') ? JVERSION : '',
-            'phpVersion' => PHP_VERSION,
             'schemaVersion' => $schemaVersion,
+            'minimumJoomla' => self::MINIMUM_JOOMLA,
+            'minimumPhp' => self::MINIMUM_PHP,
+            'joomlaVersion' => $joomlaVersion,
+            'phpVersion' => $phpVersion,
+            'databaseType' => $databaseType,
+            'databaseVersion' => $databaseVersion,
+            'tablePresentCount' => (int) $coursesPresent + (int) $editionsPresent,
+            'tableExpectedCount' => 2,
             'formsInstalled' => $formsInstalled,
+            'formsEnabled' => (int) ($formsExtension->enabled ?? 0) === 1,
             'formsVersion' => self::manifestVersion($formsExtension),
             'formsCount' => $formsCount,
             'updateSite' => $updateSite,
             'availableVersion' => $availableVersion,
+            'updateAvailable' => $updateAvailable,
+            'updateState' => $updateState,
             'diagnostics' => $diagnostics,
+            'criticalCount' => $criticalCount,
+            'systemOk' => $criticalCount === 0,
         ];
     }
 
@@ -78,6 +137,7 @@ final class InformationHelper
                 ->select([
                     $db->quoteName('extension_id'),
                     $db->quoteName('manifest_cache'),
+                    $db->quoteName('enabled'),
                 ])
                 ->from($db->quoteName('#__extensions'))
                 ->where($db->quoteName('type') . ' = :type')
@@ -129,6 +189,7 @@ final class InformationHelper
             'configured' => false,
             'enabled' => false,
             'location' => '',
+            'lastCheckTimestamp' => 0,
         ];
 
         if ($extensionId <= 0) {
@@ -140,6 +201,7 @@ final class InformationHelper
                 ->select([
                     $db->quoteName('s.location'),
                     $db->quoteName('s.enabled'),
+                    $db->quoteName('s.last_check_timestamp'),
                 ])
                 ->from($db->quoteName('#__update_sites_extensions', 'm'))
                 ->innerJoin(
@@ -155,6 +217,7 @@ final class InformationHelper
                 $result['configured'] = true;
                 $result['enabled'] = (int) $site->enabled === 1;
                 $result['location'] = trim((string) $site->location);
+                $result['lastCheckTimestamp'] = max(0, (int) $site->last_check_timestamp);
             }
         } catch (Throwable) {
             return $result;
