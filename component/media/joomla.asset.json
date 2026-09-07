@@ -47,6 +47,13 @@
       "dependencies": ["com_decarocourses.editions-mobile", "com_decarocourses.live-refresh"]
     },
     {
+      "name": "com_decarocourses.row-actions-style",
+      "type": "style",
+      "uri": "com_decarocourses/row-actions.css",
+      "version": "1.0.33",
+      "dependencies": ["com_decarocourses.adaptive"]
+    },
+    {
       "name": "com_decarocourses.admin-ui",
       "type": "script",
       "uri": "com_decarocourses/admin-ui.js",
