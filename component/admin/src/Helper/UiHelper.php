@@ -36,7 +36,7 @@ final class UiHelper
             $wa->registerStyle(
                 'com_decarocourses.design',
                 'com_decarocourses/design-system.css',
-                ['version' => '1.0.34']
+                ['version' => '1.0.35']
             );
         }
 
@@ -44,7 +44,7 @@ final class UiHelper
             $wa->registerStyle(
                 'com_decarocourses.responsive',
                 'com_decarocourses/responsive.css',
-                ['version' => '1.0.34']
+                ['version' => '1.0.35']
             );
         }
 
@@ -52,7 +52,7 @@ final class UiHelper
             $wa->registerStyle(
                 'com_decarocourses.live-refresh',
                 'com_decarocourses/live-refresh.css',
-                ['version' => '1.0.34']
+                ['version' => '1.0.35']
             );
         }
 
@@ -60,7 +60,7 @@ final class UiHelper
             $wa->registerStyle(
                 'com_decarocourses.editions',
                 'com_decarocourses/editions.css',
-                ['version' => '1.0.34']
+                ['version' => '1.0.35']
             );
         }
 
@@ -68,7 +68,7 @@ final class UiHelper
             $wa->registerStyle(
                 'com_decarocourses.editions-mobile',
                 'com_decarocourses/editions-mobile.css',
-                ['version' => '1.0.34']
+                ['version' => '1.0.35']
             );
         }
 
@@ -76,7 +76,7 @@ final class UiHelper
             $wa->registerStyle(
                 'com_decarocourses.adaptive',
                 'com_decarocourses/adaptive.css',
-                ['version' => '1.0.34']
+                ['version' => '1.0.35']
             );
         }
 
@@ -84,7 +84,7 @@ final class UiHelper
             $wa->registerStyle(
                 'com_decarocourses.row-actions-style',
                 'com_decarocourses/row-actions.css',
-                ['version' => '1.0.34']
+                ['version' => '1.0.35']
             );
         }
 
@@ -92,7 +92,7 @@ final class UiHelper
             $wa->registerScript(
                 'com_decarocourses.admin-ui',
                 'com_decarocourses/admin-ui.js',
-                ['version' => '1.0.34'],
+                ['version' => '1.0.35'],
                 ['defer' => true]
             );
         }
@@ -101,7 +101,7 @@ final class UiHelper
             $wa->registerScript(
                 'com_decarocourses.row-actions',
                 'com_decarocourses/row-actions.js',
-                ['version' => '1.0.34'],
+                ['version' => '1.0.35'],
                 ['defer' => true]
             );
         }
