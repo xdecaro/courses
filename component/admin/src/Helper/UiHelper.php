@@ -10,11 +10,21 @@ use Joomla\CMS\Session\Session;
 
 final class UiHelper
 {
+    public static function loadLanguage(): void
+    {
+        Factory::getApplication()->getLanguage()->load(
+            'com_decarocourses.actions',
+            JPATH_ADMINISTRATOR,
+            null,
+            true
+        );
+    }
+
     public static function loadAssets(): void
     {
-        $app = Factory::getApplication();
-        $app->getLanguage()->load('com_decarocourses.actions', JPATH_ADMINISTRATOR, null, true);
+        self::loadLanguage();
 
+        $app = Factory::getApplication();
         $document = $app->getDocument();
         $wa = $document->getWebAssetManager();
 
