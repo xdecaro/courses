@@ -55,7 +55,7 @@ $stateMeta = [
         aria-label="<?php echo $escape(Text::_('COM_DECAROCOURSES_FILTER_SEARCH_ARIA')); ?>"
       >
       <select class="form-select" name="filter_state" aria-label="<?php echo $escape(Text::_('COM_DECAROCOURSES_FILTER_STATE_ARIA')); ?>">
-        <option value=""<?php echo $filterState === '' ? ' selected' : ''; ?>><?php echo Text::_('COM_DECAROCOURSES_FILTER_ALL_STATES'); ?></option>
+        <option value=""<?php echo $filterState === '' ? ' selected' : ''; ?>><?php echo Text::_('COM_DECAROCOURSES_FILTER_VISIBLE_STATES'); ?></option>
         <option value="1"<?php echo $filterState === '1' ? ' selected' : ''; ?>><?php echo Text::_('COM_DECAROCOURSES_STAT_ACTIVE'); ?></option>
         <option value="0"<?php echo $filterState === '0' ? ' selected' : ''; ?>><?php echo Text::_('COM_DECAROCOURSES_STAT_INACTIVE'); ?></option>
         <option value="-2"<?php echo $isTrashFilter ? ' selected' : ''; ?>><?php echo Text::_('COM_DECAROCOURSES_STAT_TRASH'); ?></option>
