@@ -7,8 +7,8 @@
   <license>GNU General Public License version 2 or later</license>
   <authorEmail></authorEmail>
   <authorUrl>https://github.com/xdecaro/courses</authorUrl>
-  <version>1.0.37</version>
-  <!-- Release 1.0.37: final Information alignment and language key fix. -->
+  <version>1.0.38</version>
+  <!-- Release 1.0.38: final Information typography and vertical rhythm alignment with Forms. -->
   <description>COM_DECAROCOURSES_XML_DESCRIPTION</description>
   <targetplatform name="joomla" version="6.*" />
   <namespace path="src">Xdecaro\Component\Decarocourses</namespace>

@@ -52,7 +52,9 @@
 .dci-page-header h1 {
   margin: 4px 0 5px;
   color: var(--dc-text);
-  font: 700 30px/1.16 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: clamp(26px, 3vw, 30px);
+  font-weight: 700;
+  line-height: 1.16;
   letter-spacing: -.02em;
 }
 
@@ -118,7 +120,6 @@
 .dci-page-header .dc-eyebrow {
   font-size: 11px;
   font-weight: 800;
-  line-height: normal;
   letter-spacing: .085em;
 }
 
@@ -180,7 +181,8 @@
 .dci-card-intro {
   margin: -2px 0 12px;
   color: var(--dc-muted);
-  font-size: 12px;
+  font-size: 13px;
+  line-height: 1.55;
 }
 
 .dci-actions {

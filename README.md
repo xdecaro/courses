@@ -7,9 +7,9 @@
 - Pacchetto Joomla: `pkg_decarocourses`
 - Repository GitHub: `xdecaro/courses`
 - Versione iniziale: `1.0.0`
-- Versione corrente: `1.0.37`
-- ZIP componente: `com_decarocourses_1.0.37.zip`
-- ZIP completo: `pkg_decarocourses_1.0.37.zip`
+- Versione corrente: `1.0.38`
+- ZIP componente: `com_decarocourses_1.0.38.zip`
+- ZIP completo: `pkg_decarocourses_1.0.38.zip`
 
 ## Obiettivo
 
@@ -32,6 +32,10 @@ La UI adotta un design system unico per font, titoli, pulsanti, campi, card, bad
 ## Integrazione Forms by xdecaro
 
 L'integrazione è opzionale. Ogni edizione può memorizzare l'ID di un modulo di `com_decaroforms`; in assenza di Forms, Courses continua a funzionare normalmente.
+
+## 1.0.38
+
+Rifinitura finale della pagina **Informazioni** dopo il confronto affiancato reale con **Forms 1.3.71**. Rimosso il `line-height: normal` locale dagli eyebrow (`INFORMAZIONI`, `PRODOTTO`, `AMBIENTE`, ecc.), così il ritmo verticale eredita lo stesso comportamento di Forms; il testo introduttivo delle card passa a 13 px con line-height 1.55 e il titolo pagina usa lo stesso `clamp(26px, 3vw, 30px)` di Forms per mantenere coerenza anche su tablet. Nessuna modifica a Corsi, Edizioni, database, ACL o logica applicativa.
 
 ## 1.0.37
 
