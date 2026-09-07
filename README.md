@@ -7,9 +7,9 @@
 - Pacchetto Joomla: `pkg_decarocourses`
 - Repository GitHub: `xdecaro/courses`
 - Versione iniziale: `1.0.0`
-- Versione corrente: `1.0.40`
-- ZIP componente: `com_decarocourses_1.0.40.zip`
-- ZIP completo: `pkg_decarocourses_1.0.40.zip`
+- Versione corrente: `1.0.41`
+- ZIP componente: `com_decarocourses_1.0.41.zip`
+- ZIP completo: `pkg_decarocourses_1.0.41.zip`
 
 ## Obiettivo
 
@@ -32,6 +32,10 @@ La UI adotta un design system unico per font, titoli, pulsanti, campi, card, bad
 ## Integrazione Forms by xdecaro
 
 L'integrazione è opzionale. Ogni edizione può memorizzare l'ID di un modulo di `com_decaroforms`; in assenza di Forms, Courses continua a funzionare normalmente.
+
+## 1.0.41
+
+Corretto il controllo **Schema database** nella vista **Informazioni**. La 1.0.40 era una release solo UI ma mancava il relativo file SQL di avanzamento versione, quindi Joomla lasciava `#__schemas` alla 1.0.39 e la diagnostica mostrava `Da verificare` nonostante le tabelle fossero corrette. Aggiunti i marker SQL non distruttivi `1.0.40.sql` e `1.0.41.sql`, così l'aggiornamento riallinea il registro schema senza modificare dati o struttura. La build viene inoltre rafforzata separatamente per richiedere il marker SQL di ogni release futura.
 
 ## 1.0.40
 
