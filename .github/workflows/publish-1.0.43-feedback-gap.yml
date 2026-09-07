@@ -1,0 +1,81 @@
+name: Publish Courses 1.0.43 diagnostics feedback fix
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/publish-1.0.43-feedback-gap.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate 1.0.43 source
+        shell: bash
+        run: |
+          set -euo pipefail
+          VERSION="$(php -r '$x=simplexml_load_file("package/pkg_decarocourses.xml"); echo trim((string)$x->version);')"
+          test "$VERSION" = "1.0.43"
+          find component tools -type f -name '*.php' -print0 | xargs -0 -n1 php -l
+          while IFS= read -r -d '' FILE; do
+            php -r 'libxml_use_internal_errors(true); if (simplexml_load_file($argv[1]) === false) exit(1);' "$FILE"
+          done < <(find component package -type f -name '*.xml' -print0)
+          php -r '$d=json_decode(file_get_contents("component/media/joomla.asset.json"), true); if (!is_array($d) || json_last_error() !== JSON_ERROR_NONE) exit(1);'
+          test -f "component/admin/sql/updates/mysql/${VERSION}.sql"
+          if grep -A5 '^\.dci-feedback {' component/media/css/information.css | grep -q 'min-height'; then
+            echo 'Unexpected min-height in dci-feedback' >&2
+            exit 1
+          fi
+          grep -q 'padding: 14px 0 14px;' component/media/css/information.css
+          php -r '$d=json_decode(file_get_contents("component/media/joomla.asset.json"), true); $ok=[]; foreach($d["assets"] as $a){if(($a["name"]??"")==="com_decarocourses.information")$ok[$a["type"]]=$a["version"]??"";} if(($ok["style"]??"")!=="1.0.43"||($ok["script"]??"")!=="1.0.43") exit(1);'
+
+      - name: Build installable ZIPs
+        run: php tools/build.php
+
+      - name: Verify packages
+        shell: bash
+        run: |
+          set -euo pipefail
+          VERSION="1.0.43"
+          test -f "dist/com_decarocourses_${VERSION}.zip"
+          test -f "dist/pkg_decarocourses_${VERSION}.zip"
+          unzip -t "dist/com_decarocourses_${VERSION}.zip"
+          unzip -t "dist/pkg_decarocourses_${VERSION}.zip"
+          unzip -p "dist/com_decarocourses_${VERSION}.zip" decarocourses.xml | grep -F "<version>${VERSION}</version>"
+          unzip -l "dist/com_decarocourses_${VERSION}.zip" | grep -F "admin/sql/updates/mysql/${VERSION}.sql"
+          unzip -p "dist/com_decarocourses_${VERSION}.zip" media/css/information.css | grep -A5 '^.dci-feedback {' | grep -q 'margin-top: 7px'
+          if unzip -p "dist/com_decarocourses_${VERSION}.zip" media/css/information.css | grep -A5 '^.dci-feedback {' | grep -q 'min-height'; then
+            echo 'Packaged CSS still reserves feedback min-height' >&2
+            exit 1
+          fi
+
+      - name: Publish update metadata
+        run: php tools/publish-update.php
+
+      - name: Commit release 1.0.43
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add releases/1.0.43 updates/pkg_decarocourses.xml
+          git diff --cached --check
+          if git diff --cached --quiet; then
+            echo 'Release already published identically.'
+            exit 0
+          fi
+          git commit -m "Publish Courses 1.0.43 update package"
+          git push
+
+      - name: Upload Joomla packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: decarocourses-1.0.43
+          path: |
+            dist/com_decarocourses_1.0.43.zip
+            dist/pkg_decarocourses_1.0.43.zip
