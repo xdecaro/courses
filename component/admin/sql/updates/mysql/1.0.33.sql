@@ -1,0 +1,3 @@
+-- Courses 1.0.33
+-- No schema changes. This release separates operational status from publication in list views
+-- and adds reusable contextual row actions for Courses and Editions.
