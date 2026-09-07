@@ -1,7 +1,7 @@
 {
   "$schema": "https://developer.joomla.org/schemas/json-schema/web_assets.json",
   "name": "com_decarocourses",
-  "version": "1.0.31",
+  "version": "1.0.32",
   "description": "Courses administrator design system",
   "license": "GPL-2.0-or-later",
   "assets": [
@@ -9,48 +9,48 @@
       "name": "com_decarocourses.design",
       "type": "style",
       "uri": "com_decarocourses/design-system.css",
-      "version": "1.0.31"
+      "version": "1.0.32"
     },
     {
       "name": "com_decarocourses.responsive",
       "type": "style",
       "uri": "com_decarocourses/responsive.css",
-      "version": "1.0.31",
+      "version": "1.0.32",
       "dependencies": ["com_decarocourses.design"]
     },
     {
       "name": "com_decarocourses.live-refresh",
       "type": "style",
       "uri": "com_decarocourses/live-refresh.css",
-      "version": "1.0.31",
+      "version": "1.0.32",
       "dependencies": ["com_decarocourses.design"]
     },
     {
       "name": "com_decarocourses.editions",
       "type": "style",
       "uri": "com_decarocourses/editions.css",
-      "version": "1.0.31",
+      "version": "1.0.32",
       "dependencies": ["com_decarocourses.design", "com_decarocourses.responsive"]
     },
     {
       "name": "com_decarocourses.editions-mobile",
       "type": "style",
       "uri": "com_decarocourses/editions-mobile.css",
-      "version": "1.0.31",
+      "version": "1.0.32",
       "dependencies": ["com_decarocourses.editions"]
     },
     {
       "name": "com_decarocourses.adaptive",
       "type": "style",
       "uri": "com_decarocourses/adaptive.css",
-      "version": "1.0.31",
+      "version": "1.0.32",
       "dependencies": ["com_decarocourses.editions-mobile", "com_decarocourses.live-refresh"]
     },
     {
       "name": "com_decarocourses.admin-ui",
       "type": "script",
       "uri": "com_decarocourses/admin-ui.js",
-      "version": "1.0.31"
+      "version": "1.0.32"
     }
   ]
 }
