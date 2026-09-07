@@ -20,7 +20,7 @@ class HtmlView extends BaseHtmlView
 
         $wa = $app->getDocument()->getWebAssetManager();
         if (!$wa->assetExists('style', 'com_decarocourses.design')) {
-            $wa->registerStyle('com_decarocourses.design', 'com_decarocourses/css/design-system.css', [], ['version' => '1.0.32']);
+            $wa->registerStyle('com_decarocourses.design', 'com_decarocourses/css/design-system.css', [], ['version' => '1.0.33']);
         }
         $wa->useStyle('com_decarocourses.design');
 
