@@ -63,7 +63,8 @@
       "name": "com_decarocourses.row-actions",
       "type": "script",
       "uri": "com_decarocourses/row-actions.js",
-      "version": "1.0.33"
+      "version": "1.0.33",
+      "dependencies": ["bootstrap.dropdown"]
     }
   ]
 }
