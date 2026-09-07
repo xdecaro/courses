@@ -7,9 +7,9 @@
 - Pacchetto Joomla: `pkg_decarocourses`
 - Repository GitHub: `xdecaro/courses`
 - Versione iniziale: `1.0.0`
-- Versione corrente: `1.0.30`
-- ZIP componente: `com_decarocourses_1.0.30.zip`
-- ZIP completo: `pkg_decarocourses_1.0.30.zip`
+- Versione corrente: `1.0.32`
+- ZIP componente: `com_decarocourses_1.0.32.zip`
+- ZIP completo: `pkg_decarocourses_1.0.32.zip`
 
 ## Obiettivo
 
@@ -32,6 +32,14 @@ La UI adotta un design system unico per font, titoli, pulsanti, campi, card, bad
 ## Integrazione Forms by xdecaro
 
 L'integrazione è opzionale. Ogni edizione può memorizzare l'ID di un modulo di `com_decaroforms`; in assenza di Forms, Courses continua a funzionare normalmente.
+
+## 1.0.32
+
+Consolidata la gestione Joomla di Corsi ed Edizioni dopo i test reali di Pubblica, Sospendi e Cestino. Le liste normali escludono ora i record cestinati e i contatori non includono il Cestino salvo filtro esplicito. Le azioni di stato sono raccolte nella toolbar nativa Joomla tramite menu `Azioni`, con Pubblica, Sospendi, Sblocco/Check-in, Cestino e Ripristina; l'eliminazione definitiva resta disponibile soltanto nel Cestino e con `core.delete`. Aggiunti messaggi IT/EN completi per pubblicazione, sospensione, cestino, ripristino, eliminazione e check-in. Le Edizioni dispongono inoltre del nuovo flag indipendente `featured`, con `Metti in evidenza / Togli evidenza`, campo editor e ordinamento che porta le edizioni in evidenza prima delle altre senza alterare pubblicazione o stato operativo. La migrazione aggiunge in modo non distruttivo la colonna e l'indice `featured`; i nuovi install includono già lo schema aggiornato. ACL, token CSRF, query bindate, gestione dei record bloccati e responsive Joomla restano invariati.
+
+## 1.0.31
+
+Corretto l'uso delle azioni native Joomla Pubblica, Sospendi e Cestino sulle tabelle Courses: le Table espongono ora correttamente l'alias Joomla `published` verso la colonna applicativa `state`, eliminando l'errore SQL `Unknown column 'published' in 'SET'`. La correzione vale sia per Corsi sia per Edizioni e non modifica lo schema database.
 
 ## 1.0.30
 
