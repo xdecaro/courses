@@ -36,7 +36,7 @@ final class UiHelper
             $wa->registerStyle(
                 'com_decarocourses.design',
                 'com_decarocourses/design-system.css',
-                ['version' => '1.0.32']
+                ['version' => '1.0.33']
             );
         }
 
@@ -44,7 +44,7 @@ final class UiHelper
             $wa->registerStyle(
                 'com_decarocourses.responsive',
                 'com_decarocourses/responsive.css',
-                ['version' => '1.0.32']
+                ['version' => '1.0.33']
             );
         }
 
@@ -52,7 +52,7 @@ final class UiHelper
             $wa->registerStyle(
                 'com_decarocourses.live-refresh',
                 'com_decarocourses/live-refresh.css',
-                ['version' => '1.0.32']
+                ['version' => '1.0.33']
             );
         }
 
@@ -60,7 +60,7 @@ final class UiHelper
             $wa->registerStyle(
                 'com_decarocourses.editions',
                 'com_decarocourses/editions.css',
-                ['version' => '1.0.32']
+                ['version' => '1.0.33']
             );
         }
 
@@ -68,7 +68,7 @@ final class UiHelper
             $wa->registerStyle(
                 'com_decarocourses.editions-mobile',
                 'com_decarocourses/editions-mobile.css',
-                ['version' => '1.0.32']
+                ['version' => '1.0.33']
             );
         }
 
@@ -76,7 +76,7 @@ final class UiHelper
             $wa->registerStyle(
                 'com_decarocourses.adaptive',
                 'com_decarocourses/adaptive.css',
-                ['version' => '1.0.32']
+                ['version' => '1.0.33']
             );
         }
 
@@ -84,7 +84,7 @@ final class UiHelper
             $wa->registerScript(
                 'com_decarocourses.admin-ui',
                 'com_decarocourses/admin-ui.js',
-                ['version' => '1.0.32'],
+                ['version' => '1.0.33'],
                 ['defer' => true]
             );
         }
@@ -132,6 +132,24 @@ final class UiHelper
             'completed' => 'is-completed',
             'archived' => 'is-archived',
             default => 'is-draft',
+        };
+    }
+
+    public static function publicationLabel(int $state): string
+    {
+        return match ($state) {
+            1 => Text::_('JPUBLISHED'),
+            -2 => Text::_('JTRASHED'),
+            default => Text::_('JUNPUBLISHED'),
+        };
+    }
+
+    public static function publicationClass(int $state): string
+    {
+        return match ($state) {
+            1 => 'is-success',
+            -2 => 'is-danger',
+            default => 'is-muted',
         };
     }
 
