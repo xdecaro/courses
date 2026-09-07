@@ -4,6 +4,8 @@ defined('_JEXEC') or die;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
+use Xdecaro\Component\Decarocourses\Administrator\Helper\AdminRowActionsHelper;
+use Xdecaro\Component\Decarocourses\Administrator\Helper\UiHelper;
 
 $escape = static fn ($value): string => htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
 $filterState = (string) $this->state->get('filter.state', '');
@@ -12,12 +14,6 @@ $stats = $this->stats ?: (object) ['total' => 0, 'active' => 0, 'inactive' => 0,
 
 $listUrl = 'index.php?option=com_decarocourses&view=courses';
 $resetUrl = Route::_($listUrl . '&filter_search=&filter_state=');
-
-$stateMeta = [
-    1 => ['label' => Text::_('COM_DECAROCOURSES_STATE_ACTIVE'), 'class' => 'is-success'],
-    0 => ['label' => Text::_('COM_DECAROCOURSES_STATE_INACTIVE'), 'class' => 'is-muted'],
-    -2 => ['label' => Text::_('COM_DECAROCOURSES_STATE_TRASHED'), 'class' => 'is-danger'],
-];
 ?>
 <form action="<?php echo Route::_($listUrl); ?>" method="post" name="adminForm" id="adminForm">
 <div class="dc-app">
@@ -56,9 +52,9 @@ $stateMeta = [
       >
       <select class="form-select" name="filter_state" aria-label="<?php echo $escape(Text::_('COM_DECAROCOURSES_FILTER_STATE_ARIA')); ?>">
         <option value=""<?php echo $filterState === '' ? ' selected' : ''; ?>><?php echo Text::_('COM_DECAROCOURSES_FILTER_VISIBLE_STATES'); ?></option>
-        <option value="1"<?php echo $filterState === '1' ? ' selected' : ''; ?>><?php echo Text::_('COM_DECAROCOURSES_STAT_ACTIVE'); ?></option>
-        <option value="0"<?php echo $filterState === '0' ? ' selected' : ''; ?>><?php echo Text::_('COM_DECAROCOURSES_STAT_INACTIVE'); ?></option>
-        <option value="-2"<?php echo $isTrashFilter ? ' selected' : ''; ?>><?php echo Text::_('COM_DECAROCOURSES_STAT_TRASH'); ?></option>
+        <option value="1"<?php echo $filterState === '1' ? ' selected' : ''; ?>><?php echo Text::_('JPUBLISHED'); ?></option>
+        <option value="0"<?php echo $filterState === '0' ? ' selected' : ''; ?>><?php echo Text::_('JUNPUBLISHED'); ?></option>
+        <option value="-2"<?php echo $isTrashFilter ? ' selected' : ''; ?>><?php echo Text::_('JTRASHED'); ?></option>
       </select>
       <button class="btn dc-btn dc-btn-primary" type="submit"><?php echo Text::_('COM_DECAROCOURSES_ACTION_SEARCH'); ?></button>
       <a class="btn dc-btn dc-btn-secondary" href="<?php echo $resetUrl; ?>"><?php echo Text::_('COM_DECAROCOURSES_ACTION_RESET'); ?></a>
@@ -78,29 +74,43 @@ $stateMeta = [
               <th class="dc-col-title" scope="col"><?php echo Text::_('COM_DECAROCOURSES_COLUMN_TITLE'); ?></th>
               <th class="dc-col-code" scope="col"><?php echo Text::_('COM_DECAROCOURSES_COLUMN_CODE'); ?></th>
               <th class="dc-col-editions" scope="col"><?php echo Text::_('COM_DECAROCOURSES_COLUMN_EDITIONS'); ?></th>
-              <th class="dc-col-state" scope="col"><?php echo Text::_('COM_DECAROCOURSES_COLUMN_STATE'); ?></th>
+              <th class="dc-col-state" scope="col"><?php echo Text::_('COM_DECAROCOURSES_PUBLICATION'); ?></th>
               <th class="dc-col-updated" scope="col"><?php echo Text::_('COM_DECAROCOURSES_COLUMN_UPDATED'); ?></th>
               <th class="dc-actions-col" scope="col"><?php echo Text::_('COM_DECAROCOURSES_COLUMN_ACTIONS'); ?></th>
             </tr>
           </thead>
           <tbody>
           <?php foreach ($this->items as $i => $item) :
+              $itemId = (int) $item->id;
               $itemState = (int) $item->state;
-              $meta = $stateMeta[$itemState] ?? ['label' => Text::_('COM_DECAROCOURSES_STATE_UNKNOWN'), 'class' => 'is-muted'];
-              $editUrl = Route::_('index.php?option=com_decarocourses&task=course.edit&id=' . (int) $item->id);
-              $editionsUrl = Route::_('index.php?option=com_decarocourses&view=editions&filter_search=&filter_course_id=' . (int) $item->id);
+              $editUrl = Route::_('index.php?option=com_decarocourses&task=course.edit&id=' . $itemId);
+              $editionsUrl = Route::_('index.php?option=com_decarocourses&view=editions&filter_search=&filter_course_id=' . $itemId);
               $modified = !empty($item->modified) ? (string) $item->modified : (string) $item->created;
               $modifiedLabel = $modified !== '' ? HTMLHelper::_('date', $modified, 'd/m/Y H:i') : '—';
+              $rowMenu = AdminRowActionsHelper::render(
+                  'courses',
+                  $itemId,
+                  $itemState,
+                  $this->canEdit,
+                  $this->canEditState,
+                  $this->canDelete,
+                  $editUrl,
+                  [[
+                      'url' => $editionsUrl,
+                      'label' => Text::_('COM_DECAROCOURSES_ACTION_EDITIONS'),
+                      'icon' => 'icon-list',
+                  ]]
+              );
           ?>
-            <tr>
-              <td class="dc-check" data-label="<?php echo $escape(Text::_('COM_DECAROCOURSES_ROW_SELECT')); ?>"><?php echo HTMLHelper::_('grid.id', $i, $item->id); ?></td>
+            <tr data-dc-item-row="<?php echo $itemId; ?>">
+              <td class="dc-check" data-label="<?php echo $escape(Text::_('COM_DECAROCOURSES_ROW_SELECT')); ?>"><?php echo HTMLHelper::_('grid.id', $i, $itemId); ?></td>
               <td class="dc-col-title" data-label="<?php echo $escape(Text::_('COM_DECAROCOURSES_COLUMN_TITLE')); ?>">
                 <?php if ($this->canEdit) : ?>
                   <a class="dc-title-link" href="<?php echo $editUrl; ?>"><?php echo $escape($item->title); ?></a>
                 <?php else : ?>
                   <strong><?php echo $escape($item->title); ?></strong>
                 <?php endif; ?>
-                <small class="dc-row-subtitle">ID <?php echo (int) $item->id; ?></small>
+                <small class="dc-row-subtitle">ID <?php echo $itemId; ?></small>
                 <small class="dc-tablet-updated"><?php echo $escape(Text::sprintf('COM_DECAROCOURSES_UPDATED_PREFIX', $modifiedLabel)); ?></small>
               </td>
               <td class="dc-col-code" data-label="<?php echo $escape(Text::_('COM_DECAROCOURSES_COLUMN_CODE')); ?>">
@@ -113,16 +123,9 @@ $stateMeta = [
                   <?php echo (int) $item->editions_count; ?>
                 </a>
               </td>
-              <td class="dc-col-state" data-label="<?php echo $escape(Text::_('COM_DECAROCOURSES_COLUMN_STATE')); ?>"><span class="dc-badge <?php echo $meta['class']; ?>"><?php echo $escape($meta['label']); ?></span></td>
+              <td class="dc-col-state" data-label="<?php echo $escape(Text::_('COM_DECAROCOURSES_PUBLICATION')); ?>"><span class="dc-badge <?php echo UiHelper::publicationClass($itemState); ?>"><?php echo $escape(UiHelper::publicationLabel($itemState)); ?></span></td>
               <td class="dc-meta dc-col-updated" data-label="<?php echo $escape(Text::_('COM_DECAROCOURSES_COLUMN_UPDATED')); ?>"><?php echo $escape($modifiedLabel); ?></td>
-              <td class="dc-col-actions" data-label="<?php echo $escape(Text::_('COM_DECAROCOURSES_COLUMN_ACTIONS')); ?>">
-                <div class="dc-row-actions">
-                  <?php if ($this->canEdit) : ?>
-                    <a class="btn dc-btn dc-btn-primary" href="<?php echo $editUrl; ?>"><?php echo Text::_('COM_DECAROCOURSES_ACTION_EDIT'); ?></a>
-                  <?php endif; ?>
-                  <a class="btn dc-btn dc-btn-secondary" href="<?php echo $editionsUrl; ?>"><?php echo Text::_('COM_DECAROCOURSES_ACTION_EDITIONS'); ?></a>
-                </div>
-              </td>
+              <td class="dc-col-actions" data-label="<?php echo $escape(Text::_('COM_DECAROCOURSES_COLUMN_ACTIONS')); ?>"><div class="dc-row-actions"><?php echo $rowMenu; ?></div></td>
             </tr>
           <?php endforeach; ?>
           </tbody>
