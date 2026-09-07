@@ -1,0 +1,51 @@
+name: Align Courses 1.0.35 README
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/align-readme-1.0.35.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  align:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Align README version and changelog
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path('README.md')
+          text = path.read_text(encoding='utf-8')
+          text = text.replace('- Versione corrente: `1.0.34`', '- Versione corrente: `1.0.35`', 1)
+          text = text.replace('- ZIP componente: `com_decarocourses_1.0.34.zip`', '- ZIP componente: `com_decarocourses_1.0.35.zip`', 1)
+          text = text.replace('- ZIP completo: `pkg_decarocourses_1.0.34.zip`', '- ZIP completo: `pkg_decarocourses_1.0.35.zip`', 1)
+
+          heading = '## 1.0.35'
+          marker = '\n## 1.0.34\n'
+          note = '''\n## 1.0.35\n\nRifinita la pagina **Informazioni** dopo il confronto reale affiancato con **Forms 1.3.71**. La scala visiva locale di Courses ora usa badge più compatti, titoli card da 17 px, righe leggermente più basse, label con peso 600 e padding delle card ridotto, senza cambiare il design system delle altre viste. Aggiunto inoltre il titolo nativo **Informazioni** con icona nella toolbar superiore Joomla, così la vista si comporta come Forms anche con menu amministrativo compresso. Responsive e dark mode restano invariati. Nessuna modifica a dati, Corsi, Edizioni, ACL o schema database.\n'''
+
+          if heading not in text:
+              if marker not in text:
+                  raise SystemExit('README changelog marker not found')
+              text = text.replace(marker, note + marker, 1)
+
+          path.write_text(text, encoding='utf-8')
+          PY
+
+          rm -f .github/workflows/align-readme-1.0.35.yml
+
+      - name: Commit README alignment
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add README.md .github/workflows/align-readme-1.0.35.yml
+          git commit -m "Align Courses 1.0.35 README"
+          git push
