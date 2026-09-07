@@ -57,11 +57,15 @@ class CoursesModel extends ListModel
             )->bind(':search', $token, ParameterType::STRING);
         }
 
-        $state = $this->getState('filter.state');
+        $state = (string) $this->getState('filter.state', '');
 
-        if ($state !== '' && $state !== null) {
+        if (in_array($state, self::FILTER_STATES, true)) {
             $query->where($db->quoteName('a.state') . ' = :state')
                 ->bind(':state', (int) $state, ParameterType::INTEGER);
+        } else {
+            // Keep the everyday management view clean: trash is only visible
+            // through its dedicated filter/card.
+            $query->where($db->quoteName('a.state') . ' IN (0, 1)');
         }
 
         $orderingMap = [
@@ -93,11 +97,12 @@ class CoursesModel extends ListModel
     public function getStats(): object
     {
         $db = $this->getDatabase();
+        $state = $db->quoteName('state');
         $query = $db->getQuery(true)
-            ->select('COUNT(*) AS ' . $db->quoteName('total'))
-            ->select('SUM(CASE WHEN ' . $db->quoteName('state') . ' = 1 THEN 1 ELSE 0 END) AS ' . $db->quoteName('active'))
-            ->select('SUM(CASE WHEN ' . $db->quoteName('state') . ' = 0 THEN 1 ELSE 0 END) AS ' . $db->quoteName('inactive'))
-            ->select('SUM(CASE WHEN ' . $db->quoteName('state') . ' = -2 THEN 1 ELSE 0 END) AS ' . $db->quoteName('trashed'))
+            ->select('SUM(CASE WHEN ' . $state . ' IN (0, 1) THEN 1 ELSE 0 END) AS ' . $db->quoteName('total'))
+            ->select('SUM(CASE WHEN ' . $state . ' = 1 THEN 1 ELSE 0 END) AS ' . $db->quoteName('active'))
+            ->select('SUM(CASE WHEN ' . $state . ' = 0 THEN 1 ELSE 0 END) AS ' . $db->quoteName('inactive'))
+            ->select('SUM(CASE WHEN ' . $state . ' = -2 THEN 1 ELSE 0 END) AS ' . $db->quoteName('trashed'))
             ->from($db->quoteName('#__decarocourses_courses'));
 
         $stats = $db->setQuery($query)->loadObject();
