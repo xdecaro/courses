@@ -42,6 +42,7 @@ class HtmlView extends BaseHtmlView
 
         if (!$this->canEditState && $this->form) {
             $this->form->setFieldAttribute('state', 'disabled', 'true');
+            $this->form->setFieldAttribute('featured', 'disabled', 'true');
         }
 
         AdminToolbarHelper::editionForm($this->canSave);
