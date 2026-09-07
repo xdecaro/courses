@@ -1,7 +1,7 @@
 .dci-page {
   max-width: 1180px;
   margin: 0 auto;
-  padding: 8px 0 36px;
+  padding: 10px 0 36px;
 }
 
 .dci-page-header {
@@ -9,9 +9,9 @@
 }
 
 .dci-page-header h1 {
-  margin: 4px 0 6px;
+  margin: 4px 0 5px;
   color: var(--dc-text);
-  font: 700 28px/1.15 var(--dc-font);
+  font: 700 30px/1.16 var(--dc-font);
   letter-spacing: -.02em;
 }
 
@@ -19,7 +19,7 @@
   margin: 0;
   color: var(--dc-muted);
   font-size: 13px;
-  line-height: 1.5;
+  line-height: 1.55;
 }
 
 .dci-summary {
@@ -30,7 +30,7 @@
   margin-bottom: 16px;
   padding: 11px 14px;
   border: 1px solid var(--dc-border);
-  border-radius: 12px;
+  border-radius: 11px;
   background: var(--dc-surface);
   box-shadow: 0 1px 2px rgba(15, 23, 42, .03);
 }
@@ -39,7 +39,7 @@
   margin-right: auto;
   color: var(--dc-text);
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 750;
 }
 
 .dci-grid {
@@ -50,7 +50,7 @@
 
 .dci-card {
   min-width: 0;
-  padding: 17px 18px;
+  padding: 18px;
   border-radius: 12px;
   box-shadow: 0 1px 2px rgba(15, 23, 42, .025);
 }
@@ -62,7 +62,7 @@
 .dci-card .dc-card-head h2,
 .dci-diagnostic-head h2 {
   margin: 3px 0 0;
-  font: 700 17px/1.2 var(--dc-font);
+  font: 700 18px/1.2 var(--dc-font);
 }
 
 .dci-card .dc-eyebrow,
@@ -72,26 +72,26 @@
   letter-spacing: .09em;
 }
 
-/* La pagina Informazioni usa la stessa scala compatta di Forms,
+/* La pagina Informazioni replica la scala misurata di Forms 1.3.71,
    senza alterare i badge del resto di Courses. */
 .dci-page .dc-badge {
-  min-height: 22px;
-  padding: 3px 8px;
+  min-height: 24px;
+  padding: 4px 9px;
   border-radius: 999px;
-  font-size: 10px;
-  font-weight: 700;
-  line-height: 1;
+  font-size: 11px;
+  font-weight: 750;
+  line-height: 1.15;
 }
 
 .dci-list { margin: 0; }
 
 .dci-row {
   display: grid;
-  grid-template-columns: minmax(135px, 43%) minmax(0, 1fr);
+  grid-template-columns: minmax(135px, 42%) minmax(0, 1fr);
   align-items: center;
   gap: 14px;
-  min-height: 40px;
-  padding: 7px 0;
+  min-height: 41px;
+  padding: 8px 0;
   border-bottom: 1px solid var(--dc-border);
 }
 
@@ -101,7 +101,7 @@
   margin: 0;
   color: var(--dc-muted);
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 650;
 }
 
 .dci-row dd {
@@ -110,6 +110,7 @@
   color: var(--dc-text);
   font-size: 12px;
   font-weight: 400;
+  line-height: 1.5;
   overflow-wrap: anywhere;
 }
 

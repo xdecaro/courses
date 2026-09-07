@@ -1,0 +1,1 @@
+-- Courses 1.0.36: visual-only Information alignment; no schema changes.
