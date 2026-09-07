@@ -1,0 +1,51 @@
+name: Align Courses 1.0.34 README
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/align-readme-1.0.34.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  align:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Align README version and changelog
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path('README.md')
+          text = path.read_text(encoding='utf-8')
+          text = text.replace('- Versione corrente: `1.0.33`', '- Versione corrente: `1.0.34`', 1)
+          text = text.replace('- ZIP componente: `com_decarocourses_1.0.33.zip`', '- ZIP componente: `com_decarocourses_1.0.34.zip`', 1)
+          text = text.replace('- ZIP completo: `pkg_decarocourses_1.0.33.zip`', '- ZIP completo: `pkg_decarocourses_1.0.34.zip`', 1)
+
+          heading = '## 1.0.34'
+          marker = '\n## 1.0.33\n'
+          note = '''\n## 1.0.34\n\nUniformata la pagina **Informazioni** allo standard xdecaro confermato, mantenendo **Competitions** come riferimento visivo e la barra riepilogativa con nome prodotto, versione e stato. La pagina ora usa una griglia coerente con **Prodotto**, **Ambiente**, **Estensioni incluse** e **Aggiornamenti**, seguite dalle sezioni a tutta larghezza **Componenti collegati** e **Diagnostica**. L’integrazione reale con **Forms by xdecaro** viene rilevata senza renderla obbligatoria; aggiunti controlli su versioni componente/pacchetto, schema e tabelle database, requisiti Joomla/PHP, update server e stato generale. La diagnostica può essere copiata o scaricata in `.txt` e non include password, token, cookie o credenziali. Gli asset dedicati della vista sono gestiti tramite WebAssetManager, con responsive e dark mode. Aggiunti ACL lato server per la vista e controllo permessi per i collegamenti all’Installer Joomla. Nessuna modifica distruttiva ai dati, ai Corsi o alle Edizioni.\n'''
+
+          if heading not in text:
+              if marker not in text:
+                  raise SystemExit('README changelog marker not found')
+              text = text.replace(marker, note + marker, 1)
+
+          path.write_text(text, encoding='utf-8')
+          PY
+
+          rm -f .github/workflows/align-readme-1.0.34.yml
+
+      - name: Commit README alignment
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add README.md .github/workflows/align-readme-1.0.34.yml
+          git commit -m "Align Courses 1.0.34 README"
+          git push
