@@ -35,6 +35,7 @@ CREATE TABLE IF NOT EXISTS `#__decarocourses_editions` (
   `forms_form_id` int unsigned NOT NULL DEFAULT 0,
   `notes` text NULL,
   `state` tinyint NOT NULL DEFAULT 1,
+  `featured` tinyint NOT NULL DEFAULT 0,
   `ordering` int NOT NULL DEFAULT 0,
   `checked_out` int unsigned NOT NULL DEFAULT 0,
   `checked_out_time` datetime NULL,
@@ -48,5 +49,6 @@ CREATE TABLE IF NOT EXISTS `#__decarocourses_editions` (
   KEY `idx_year` (`academic_year`),
   KEY `idx_forms_form` (`forms_form_id`),
   KEY `idx_state` (`state`),
+  KEY `idx_featured` (`featured`),
   KEY `idx_checked_out` (`checked_out`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 DEFAULT COLLATE=utf8mb4_unicode_ci;
