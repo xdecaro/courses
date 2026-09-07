@@ -15,6 +15,7 @@ class CourseTable extends Table
     public function __construct(DatabaseDriver $db)
     {
         parent::__construct('#__decarocourses_courses', 'id', $db);
+        $this->setColumnAlias('published', 'state');
     }
 
     public function check(): bool
