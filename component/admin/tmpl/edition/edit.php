@@ -175,6 +175,7 @@ $renderLiveSelect = function (string $fieldName, string $source) use ($escape): 
         <div class="dc-edition-status-fields">
           <?php echo $this->form->renderField('status'); ?>
           <?php echo $this->form->renderField('state'); ?>
+          <?php echo $this->form->renderField('featured'); ?>
         </div>
       </section>
 
