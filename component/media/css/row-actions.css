@@ -1,0 +1,88 @@
+/* Shared contextual row menus for Courses management lists. */
+.dc-courses-table-wrap,
+.dc-editions-table-wrap {
+  overflow: visible;
+}
+
+.dc-row-menu {
+  position: relative;
+  display: inline-flex;
+  width: 100%;
+}
+
+.dc-row-menu > .dropdown-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.dc-row-menu .dropdown-menu {
+  min-width: 220px;
+  z-index: 1090;
+}
+
+.dc-row-menu .dropdown-item {
+  min-height: 40px;
+}
+
+.dc-courses-table .dc-actions-col,
+.dc-courses-table .dc-col-actions,
+.dc-editions-table .dc-actions-col,
+.dc-editions-table .dc-col-actions {
+  width: 132px;
+}
+
+.dc-editions-table .dc-col-publication {
+  width: 128px;
+}
+
+@container dc-courses (max-width: 860px) {
+  .dc-courses-table-wrap,
+  .dc-editions-table-wrap {
+    overflow: visible;
+  }
+
+  .dc-courses-table .dc-actions-col,
+  .dc-courses-table .dc-col-actions,
+  .dc-editions-table .dc-actions-col,
+  .dc-editions-table .dc-col-actions {
+    width: 116px;
+  }
+
+  .dc-editions-table .dc-col-publication {
+    width: 116px;
+  }
+}
+
+@container dc-courses (max-width: 520px) {
+  .dc-courses-table .dc-row-actions,
+  .dc-editions-table .dc-row-actions {
+    display: block;
+    width: 100%;
+  }
+
+  .dc-courses-table .dc-col-actions,
+  .dc-editions-table .dc-col-actions,
+  .dc-editions-table .dc-col-publication {
+    width: 100%;
+  }
+
+  .dc-row-menu,
+  .dc-row-menu > .dropdown-toggle {
+    width: 100%;
+  }
+
+  .dc-row-menu .dropdown-menu {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .dc-responsive-table tr:has(.dc-row-menu .dropdown-menu.show) {
+    z-index: 5;
+    overflow: visible;
+  }
+}
