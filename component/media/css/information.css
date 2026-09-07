@@ -318,7 +318,9 @@
   color: var(--dc-text);
 }
 
-.dci-action-status {
+.dci-feedback {
+  min-height: 18px;
+  margin-top: 7px;
   color: var(--dc-muted);
   font-size: 11px;
 }
@@ -360,5 +362,4 @@
   .dci-checks { grid-template-columns: 1fr; }
   .dci-actions { display: grid; grid-template-columns: 1fr; }
   .dci-actions .btn { width: 100%; }
-  .dci-action-status { grid-column: 1; }
 }

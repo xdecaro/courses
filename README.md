@@ -7,9 +7,9 @@
 - Pacchetto Joomla: `pkg_decarocourses`
 - Repository GitHub: `xdecaro/courses`
 - Versione iniziale: `1.0.0`
-- Versione corrente: `1.0.39`
-- ZIP componente: `com_decarocourses_1.0.39.zip`
-- ZIP completo: `pkg_decarocourses_1.0.39.zip`
+- Versione corrente: `1.0.40`
+- ZIP componente: `com_decarocourses_1.0.40.zip`
+- ZIP completo: `pkg_decarocourses_1.0.40.zip`
 
 ## Obiettivo
 
@@ -32,6 +32,10 @@ La UI adotta un design system unico per font, titoli, pulsanti, campi, card, bad
 ## Integrazione Forms by xdecaro
 
 L'integrazione è opzionale. Ogni edizione può memorizzare l'ID di un modulo di `com_decaroforms`; in assenza di Forms, Courses continua a funzionare normalmente.
+
+## 1.0.40
+
+Allineata la parte finale della **Diagnostica** nella vista **Informazioni** a Forms 1.3.71. Il messaggio di feedback di `Copia diagnostica` / `Scarica .txt` non è più inserito nella stessa riga dei pulsanti: ora occupa una riga dedicata con `min-height: 18px` e `margin-top: 7px`, preservando lo stesso spazio inferiore e lo stesso ritmo verticale di Forms anche quando non è visualizzato alcun messaggio. Funzioni JavaScript, dati, Corsi, Edizioni, database e ACL restano invariati.
 
 ## 1.0.39
 

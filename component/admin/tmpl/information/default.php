@@ -281,8 +281,8 @@ $diagnosticJson = json_encode(
                 <button class="btn btn-outline-secondary" type="button" data-dci-copy><?php echo Text::_('COM_DECAROCOURSES_INFO_COPY_DIAGNOSTICS'); ?></button>
                 <button class="btn btn-outline-secondary" type="button" data-dci-download><?php echo Text::_('COM_DECAROCOURSES_INFO_DOWNLOAD_DIAGNOSTICS'); ?></button>
                 <a class="btn btn-outline-secondary" href="https://github.com/xdecaro/courses/tree/main/releases/<?php echo rawurlencode($componentVersion); ?>" target="_blank" rel="noopener noreferrer"><?php echo Text::_('COM_DECAROCOURSES_INFO_RELEASE_GITHUB'); ?></a>
-                <span class="dci-action-status" data-dci-status aria-live="polite"></span>
             </div>
+            <div class="dci-feedback" data-dci-status aria-live="polite"></div>
 
             <script type="application/json" id="dci-diagnostics-data"><?php echo $diagnosticJson ?: '{}'; ?></script>
         </section>
