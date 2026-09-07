@@ -7,9 +7,9 @@
 - Pacchetto Joomla: `pkg_decarocourses`
 - Repository GitHub: `xdecaro/courses`
 - Versione iniziale: `1.0.0`
-- Versione corrente: `1.0.32`
-- ZIP componente: `com_decarocourses_1.0.32.zip`
-- ZIP completo: `pkg_decarocourses_1.0.32.zip`
+- Versione corrente: `1.0.33`
+- ZIP componente: `com_decarocourses_1.0.33.zip`
+- ZIP completo: `pkg_decarocourses_1.0.33.zip`
 
 ## Obiettivo
 
@@ -32,6 +32,10 @@ La UI adotta un design system unico per font, titoli, pulsanti, campi, card, bad
 ## Integrazione Forms by xdecaro
 
 L'integrazione è opzionale. Ogni edizione può memorizzare l'ID di un modulo di `com_decaroforms`; in assenza di Forms, Courses continua a funzionare normalmente.
+
+## 1.0.33
+
+Pulizia delle liste amministrative di Gestione Corsi ed Edizioni sul modello delle gestioni Joomla più compatte. In Edizioni lo `Stato operativo` resta separato dalla nuova colonna visibile `Pubblicazione`, così un'edizione può restare `Programmata` mentre risulta correttamente `Pubblicata`, `Sospesa` o `Cestinata`. Anche Gestione Corsi mostra esplicitamente la Pubblicazione. Le azioni del singolo record sono ora raccolte in un menu contestuale `Azioni` riutilizzabile, con `Modifica` e, quando pertinenti e autorizzate, Pubblica, Sospendi, Metti/Togli evidenza, Sblocco, Cestino, Ripristina ed Elimina definitivamente; per i Corsi resta disponibile anche il collegamento rapido alle Edizioni. Le azioni massive restano nella toolbar nativa Joomla. Il menu di riga seleziona esclusivamente il record interessato prima di inviare il task MVC, usa token CSRF del form, ACL server-side già presenti e conferma esplicita per l'eliminazione definitiva. Aggiunti asset condivisi responsive per evitare clipping dei dropdown nelle tabelle e mantenere il menu utilizzabile su tablet e smartphone. I filtri Cestino continuano a mostrare solo `state=-2`, mentre le liste normali escludono i cestinati. Nessuna modifica allo schema database.
 
 ## 1.0.32
 
