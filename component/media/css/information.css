@@ -1,0 +1,292 @@
+.dci-page {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 10px 0 36px;
+}
+
+.dci-page-header {
+  margin: 4px 0 22px;
+}
+
+.dci-page-header h1 {
+  margin: 4px 0 6px;
+  color: var(--dc-text);
+  font: 700 28px/1.15 var(--dc-font);
+  letter-spacing: -.02em;
+}
+
+.dci-page-header p {
+  margin: 0;
+  color: var(--dc-muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.dci-summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  padding: 11px 14px;
+  border: 1px solid var(--dc-border);
+  border-radius: 12px;
+  background: var(--dc-surface);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, .03);
+}
+
+.dci-summary > strong {
+  margin-right: auto;
+  color: var(--dc-text);
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.dci-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.dci-card {
+  min-width: 0;
+  padding: 18px 20px;
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, .025);
+}
+
+.dci-full { grid-column: 1 / -1; }
+
+.dci-card .dc-card-head { margin-bottom: 10px; }
+
+.dci-card .dc-card-head h2,
+.dci-diagnostic-head h2 {
+  margin: 3px 0 0;
+  font: 700 18px/1.2 var(--dc-font);
+}
+
+.dci-card .dc-eyebrow,
+.dci-page-header .dc-eyebrow {
+  font-size: 10px;
+  line-height: 1.3;
+  letter-spacing: .09em;
+}
+
+.dci-list { margin: 0; }
+
+.dci-row {
+  display: grid;
+  grid-template-columns: minmax(135px, 43%) minmax(0, 1fr);
+  align-items: center;
+  gap: 14px;
+  min-height: 42px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--dc-border);
+}
+
+.dci-row:last-child { border-bottom: 0; }
+
+.dci-row dt {
+  margin: 0;
+  color: var(--dc-muted);
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.dci-row dd {
+  min-width: 0;
+  margin: 0;
+  color: var(--dc-text);
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.dci-row code,
+.dci-integration code {
+  padding: 0;
+  background: transparent;
+  color: var(--dc-text);
+  font-size: 11px;
+}
+
+.dci-row a {
+  color: var(--dc-primary);
+  text-decoration: none;
+}
+.dci-row a:hover,
+.dci-row a:focus { text-decoration: underline; }
+
+.dci-card-intro {
+  margin: 0 0 10px;
+  color: var(--dc-muted);
+  font-size: 12px;
+}
+
+.dci-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.dci-actions .btn {
+  min-height: 36px;
+  border-radius: 7px;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.dci-integration {
+  display: grid;
+  grid-template-columns: minmax(240px, 1.25fr) minmax(230px, .85fr) auto;
+  align-items: center;
+  gap: 20px;
+  padding: 14px 0 2px;
+  border-top: 1px solid var(--dc-border);
+}
+
+.dci-integration-main { min-width: 0; }
+.dci-integration-main > strong {
+  display: block;
+  color: var(--dc-text);
+  font-size: 13px;
+  font-weight: 750;
+}
+.dci-integration-main > span {
+  display: block;
+  margin-top: 3px;
+  color: var(--dc-muted);
+  font-size: 11px;
+}
+
+.dci-integration-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+.dci-integration-metrics small {
+  display: block;
+  color: var(--dc-muted);
+  font-size: 10px;
+}
+.dci-integration-metrics strong {
+  display: block;
+  margin-top: 2px;
+  color: var(--dc-text);
+  font-size: 12px;
+}
+
+.dci-integration-badges {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.dci-diagnostic-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+}
+.dci-diagnostic-head p {
+  max-width: 760px;
+  margin: 5px 0 0;
+  color: var(--dc-muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.dci-checks {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px 20px;
+  margin-top: 16px;
+}
+.dci-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  color: var(--dc-text);
+  font-size: 12px;
+}
+.dci-check > span {
+  display: inline-flex;
+  flex: 0 0 18px;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+}
+.dci-check.is-ok > span { background: var(--dc-success-soft); color: var(--dc-success); }
+.dci-check.is-warning > span { background: var(--dc-warning-soft); color: var(--dc-warning); }
+.dci-check.is-error > span { background: var(--dc-danger-soft); color: var(--dc-danger); }
+
+.dci-details {
+  margin-top: 16px;
+  border: 1px solid var(--dc-border);
+  border-radius: 7px;
+  background: var(--dc-surface-soft);
+}
+.dci-details summary {
+  padding: 10px 12px;
+  color: var(--dc-text);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.dci-details[open] summary { border-bottom: 1px solid var(--dc-border); }
+.dci-details .dci-list { padding: 0 12px 4px; }
+
+.dci-btn-outline {
+  border: 1px solid color-mix(in srgb, var(--dc-primary) 56%, var(--dc-border));
+  background: var(--dc-surface);
+  color: var(--dc-text);
+}
+.dci-btn-outline:hover,
+.dci-btn-outline:focus {
+  border-color: var(--dc-primary);
+  background: color-mix(in srgb, var(--dc-primary) 6%, var(--dc-surface));
+  color: var(--dc-text);
+}
+
+.dci-action-status {
+  color: var(--dc-muted);
+  font-size: 11px;
+}
+
+.dc-badge.is-warning {
+  background: var(--dc-warning-soft);
+  color: var(--dc-warning);
+}
+
+[data-bs-theme="dark"] .dci-summary,
+[data-bs-theme="dark"] .dci-card { box-shadow: none; }
+
+@media (max-width: 900px) {
+  .dci-grid { grid-template-columns: 1fr; }
+  .dci-full { grid-column: auto; }
+  .dci-integration { grid-template-columns: 1fr; gap: 10px; }
+  .dci-integration-badges { justify-content: flex-start; }
+  .dci-checks { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 560px) {
+  .dci-page { padding: 4px 0 28px; }
+  .dci-page-header { margin-bottom: 16px; }
+  .dci-page-header h1 { font-size: 24px; }
+  .dci-summary > strong { width: 100%; margin-right: 0; }
+  .dci-card { padding: 16px; }
+  .dci-row { grid-template-columns: 1fr; gap: 3px; padding: 10px 0; }
+  .dci-integration-metrics { grid-template-columns: 1fr 1fr; }
+  .dci-diagnostic-head { flex-direction: column; }
+  .dci-checks { grid-template-columns: 1fr; }
+  .dci-actions { display: grid; grid-template-columns: 1fr; }
+  .dci-actions .btn { width: 100%; }
+  .dci-action-status { grid-column: 1; }
+}

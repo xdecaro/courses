@@ -1,0 +1,1 @@
+-- Courses 1.0.34: standard information page; no database schema changes.
