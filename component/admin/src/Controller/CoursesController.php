@@ -6,6 +6,7 @@ defined('_JEXEC') or die;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\AdminController;
+use Xdecaro\Component\Decarocourses\Administrator\Helper\UiHelper;
 
 class CoursesController extends AdminController
 {
@@ -34,6 +35,8 @@ class CoursesController extends AdminController
 
     private function assertAuthorised(string $action): void
     {
+        UiHelper::loadLanguage();
+
         if (!Factory::getApplication()->getIdentity()->authorise($action, 'com_decarocourses')) {
             throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
         }
