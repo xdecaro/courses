@@ -1,0 +1,1 @@
+-- Courses 1.0.35: align Information typography and Joomla toolbar title; no database schema changes.
