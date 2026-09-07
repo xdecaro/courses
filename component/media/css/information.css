@@ -1,7 +1,7 @@
 .dci-page {
   max-width: 1180px;
   margin: 0 auto;
-  padding: 10px 0 36px;
+  padding: 8px 0 36px;
 }
 
 .dci-page-header {
@@ -39,7 +39,7 @@
   margin-right: auto;
   color: var(--dc-text);
   font-size: 13px;
-  font-weight: 750;
+  font-weight: 700;
 }
 
 .dci-grid {
@@ -50,7 +50,7 @@
 
 .dci-card {
   min-width: 0;
-  padding: 18px 20px;
+  padding: 17px 18px;
   border-radius: 12px;
   box-shadow: 0 1px 2px rgba(15, 23, 42, .025);
 }
@@ -62,7 +62,7 @@
 .dci-card .dc-card-head h2,
 .dci-diagnostic-head h2 {
   margin: 3px 0 0;
-  font: 700 18px/1.2 var(--dc-font);
+  font: 700 17px/1.2 var(--dc-font);
 }
 
 .dci-card .dc-eyebrow,
@@ -72,6 +72,17 @@
   letter-spacing: .09em;
 }
 
+/* La pagina Informazioni usa la stessa scala compatta di Forms,
+   senza alterare i badge del resto di Courses. */
+.dci-page .dc-badge {
+  min-height: 22px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+}
+
 .dci-list { margin: 0; }
 
 .dci-row {
@@ -79,8 +90,8 @@
   grid-template-columns: minmax(135px, 43%) minmax(0, 1fr);
   align-items: center;
   gap: 14px;
-  min-height: 42px;
-  padding: 8px 0;
+  min-height: 40px;
+  padding: 7px 0;
   border-bottom: 1px solid var(--dc-border);
 }
 
@@ -90,7 +101,7 @@
   margin: 0;
   color: var(--dc-muted);
   font-size: 12px;
-  font-weight: 650;
+  font-weight: 600;
 }
 
 .dci-row dd {
@@ -98,6 +109,7 @@
   margin: 0;
   color: var(--dc-text);
   font-size: 12px;
+  font-weight: 400;
   overflow-wrap: anywhere;
 }
 
@@ -151,7 +163,7 @@
   display: block;
   color: var(--dc-text);
   font-size: 13px;
-  font-weight: 750;
+  font-weight: 700;
 }
 .dci-integration-main > span {
   display: block;
@@ -281,8 +293,8 @@
   .dci-page-header { margin-bottom: 16px; }
   .dci-page-header h1 { font-size: 24px; }
   .dci-summary > strong { width: 100%; margin-right: 0; }
-  .dci-card { padding: 16px; }
-  .dci-row { grid-template-columns: 1fr; gap: 3px; padding: 10px 0; }
+  .dci-card { padding: 15px; }
+  .dci-row { grid-template-columns: 1fr; gap: 3px; min-height: 0; padding: 10px 0; }
   .dci-integration-metrics { grid-template-columns: 1fr 1fr; }
   .dci-diagnostic-head { flex-direction: column; }
   .dci-checks { grid-template-columns: 1fr; }
