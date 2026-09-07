@@ -7,9 +7,9 @@
 - Pacchetto Joomla: `pkg_decarocourses`
 - Repository GitHub: `xdecaro/courses`
 - Versione iniziale: `1.0.0`
-- Versione corrente: `1.0.38`
-- ZIP componente: `com_decarocourses_1.0.38.zip`
-- ZIP completo: `pkg_decarocourses_1.0.38.zip`
+- Versione corrente: `1.0.39`
+- ZIP componente: `com_decarocourses_1.0.39.zip`
+- ZIP completo: `pkg_decarocourses_1.0.39.zip`
 
 ## Obiettivo
 
@@ -32,6 +32,10 @@ La UI adotta un design system unico per font, titoli, pulsanti, campi, card, bad
 ## Integrazione Forms by xdecaro
 
 L'integrazione è opzionale. Ogni edizione può memorizzare l'ID di un modulo di `com_decaroforms`; in assenza di Forms, Courses continua a funzionare normalmente.
+
+## 1.0.39
+
+Uniformate le tre azioni finali della Diagnostica nella vista **Informazioni** a Forms: `Copia diagnostica`, `Scarica .txt` e `Release GitHub` usano ora direttamente le classi Joomla `btn btn-outline-secondary`, eliminando la resa come semplici testi che restava in Courses 1.0.38. Nessuna modifica a Corsi, Edizioni, dati, database o logica applicativa.
 
 ## 1.0.38
 
