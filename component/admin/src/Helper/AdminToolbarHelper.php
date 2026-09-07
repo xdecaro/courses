@@ -104,7 +104,7 @@ final class AdminToolbarHelper
         $childBar = $dropdown->getChildToolbar();
 
         if ($isTrashFilter) {
-            $childBar->standardButton('publish', 'COM_DECAROCOURSES_ACTION_RESTORE', $context . '.publish')
+            $childBar->standardButton('publish', 'COM_DECAROCOURSES_ACTION_RESTORE', $context . '.restore')
                 ->listCheck(true);
             $childBar->checkin($context . '.checkin')->listCheck(true);
 
