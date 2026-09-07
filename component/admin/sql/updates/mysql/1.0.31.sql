@@ -1,0 +1,2 @@
+-- Courses 1.0.31
+-- No schema changes. Marker release for Joomla publication-state alias fix.
