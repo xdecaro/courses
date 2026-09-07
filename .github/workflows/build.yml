@@ -84,3 +84,5 @@ jobs:
           path: |
             dist/com_decarocourses_${{ steps.version.outputs.version }}.zip
             dist/pkg_decarocourses_${{ steps.version.outputs.version }}.zip
+
+# Trigger 1.0.39 diagnostic button alignment build
