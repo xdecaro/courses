@@ -204,7 +204,7 @@
   grid-template-columns: minmax(240px, 1.25fr) minmax(230px, .85fr) auto;
   align-items: center;
   gap: 20px;
-  padding: 14px 0 14px;
+  padding: 14px 0 2px;
   border-top: 1px solid var(--dc-border);
 }
 
@@ -291,7 +291,7 @@
 
 .dci-details {
   margin-top: 17px;
-  padding: 14px 16px 8px;
+  padding: 11px 16px;
   border: 1px solid var(--dc-border);
   border-radius: 7px;
   background: var(--dc-surface-soft);
