@@ -21,7 +21,6 @@
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
-
 [data-bs-theme="dark"] .dci-page,
 :root[data-color-scheme="dark"] .dci-page {
   --dc-text: #f2f4f7;
@@ -194,7 +193,7 @@
 }
 
 .dci-actions .btn {
-  min-height: 38px;
+  min-height: 39px;
   border-radius: 8px;
   font-size: 12px;
   font-weight: 650;
@@ -205,7 +204,7 @@
   grid-template-columns: minmax(240px, 1.25fr) minmax(230px, .85fr) auto;
   align-items: center;
   gap: 20px;
-  padding: 14px 0 2px;
+  padding: 14px 0 14px;
   border-top: 1px solid var(--dc-border);
 }
 
@@ -255,10 +254,10 @@
 }
 .dci-diagnostic-head p {
   max-width: 760px;
-  margin: 5px 0 0;
+  margin: -2px 0 12px;
   color: var(--dc-muted);
-  font-size: 12px;
-  line-height: 1.5;
+  font-size: 13px;
+  line-height: 1.55;
 }
 
 .dci-checks {
@@ -291,13 +290,14 @@
 .dci-check.is-error > span { background: var(--dc-danger-soft); color: var(--dc-danger); }
 
 .dci-details {
-  margin-top: 16px;
+  margin-top: 17px;
+  padding: 14px 16px 8px;
   border: 1px solid var(--dc-border);
   border-radius: 7px;
   background: var(--dc-surface-soft);
 }
 .dci-details summary {
-  padding: 10px 12px;
+  padding: 0;
   color: var(--dc-text);
   font-size: 12px;
   font-weight: 700;
