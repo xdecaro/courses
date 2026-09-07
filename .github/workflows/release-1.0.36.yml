@@ -1,0 +1,92 @@
+name: Prepare Courses 1.0.36 exact Forms information metrics
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/release-1.0.36.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Align Information view exactly to measured Forms metrics
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          def replace_once(path, old, new):
+              p = Path(path)
+              text = p.read_text(encoding='utf-8')
+              if old not in text:
+                  raise SystemExit(f'Marker not found in {path}: {old!r}')
+              p.write_text(text.replace(old, new, 1), encoding='utf-8')
+
+          css_path = Path('component/media/css/information.css')
+          css = css_path.read_text(encoding='utf-8')
+          replacements = [
+              ('padding: 8px 0 36px;', 'padding: 10px 0 36px;'),
+              ('margin: 4px 0 6px;\n  color: var(--dc-text);\n  font: 700 28px/1.15 var(--dc-font);', 'margin: 4px 0 5px;\n  color: var(--dc-text);\n  font: 700 30px/1.16 var(--dc-font);'),
+              ('font-size: 13px;\n  line-height: 1.5;', 'font-size: 13px;\n  line-height: 1.55;'),
+              ('border-radius: 12px;\n  background: var(--dc-surface);', 'border-radius: 11px;\n  background: var(--dc-surface);'),
+              ('font-size: 13px;\n  font-weight: 700;', 'font-size: 13px;\n  font-weight: 750;'),
+              ('padding: 17px 18px;', 'padding: 18px;'),
+              ('font: 700 17px/1.2 var(--dc-font);', 'font: 700 18px/1.2 var(--dc-font);'),
+              ('/* La pagina Informazioni usa la stessa scala compatta di Forms,\n   senza alterare i badge del resto di Courses. */\n.dci-page .dc-badge {\n  min-height: 22px;\n  padding: 3px 8px;\n  border-radius: 999px;\n  font-size: 10px;\n  font-weight: 700;\n  line-height: 1;\n}', '/* La pagina Informazioni replica la scala misurata di Forms 1.3.71,\n   senza alterare i badge del resto di Courses. */\n.dci-page .dc-badge {\n  min-height: 24px;\n  padding: 4px 9px;\n  border-radius: 999px;\n  font-size: 11px;\n  font-weight: 750;\n  line-height: 1.15;\n}'),
+              ('grid-template-columns: minmax(135px, 43%) minmax(0, 1fr);', 'grid-template-columns: minmax(135px, 42%) minmax(0, 1fr);'),
+              ('min-height: 40px;\n  padding: 7px 0;', 'min-height: 41px;\n  padding: 8px 0;'),
+              ('font-size: 12px;\n  font-weight: 600;', 'font-size: 12px;\n  font-weight: 650;'),
+              ('font-size: 12px;\n  font-weight: 400;\n  overflow-wrap: anywhere;', 'font-size: 12px;\n  font-weight: 400;\n  line-height: 1.5;\n  overflow-wrap: anywhere;'),
+          ]
+          for old, new in replacements:
+              if old not in css:
+                  raise SystemExit(f'CSS marker not found: {old!r}')
+              css = css.replace(old, new, 1)
+          css_path.write_text(css, encoding='utf-8')
+
+          replace_once('component/decarocourses.xml', '<version>1.0.35</version>', '<version>1.0.36</version>')
+          replace_once('package/pkg_decarocourses.xml', '<version>1.0.35</version>', '<version>1.0.36</version>')
+          replace_once('package/pkg_decarocourses.xml', 'com_decarocourses_1.0.35.zip', 'com_decarocourses_1.0.36.zip')
+          replace_once('component/admin/src/Helper/InformationHelper.php', "public const VERSION = '1.0.35';", "public const VERSION = '1.0.36';")
+
+          for path in ['component/media/joomla.asset.json', 'component/admin/src/Helper/UiHelper.php']:
+              p = Path(path)
+              text = p.read_text(encoding='utf-8')
+              if '1.0.35' not in text:
+                  raise SystemExit(f'Version marker not found in {path}')
+              p.write_text(text.replace('1.0.35', '1.0.36'), encoding='utf-8')
+
+          sql = Path('component/admin/sql/updates/mysql/1.0.36.sql')
+          if sql.exists():
+              raise SystemExit('1.0.36.sql already exists')
+          sql.write_text('-- Courses 1.0.36: visual-only Information alignment; no schema changes.\n', encoding='utf-8')
+
+          readme = Path('README.md')
+          text = readme.read_text(encoding='utf-8')
+          text = text.replace('- Versione corrente: `1.0.35`', '- Versione corrente: `1.0.36`', 1)
+          text = text.replace('- ZIP componente: `com_decarocourses_1.0.35.zip`', '- ZIP componente: `com_decarocourses_1.0.36.zip`', 1)
+          text = text.replace('- ZIP completo: `pkg_decarocourses_1.0.35.zip`', '- ZIP completo: `pkg_decarocourses_1.0.36.zip`', 1)
+          marker = '\n## 1.0.35\n'
+          note = '''\n## 1.0.36\n\nAllineata la pagina **Informazioni** di Courses ai valori reali misurati in Console su **Forms 1.3.71**, a parità di viewport e zoom: titolo pagina 30 px, titolo card 18 px, label 12 px/650, badge 11 px/750 con altezza 24 px, righe da 41 px, padding card 18 px, rapporto colonne 42/58 e barra prodotto da 48 px con radius 11 px. La correzione è confinata alla vista Informazioni e non modifica il design system delle altre viste, Corsi, Edizioni, dati, ACL o database.\n'''
+          if marker not in text:
+              raise SystemExit('README 1.0.35 marker not found')
+          text = text.replace(marker, note + marker, 1)
+          readme.write_text(text, encoding='utf-8')
+
+          Path('.github/workflows/release-1.0.36.yml').unlink()
+          PY
+
+      - name: Commit Courses 1.0.36 source alignment
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add README.md component package .github/workflows/release-1.0.36.yml
+          git commit -m "Courses 1.0.36 exact Forms Information metrics"
+          git push
