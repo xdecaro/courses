@@ -31,6 +31,7 @@ class EditionTable extends Table
         $this->forms_form_id = max(0, (int) $this->forms_form_id);
         $this->notes = trim((string) $this->notes);
         $this->state = (int) $this->state;
+        $this->featured = (int) ((int) ($this->featured ?? 0) === 1);
 
         $courseTitle = $this->getCourseTitle($this->course_id);
 
@@ -171,10 +172,6 @@ class EditionTable extends Table
             return true;
         }
 
-        // Joomla's CalendarField with translateformat enabled normalises a
-        // submitted date to an SQL datetime string even when showtime=false.
-        // Accept both the database DATE format and Joomla's Y-m-d H:i:s
-        // representation, then persist only the date part required by this table.
         $date = \DateTimeImmutable::createFromFormat('!Y-m-d', $value);
 
         if ($date !== false && $date->format('Y-m-d') === $value) {
