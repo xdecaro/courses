@@ -23,6 +23,38 @@ class EditionsController extends AdminController
         parent::publish();
     }
 
+    public function restore(): void
+    {
+        $this->checkToken();
+        $this->assertAuthorised('core.edit.state');
+
+        $ids = array_values(array_filter(ArrayHelper::toInteger((array) $this->input->get('cid', [], 'int'))));
+        $redirect = Route::_(
+            'index.php?option=com_decarocourses&view=editions' . $this->getRedirectToListAppend(),
+            false
+        );
+
+        if (!$ids) {
+            $this->setRedirect($redirect, Text::_('COM_DECAROCOURSES_NO_ITEM_SELECTED'), 'warning');
+            return;
+        }
+
+        try {
+            $model = $this->getModel();
+            $model->publish($ids, 1);
+
+            if ($model->getErrors()) {
+                $this->setRedirect($redirect, implode("\n", $model->getErrors()), 'error');
+                return;
+            }
+        } catch (\Throwable $e) {
+            $this->setRedirect($redirect, $e->getMessage(), 'error');
+            return;
+        }
+
+        $this->setRedirect($redirect, Text::plural('COM_DECAROCOURSES_N_ITEMS_RESTORED', count($ids)));
+    }
+
     public function checkin()
     {
         $this->assertAuthorised('core.edit.state');
