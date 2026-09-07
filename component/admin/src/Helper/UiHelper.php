@@ -89,6 +89,15 @@ final class UiHelper
             );
         }
 
+        if (!$wa->assetExists('script', 'com_decarocourses.row-actions')) {
+            $wa->registerScript(
+                'com_decarocourses.row-actions',
+                'com_decarocourses/row-actions.js',
+                ['version' => '1.0.33'],
+                ['defer' => true]
+            );
+        }
+
         $document->addScriptOptions('com_decarocourses.liveRefresh', [
             'url' => Route::_('index.php?option=com_decarocourses&task=live.options&format=json', false),
             'token' => Session::getFormToken(),
@@ -109,6 +118,7 @@ final class UiHelper
         $wa->useStyle('com_decarocourses.editions-mobile');
         $wa->useStyle('com_decarocourses.adaptive');
         $wa->useScript('com_decarocourses.admin-ui');
+        $wa->useScript('com_decarocourses.row-actions');
     }
 
     public static function statusLabel(string $status): string
