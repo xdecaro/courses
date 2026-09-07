@@ -6,6 +6,7 @@ defined('_JEXEC') or die;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 use Xdecaro\Component\Decarocourses\Administrator\Helper\InformationHelper;
 
 class HtmlView extends BaseHtmlView
@@ -28,6 +29,8 @@ class HtmlView extends BaseHtmlView
             null,
             true
         );
+
+        ToolbarHelper::title(Text::_('COM_DECAROCOURSES_INFORMATION'), 'info-circle');
 
         $document = $app->getDocument();
         $wa = $document->getWebAssetManager();
