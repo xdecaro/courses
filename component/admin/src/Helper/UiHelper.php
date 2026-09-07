@@ -12,7 +12,10 @@ final class UiHelper
 {
     public static function loadAssets(): void
     {
-        $document = Factory::getApplication()->getDocument();
+        $app = Factory::getApplication();
+        $app->getLanguage()->load('com_decarocourses.actions', JPATH_ADMINISTRATOR, null, true);
+
+        $document = $app->getDocument();
         $wa = $document->getWebAssetManager();
 
         if (!$wa->assetExists('style', 'com_decarocourses.design')) {
@@ -23,7 +26,7 @@ final class UiHelper
             $wa->registerStyle(
                 'com_decarocourses.design',
                 'com_decarocourses/design-system.css',
-                ['version' => '1.0.31']
+                ['version' => '1.0.32']
             );
         }
 
@@ -31,7 +34,7 @@ final class UiHelper
             $wa->registerStyle(
                 'com_decarocourses.responsive',
                 'com_decarocourses/responsive.css',
-                ['version' => '1.0.31']
+                ['version' => '1.0.32']
             );
         }
 
@@ -39,7 +42,7 @@ final class UiHelper
             $wa->registerStyle(
                 'com_decarocourses.live-refresh',
                 'com_decarocourses/live-refresh.css',
-                ['version' => '1.0.31']
+                ['version' => '1.0.32']
             );
         }
 
@@ -47,7 +50,7 @@ final class UiHelper
             $wa->registerStyle(
                 'com_decarocourses.editions',
                 'com_decarocourses/editions.css',
-                ['version' => '1.0.31']
+                ['version' => '1.0.32']
             );
         }
 
@@ -55,7 +58,7 @@ final class UiHelper
             $wa->registerStyle(
                 'com_decarocourses.editions-mobile',
                 'com_decarocourses/editions-mobile.css',
-                ['version' => '1.0.31']
+                ['version' => '1.0.32']
             );
         }
 
@@ -63,7 +66,7 @@ final class UiHelper
             $wa->registerStyle(
                 'com_decarocourses.adaptive',
                 'com_decarocourses/adaptive.css',
-                ['version' => '1.0.31']
+                ['version' => '1.0.32']
             );
         }
 
@@ -71,7 +74,7 @@ final class UiHelper
             $wa->registerScript(
                 'com_decarocourses.admin-ui',
                 'com_decarocourses/admin-ui.js',
-                ['version' => '1.0.31'],
+                ['version' => '1.0.32'],
                 ['defer' => true]
             );
         }
