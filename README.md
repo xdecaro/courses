@@ -7,9 +7,9 @@
 - Pacchetto Joomla: `pkg_decarocourses`
 - Repository GitHub: `xdecaro/courses`
 - Versione iniziale: `1.0.0`
-- Versione corrente: `1.0.41`
-- ZIP componente: `com_decarocourses_1.0.41.zip`
-- ZIP completo: `pkg_decarocourses_1.0.41.zip`
+- Versione corrente: `1.0.43`
+- ZIP componente: `com_decarocourses_1.0.43.zip`
+- ZIP completo: `pkg_decarocourses_1.0.43.zip`
 
 ## Obiettivo
 
@@ -32,6 +32,10 @@ La UI adotta un design system unico per font, titoli, pulsanti, campi, card, bad
 ## Integrazione Forms by xdecaro
 
 L'integrazione è opzionale. Ogni edizione può memorizzare l'ID di un modulo di `com_decaroforms`; in assenza di Forms, Courses continua a funzionare normalmente.
+
+## 1.0.43
+
+Corretto l’ultimo spazio vuoto sotto le azioni della sezione **Diagnostica** nella vista **Informazioni**. Il contenitore `.dci-feedback` non riserva più `min-height: 18px` quando non esiste alcun messaggio: la card termina quindi con lo stesso ritmo visivo verificato manualmente in browser. Il feedback continua a comparire normalmente quando viene usato `Copia diagnostica` o `Scarica .txt`. La sezione **Integrazioni**, già approvata, non viene modificata. Aggiornata inoltre la versione cache dei soli asset Informazioni per assicurare il caricamento immediato del CSS corretto dopo l’upgrade. Nessuna modifica a Corsi, Edizioni, dati, ACL o schema database.
 
 ## 1.0.41
 

@@ -319,7 +319,6 @@
 }
 
 .dci-feedback {
-  min-height: 18px;
   margin-top: 7px;
   color: var(--dc-muted);
   font-size: 11px;
