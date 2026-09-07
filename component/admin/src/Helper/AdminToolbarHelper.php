@@ -3,6 +3,7 @@ namespace Xdecaro\Component\Decarocourses\Administrator\Helper;
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 
@@ -21,22 +22,18 @@ final class AdminToolbarHelper
         bool $canDelete,
         bool $isTrashFilter
     ): void {
+        $toolbar = Factory::getApplication()->getDocument()->getToolbar();
+
         if ($canCreate) {
-            ToolbarHelper::addNew('course.add', 'COM_DECAROCOURSES_COURSE_NEW');
+            $toolbar->addNew('course.add', 'COM_DECAROCOURSES_COURSE_NEW');
         }
 
-        if ($canEditState) {
-            if ($isTrashFilter) {
-                ToolbarHelper::publish('courses.publish', 'COM_DECAROCOURSES_ACTION_RESTORE', true);
-            } else {
-                ToolbarHelper::publish('courses.publish', 'COM_DECAROCOURSES_ACTION_PUBLISH', true);
-                ToolbarHelper::unpublish('courses.unpublish', 'COM_DECAROCOURSES_ACTION_SUSPEND', true);
-                ToolbarHelper::trash('courses.trash', 'COM_DECAROCOURSES_ACTION_TRASH', true);
-            }
-        }
+        self::addStateActions('courses', $canEditState, $isTrashFilter, false);
 
         if ($isTrashFilter && $canDelete) {
-            ToolbarHelper::deleteList('JGLOBAL_CONFIRM_DELETE', 'courses.delete', 'COM_DECAROCOURSES_ACTION_DELETE_PERMANENTLY');
+            $toolbar->delete('courses.delete', 'COM_DECAROCOURSES_ACTION_DELETE_PERMANENTLY')
+                ->message('JGLOBAL_CONFIRM_DELETE')
+                ->listCheck(true);
         }
     }
 
@@ -56,6 +53,8 @@ final class AdminToolbarHelper
         bool $canDelete,
         bool $isTrashFilter
     ): void {
+        $toolbar = Factory::getApplication()->getDocument()->getToolbar();
+
         ToolbarHelper::link(
             Route::_('index.php?option=com_decarocourses&view=courses'),
             'COM_DECAROCOURSES_COURSES',
@@ -63,21 +62,15 @@ final class AdminToolbarHelper
         );
 
         if ($canCreate) {
-            ToolbarHelper::addNew('edition.add', 'COM_DECAROCOURSES_EDITION_NEW');
+            $toolbar->addNew('edition.add', 'COM_DECAROCOURSES_EDITION_NEW');
         }
 
-        if ($canEditState) {
-            if ($isTrashFilter) {
-                ToolbarHelper::publish('editions.publish', 'COM_DECAROCOURSES_ACTION_RESTORE', true);
-            } else {
-                ToolbarHelper::publish('editions.publish', 'COM_DECAROCOURSES_ACTION_PUBLISH', true);
-                ToolbarHelper::unpublish('editions.unpublish', 'COM_DECAROCOURSES_ACTION_SUSPEND', true);
-                ToolbarHelper::trash('editions.trash', 'COM_DECAROCOURSES_ACTION_TRASH', true);
-            }
-        }
+        self::addStateActions('editions', $canEditState, $isTrashFilter, true);
 
         if ($isTrashFilter && $canDelete) {
-            ToolbarHelper::deleteList('JGLOBAL_CONFIRM_DELETE', 'editions.delete', 'COM_DECAROCOURSES_ACTION_DELETE_PERMANENTLY');
+            $toolbar->delete('editions.delete', 'COM_DECAROCOURSES_ACTION_DELETE_PERMANENTLY')
+                ->message('JGLOBAL_CONFIRM_DELETE')
+                ->listCheck(true);
         }
     }
 
@@ -89,5 +82,46 @@ final class AdminToolbarHelper
         }
 
         ToolbarHelper::cancel('edition.cancel', 'COM_DECAROCOURSES_ACTION_CANCEL');
+    }
+
+    private static function addStateActions(
+        string $context,
+        bool $canEditState,
+        bool $isTrashFilter,
+        bool $supportsFeatured
+    ): void {
+        if (!$canEditState) {
+            return;
+        }
+
+        $toolbar = Factory::getApplication()->getDocument()->getToolbar();
+        $dropdown = $toolbar->dropdownButton($context . '-status-group', 'COM_DECAROCOURSES_TOOLBAR_ACTIONS')
+            ->toggleSplit(false)
+            ->icon('icon-ellipsis-h')
+            ->buttonClass('btn btn-action')
+            ->listCheck(true);
+
+        $childBar = $dropdown->getChildToolbar();
+
+        if ($isTrashFilter) {
+            $childBar->standardButton('publish', 'COM_DECAROCOURSES_ACTION_RESTORE', $context . '.publish')
+                ->listCheck(true);
+            $childBar->checkin($context . '.checkin')->listCheck(true);
+
+            return;
+        }
+
+        $childBar->publish($context . '.publish')->listCheck(true);
+        $childBar->unpublish($context . '.unpublish')->listCheck(true);
+
+        if ($supportsFeatured) {
+            $childBar->standardButton('featured', 'JFEATURE', $context . '.featured')
+                ->listCheck(true);
+            $childBar->standardButton('unfeatured', 'JUNFEATURE', $context . '.unfeatured')
+                ->listCheck(true);
+        }
+
+        $childBar->checkin($context . '.checkin')->listCheck(true);
+        $childBar->trash($context . '.trash')->listCheck(true);
     }
 }
