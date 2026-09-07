@@ -20,6 +20,12 @@ class CoursesController extends AdminController
         parent::publish();
     }
 
+    public function checkin()
+    {
+        $this->assertAuthorised('core.edit.state');
+        parent::checkin();
+    }
+
     public function delete()
     {
         $this->assertAuthorised('core.delete');
