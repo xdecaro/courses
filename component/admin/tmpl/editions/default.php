@@ -80,7 +80,7 @@ $showAllUrl = Route::_($listUrl . '&filter_search=&filter_status=' . rawurlencod
           <option value="archived"<?php echo $statusFilter === 'archived' ? ' selected' : ''; ?>><?php echo Text::_('COM_DECAROCOURSES_STATUS_ARCHIVED'); ?></option>
         </select>
         <select class="form-select" name="filter_state" aria-label="<?php echo $escape(Text::_('COM_DECAROCOURSES_EDITIONS_PUBLICATION_FILTER_ARIA')); ?>">
-          <option value=""<?php echo $publicationFilter === '' ? ' selected' : ''; ?>><?php echo Text::_('COM_DECAROCOURSES_FILTER_ALL_PUBLICATION'); ?></option>
+          <option value=""<?php echo $publicationFilter === '' ? ' selected' : ''; ?>><?php echo Text::_('COM_DECAROCOURSES_FILTER_VISIBLE_PUBLICATION'); ?></option>
           <option value="1"<?php echo $publicationFilter === '1' ? ' selected' : ''; ?>><?php echo Text::_('JPUBLISHED'); ?></option>
           <option value="0"<?php echo $publicationFilter === '0' ? ' selected' : ''; ?>><?php echo Text::_('JUNPUBLISHED'); ?></option>
           <option value="-2"<?php echo $isTrashFilter ? ' selected' : ''; ?>><?php echo Text::_('JTRASHED'); ?></option>
@@ -117,7 +117,13 @@ $showAllUrl = Route::_($listUrl . '&filter_search=&filter_status=' . rawurlencod
             <tr>
               <td class="dc-check" data-label="<?php echo $escape(Text::_('COM_DECAROCOURSES_ROW_SELECT')); ?>"><?php echo HTMLHelper::_('grid.id', $i, $item->id); ?></td>
               <td class="dc-col-edition-course" data-label="<?php echo $escape(Text::_('COM_DECAROCOURSES_COLUMN_COURSE')); ?>">
-                <strong class="dc-edition-course-title"><?php echo $escape($item->course_title); ?></strong>
+                <strong class="dc-edition-course-title">
+                  <?php echo $escape($item->course_title); ?>
+                  <?php if ((int) ($item->featured ?? 0) === 1) : ?>
+                    <span class="icon-star text-warning" aria-hidden="true" title="<?php echo $escape(Text::_('JFEATURE')); ?>"></span>
+                    <span class="visually-hidden"><?php echo Text::_('JFEATURE'); ?></span>
+                  <?php endif; ?>
+                </strong>
                 <small class="dc-row-subtitle">ID <?php echo (int) $item->id; ?></small>
                 <small class="dc-edition-tablet-forms"><?php echo Text::sprintf('COM_DECAROCOURSES_FORMS_PREFIX', $escape($formsLabel)); ?></small>
               </td>
