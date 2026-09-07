@@ -7,9 +7,9 @@
 - Pacchetto Joomla: `pkg_decarocourses`
 - Repository GitHub: `xdecaro/courses`
 - Versione iniziale: `1.0.0`
-- Versione corrente: `1.0.33`
-- ZIP componente: `com_decarocourses_1.0.33.zip`
-- ZIP completo: `pkg_decarocourses_1.0.33.zip`
+- Versione corrente: `1.0.34`
+- ZIP componente: `com_decarocourses_1.0.34.zip`
+- ZIP completo: `pkg_decarocourses_1.0.34.zip`
 
 ## Obiettivo
 
@@ -32,6 +32,10 @@ La UI adotta un design system unico per font, titoli, pulsanti, campi, card, bad
 ## Integrazione Forms by xdecaro
 
 L'integrazione è opzionale. Ogni edizione può memorizzare l'ID di un modulo di `com_decaroforms`; in assenza di Forms, Courses continua a funzionare normalmente.
+
+## 1.0.34
+
+Uniformata la pagina **Informazioni** allo standard xdecaro confermato, mantenendo **Competitions** come riferimento visivo e la barra riepilogativa con nome prodotto, versione e stato. La pagina ora usa una griglia coerente con **Prodotto**, **Ambiente**, **Estensioni incluse** e **Aggiornamenti**, seguite dalle sezioni a tutta larghezza **Componenti collegati** e **Diagnostica**. L’integrazione reale con **Forms by xdecaro** viene rilevata senza renderla obbligatoria; aggiunti controlli su versioni componente/pacchetto, schema e tabelle database, requisiti Joomla/PHP, update server e stato generale. La diagnostica può essere copiata o scaricata in `.txt` e non include password, token, cookie o credenziali. Gli asset dedicati della vista sono gestiti tramite WebAssetManager, con responsive e dark mode. Aggiunti ACL lato server per la vista e controllo permessi per i collegamenti all’Installer Joomla. Nessuna modifica distruttiva ai dati, ai Corsi o alle Edizioni.
 
 ## 1.0.33
 
