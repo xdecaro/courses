@@ -80,6 +80,14 @@ final class UiHelper
             );
         }
 
+        if (!$wa->assetExists('style', 'com_decarocourses.row-actions-style')) {
+            $wa->registerStyle(
+                'com_decarocourses.row-actions-style',
+                'com_decarocourses/row-actions.css',
+                ['version' => '1.0.33']
+            );
+        }
+
         if (!$wa->assetExists('script', 'com_decarocourses.admin-ui')) {
             $wa->registerScript(
                 'com_decarocourses.admin-ui',
@@ -117,6 +125,7 @@ final class UiHelper
         $wa->useStyle('com_decarocourses.editions');
         $wa->useStyle('com_decarocourses.editions-mobile');
         $wa->useStyle('com_decarocourses.adaptive');
+        $wa->useStyle('com_decarocourses.row-actions-style');
         $wa->useScript('com_decarocourses.admin-ui');
         $wa->useScript('com_decarocourses.row-actions');
     }
