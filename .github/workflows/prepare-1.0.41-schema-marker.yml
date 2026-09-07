@@ -31,13 +31,11 @@ jobs:
           def write(path, text):
               Path(path).write_text(text, encoding='utf-8')
 
-          # Joomla schema markers: 1.0.40 was UI-only but still needs a schema marker.
           sql_dir = Path('component/admin/sql/updates/mysql')
           sql_dir.mkdir(parents=True, exist_ok=True)
           (sql_dir / '1.0.40.sql').write_text('-- Schema unchanged in 1.0.40.\n', encoding='utf-8')
           (sql_dir / '1.0.41.sql').write_text('-- Schema unchanged in 1.0.41.\n', encoding='utf-8')
 
-          # Component manifest.
           path = 'component/decarocourses.xml'
           text = read(path)
           text = text.replace('<version>1.0.40</version>', '<version>1.0.41</version>', 1)
@@ -48,20 +46,17 @@ jobs:
           )
           write(path, text)
 
-          # Package manifest.
           path = 'package/pkg_decarocourses.xml'
           text = read(path)
           text = text.replace('<version>1.0.40</version>', '<version>1.0.41</version>', 1)
           text = text.replace('com_decarocourses_1.0.40.zip', 'com_decarocourses_1.0.41.zip', 1)
           write(path, text)
 
-          # Runtime version used by Informazioni.
           path = 'component/admin/src/Helper/InformationHelper.php'
           text = read(path)
           text = text.replace("public const VERSION = '1.0.40';", "public const VERSION = '1.0.41';", 1)
           write(path, text)
 
-          # Asset cache versions.
           path = 'component/admin/src/Helper/UiHelper.php'
           text = read(path)
           if old not in text:
@@ -74,38 +69,16 @@ jobs:
               raise SystemExit('Versione 1.0.40 non trovata in joomla.asset.json')
           write(path, text.replace(old, new))
 
-          # README/changelog.
           path = 'README.md'
           text = read(path)
           text = text.replace('- Versione corrente: `1.0.40`', '- Versione corrente: `1.0.41`', 1)
           text = text.replace('- ZIP componente: `com_decarocourses_1.0.40.zip`', '- ZIP componente: `com_decarocourses_1.0.41.zip`', 1)
           text = text.replace('- ZIP completo: `pkg_decarocourses_1.0.40.zip`', '- ZIP completo: `pkg_decarocourses_1.0.41.zip`', 1)
           marker = '\n## 1.0.40\n'
-          entry = '''\n## 1.0.41\n\nCorretto il controllo **Schema database** nella vista **Informazioni**. La 1.0.40 era una release solo UI ma mancava il relativo file SQL di avanzamento versione, quindi Joomla lasciava `#__schemas` alla 1.0.39 e la diagnostica mostrava `Da verificare` nonostante le tabelle fossero corrette. Aggiunti i marker SQL non distruttivi `1.0.40.sql` e `1.0.41.sql`, così l'aggiornamento riallinea il registro schema senza modificare dati o struttura. La build ora verifica obbligatoriamente che ogni release contenga il proprio marker SQL, prevenendo la regressione nelle versioni future.\n\n## 1.0.40\n'''
+          entry = '''\n## 1.0.41\n\nCorretto il controllo **Schema database** nella vista **Informazioni**. La 1.0.40 era una release solo UI ma mancava il relativo file SQL di avanzamento versione, quindi Joomla lasciava `#__schemas` alla 1.0.39 e la diagnostica mostrava `Da verificare` nonostante le tabelle fossero corrette. Aggiunti i marker SQL non distruttivi `1.0.40.sql` e `1.0.41.sql`, così l'aggiornamento riallinea il registro schema senza modificare dati o struttura. La build viene inoltre rafforzata separatamente per richiedere il marker SQL di ogni release futura.\n\n## 1.0.40\n'''
           if marker not in text:
               raise SystemExit('Punto inserimento changelog 1.0.40 non trovato')
           text = text.replace(marker, entry, 1)
-          write(path, text)
-
-          # Build guard: ogni release deve avere il marker SQL corrispondente.
-          path = '.github/workflows/build.yml'
-          text = read(path)
-          needle = '''          php -r '$data=json_decode(file_get_contents("component/media/joomla.asset.json"), true); if (!is_array($data) || json_last_error() !== JSON_ERROR_NONE) { fwrite(STDERR, "joomla.asset.json non valido\\n"); exit(1); }'\n'''
-          replacement = needle + '''          VERSION="${{ steps.version.outputs.version }}"\n          test -f "component/admin/sql/updates/mysql/${VERSION}.sql"\n'''
-          if 'test -f "component/admin/sql/updates/mysql/${VERSION}.sql"' not in text:
-              if needle not in text:
-                  raise SystemExit('Punto inserimento guard SQL non trovato nel workflow build')
-              text = text.replace(needle, replacement, 1)
-
-          verify_needle = '''          unzip -l "dist/com_decarocourses_${VERSION}.zip" | grep -F "media/css/editions.css"\n'''
-          verify_replacement = verify_needle + '''          unzip -l "dist/com_decarocourses_${VERSION}.zip" | grep -F "admin/sql/updates/mysql/${VERSION}.sql"\n'''
-          if 'admin/sql/updates/mysql/${VERSION}.sql' not in text:
-              if verify_needle not in text:
-                  raise SystemExit('Punto inserimento verifica ZIP SQL non trovato')
-              text = text.replace(verify_needle, verify_replacement, 1)
-
-          # Aggiorna il commento trigger finale senza cambiare la logica.
-          text = text.replace('# Trigger 1.0.40 diagnostics footer alignment build', '# Trigger 1.0.41 schema marker fix build')
           write(path, text)
           PY
 
@@ -124,8 +97,6 @@ jobs:
           grep -F '<version>1.0.41</version>' component/decarocourses.xml
           grep -F '<version>1.0.41</version>' package/pkg_decarocourses.xml
           grep -F "public const VERSION = '1.0.41';" component/admin/src/Helper/InformationHelper.php
-          grep -F 'test -f "component/admin/sql/updates/mysql/${VERSION}.sql"' .github/workflows/build.yml
-          grep -F 'admin/sql/updates/mysql/${VERSION}.sql' .github/workflows/build.yml
 
       - name: Commit prepared release
         shell: bash
@@ -133,6 +104,6 @@ jobs:
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add component package README.md .github/workflows/build.yml
+          git add component package README.md
           git commit -m "Prepare Courses 1.0.41 schema marker fix"
           git push
