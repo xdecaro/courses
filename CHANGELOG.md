@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.3.0 — 2026-09-09
+
+### Changed
+
+- Courses now consumes the canonical Core by xdecaro PHP namespace `xdecaro\Core` for cross-product references and optional shared UI assets.
+- Core-dependent integration features now explicitly require Core by xdecaro 1.3.0 or newer.
+- The administrator Information view continues to fall back to the local Courses UI when Core is absent, too old or unavailable.
+
+### Compatibility
+
+- `com_decarocourses`, `pkg_decarocourses`, database tables and the historical Courses namespace `Xdecaro\Component\Decarocourses` remain unchanged.
+- Core remains optional for Courses as a whole; only features that invoke the Core integration adapter require Core >= 1.3.0.
+- No database schema changes; the 1.3.0 SQL file is only a Joomla schema-version marker.
+- Existing Courses, Editions, Forms integration, ACL and application workflows are unchanged.
+
 ## 1.2.0 — 2026-09-08
 
 ### Added

@@ -64,12 +64,15 @@ jobs:
           unzip -p "$COMPONENT_ZIP" media/joomla.asset.json | grep -F '"com_decarocourses.design"'
           unzip -p "$COMPONENT_ZIP" media/joomla.asset.json | grep -F '"com_decarocourses.editions"'
 
-          if [ "$VERSION" = "1.2.0" ]; then
+          if [ "$VERSION" = "1.3.0" ]; then
             unzip -l "$COMPONENT_ZIP" | grep -F "admin/tmpl/information/core.php"
             unzip -l "$COMPONENT_ZIP" | grep -F "media/css/core-bridge.css"
             unzip -p "$COMPONENT_ZIP" media/joomla.asset.json | grep -F '"com_decarocourses.core-bridge"'
             unzip -p "$COMPONENT_ZIP" admin/tmpl/information/core.php | grep -F 'xdecaro-scope courses-core-scope'
-            unzip -p "$COMPONENT_ZIP" admin/src/View/Information/HtmlView.php | grep -F 'Xdecaro\Core\Asset\AssetService'
+            unzip -p "$COMPONENT_ZIP" admin/src/View/Information/HtmlView.php | grep -F 'xdecaro\Core\Asset\AssetService'
+            unzip -p "$COMPONENT_ZIP" admin/src/Service/CoreIntegrationService.php | grep -F 'xdecaro\Core\Integration\EntityReference'
+            ! unzip -p "$COMPONENT_ZIP" admin/src/View/Information/HtmlView.php | grep -F 'Xdecaro\Core\'
+            ! unzip -p "$COMPONENT_ZIP" admin/src/Service/CoreIntegrationService.php | grep -F 'Xdecaro\Core\'
             unzip -p "$COMPONENT_ZIP" media/css/core-bridge.css | grep -F -- '--dc-surface: var(--xdecaro-color-surface);'
           fi
 

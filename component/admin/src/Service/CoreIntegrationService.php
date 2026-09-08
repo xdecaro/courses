@@ -10,18 +10,21 @@ defined('_JEXEC') or die;
 final class CoreIntegrationService
 {
     private const COMPONENT = 'com_decarocourses';
+    private const MINIMUM_CORE_VERSION = '1.3.0';
 
     public function isAvailable(): bool
     {
-        return class_exists(\Xdecaro\Core\Integration\EntityReference::class)
-            && class_exists(\Xdecaro\Core\Integration\RelationReference::class);
+        return class_exists(\xdecaro\Core\Version::class)
+            && version_compare(\xdecaro\Core\Version::VERSION, self::MINIMUM_CORE_VERSION, '>=')
+            && class_exists(\xdecaro\Core\Integration\EntityReference::class)
+            && class_exists(\xdecaro\Core\Integration\RelationReference::class);
     }
 
     public function createEntityReference(string $entity, int|string $id): object
     {
         $this->assertAvailable();
 
-        return new \Xdecaro\Core\Integration\EntityReference(
+        return new \xdecaro\Core\Integration\EntityReference(
             self::COMPONENT,
             $entity,
             $id
@@ -38,19 +41,19 @@ final class CoreIntegrationService
     ): object {
         $this->assertAvailable();
 
-        $source = new \Xdecaro\Core\Integration\EntityReference(
+        $source = new \xdecaro\Core\Integration\EntityReference(
             self::COMPONENT,
             $sourceEntity,
             $sourceId
         );
 
-        $target = new \Xdecaro\Core\Integration\EntityReference(
+        $target = new \xdecaro\Core\Integration\EntityReference(
             $targetComponent,
             $targetEntity,
             $targetId
         );
 
-        return new \Xdecaro\Core\Integration\RelationReference(
+        return new \xdecaro\Core\Integration\RelationReference(
             $source,
             $target,
             $relationType
@@ -61,7 +64,7 @@ final class CoreIntegrationService
     {
         if (!$this->isAvailable()) {
             throw new \RuntimeException(
-                'Core by xdecaro integration is unavailable. Install a compatible Core by xdecaro version before using cross-product references.'
+                'Core by xdecaro integration is unavailable. Install Core by xdecaro 1.3.0 or newer before using cross-product references.'
             );
         }
     }

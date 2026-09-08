@@ -4,21 +4,23 @@ Courses uses the Xdecaro Core cross-product reference contract for relationships
 
 Current Joomla component element: `com_decarocourses`.
 
-Use:
+From Courses 1.3.0, new Core API calls use the canonical lowercase namespace introduced by Core 1.3.0:
 
-- `Xdecaro\Core\Integration\EntityReference` for `component/entity/id` references;
-- `Xdecaro\Core\Integration\RelationReference` for typed links between references.
+- `xdecaro\Core\Integration\EntityReference` for `component/entity/id` references;
+- `xdecaro\Core\Integration\RelationReference` for typed links between references.
+
+The deprecated `Xdecaro\Core` compatibility namespace shipped by Core 1.3.0 is not used by Courses 1.3.0.
 
 ## Optional runtime adapter
 
-From Courses 1.1.0, `Xdecaro\Component\Decarocourses\Administrator\Service\CoreIntegrationService` is registered in the Joomla DI container.
+`Xdecaro\Component\Decarocourses\Administrator\Service\CoreIntegrationService` is registered in the Joomla DI container.
 
-Core remains optional:
+Core remains optional for Courses as a whole. Core-dependent integration calls require Core by xdecaro 1.3.0 or newer:
 
-- `isAvailable()` detects whether the public Core reference classes are available;
+- `isAvailable()` verifies the canonical Core namespace, minimum version and public reference classes;
 - `createEntityReference()` creates a Courses-owned reference;
 - `createRelationReference()` creates a typed relation from a Courses entity to another product's published entity;
-- requesting a Core-dependent reference without Core produces a controlled `RuntimeException` rather than an opaque fatal error.
+- requesting a Core-dependent reference without Core 1.3.0+ produces a controlled `RuntimeException` rather than an opaque fatal error.
 
 Courses remains the owner of courses, editions, enrollments, lessons, attendance and evaluations.
 

@@ -12,7 +12,7 @@ use Xdecaro\Component\Decarocourses\Administrator\Helper\InformationHelper;
 
 class HtmlView extends BaseHtmlView
 {
-    private const MINIMUM_CORE_UI_VERSION = '1.1.0';
+    private const MINIMUM_CORE_UI_VERSION = '1.3.0';
 
     public array $info = [];
     public bool $canManageInstaller = false;
@@ -69,14 +69,14 @@ class HtmlView extends BaseHtmlView
 
     private function enableCoreUi(WebAssetManager $webAssets): bool
     {
-        if (!class_exists(\Xdecaro\Core\Version::class)
-            || version_compare(\Xdecaro\Core\Version::VERSION, self::MINIMUM_CORE_UI_VERSION, '<')
-            || !class_exists(\Xdecaro\Core\Asset\AssetService::class)) {
+        if (!class_exists(\xdecaro\Core\Version::class)
+            || version_compare(\xdecaro\Core\Version::VERSION, self::MINIMUM_CORE_UI_VERSION, '<')
+            || !class_exists(\xdecaro\Core\Asset\AssetService::class)) {
             return false;
         }
 
         try {
-            $assetService = new \Xdecaro\Core\Asset\AssetService();
+            $assetService = new \xdecaro\Core\Asset\AssetService();
 
             return $assetService->useComponents($webAssets);
         } catch (\Throwable $exception) {
