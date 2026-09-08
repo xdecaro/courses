@@ -4,7 +4,7 @@ namespace Xdecaro\Component\Decarocourses\Administrator\Service;
 defined('_JEXEC') or die;
 
 /**
- * Optional adapter between Courses and the public Xdecaro Core
+ * Optional adapter between Courses and the public Core by xdecaro
  * cross-product reference contract.
  */
 final class CoreIntegrationService
@@ -61,7 +61,7 @@ final class CoreIntegrationService
     {
         if (!$this->isAvailable()) {
             throw new \RuntimeException(
-                'Xdecaro Core integration is unavailable. Install a compatible Xdecaro Core version before using cross-product references.'
+                'Core by xdecaro integration is unavailable. Install a compatible Core by xdecaro version before using cross-product references.'
             );
         }
     }
