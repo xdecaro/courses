@@ -9,6 +9,17 @@ Use:
 - `Xdecaro\Core\Integration\EntityReference` for `component/entity/id` references;
 - `Xdecaro\Core\Integration\RelationReference` for typed links between references.
 
+## Optional runtime adapter
+
+From Courses 1.1.0, `Xdecaro\Component\Decarocourses\Administrator\Service\CoreIntegrationService` is registered in the Joomla DI container.
+
+Core remains optional:
+
+- `isAvailable()` detects whether the public Core reference classes are available;
+- `createEntityReference()` creates a Courses-owned reference;
+- `createRelationReference()` creates a typed relation from a Courses entity to another product's published entity;
+- requesting a Core-dependent reference without Core produces a controlled `RuntimeException` rather than an opaque fatal error.
+
 Courses remains the owner of courses, editions, enrollments, lessons, attendance and evaluations.
 
 Typical integrations include:

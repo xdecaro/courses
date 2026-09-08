@@ -1,0 +1,2 @@
+-- Schema unchanged in 1.1.0.
+-- Adds optional Xdecaro Core integration code only.
