@@ -1,0 +1,20 @@
+/* Courses 1.2.0 - optional bridge to Core by xdecaro 1.1+ design tokens. */
+
+.courses-core-scope {
+  --dc-font: var(--xdecaro-font-family);
+  --dc-text: var(--xdecaro-color-text);
+  --dc-muted: var(--xdecaro-color-muted);
+  --dc-border: var(--xdecaro-color-border);
+  --dc-surface: var(--xdecaro-color-surface);
+  --dc-surface-soft: var(--xdecaro-color-surface-subtle);
+  --dc-primary: var(--xdecaro-color-primary);
+  --dc-primary-dark: var(--xdecaro-color-primary-hover);
+  --dc-success: var(--xdecaro-color-success);
+  --dc-success-soft: var(--xdecaro-color-success-soft);
+  --dc-warning: var(--xdecaro-color-warning);
+  --dc-warning-soft: var(--xdecaro-color-warning-soft);
+  --dc-danger: var(--xdecaro-color-danger);
+  --dc-danger-soft: var(--xdecaro-color-danger-soft);
+  --dc-radius: var(--xdecaro-radius-lg);
+  --dc-shadow: var(--xdecaro-shadow-sm);
+}
