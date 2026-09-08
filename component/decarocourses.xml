@@ -7,8 +7,8 @@
   <license>GNU General Public License version 2 or later</license>
   <authorEmail></authorEmail>
   <authorUrl>https://github.com/xdecaro/courses</authorUrl>
-  <version>1.1.0</version>
-  <!-- Release 1.1.0: add optional Xdecaro Core cross-product reference integration service. -->
+  <version>1.2.0</version>
+  <!-- Release 1.2.0: optional Core by xdecaro 1.1+ design tokens on the Information view with local fallback. -->
   <description>COM_DECAROCOURSES_XML_DESCRIPTION</description>
   <targetplatform name="joomla" version="6.*" />
   <namespace path="src">Xdecaro\Component\Decarocourses</namespace>
