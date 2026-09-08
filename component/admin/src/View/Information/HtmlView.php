@@ -11,8 +11,11 @@ use Xdecaro\Component\Decarocourses\Administrator\Helper\InformationHelper;
 
 class HtmlView extends BaseHtmlView
 {
+    private const MINIMUM_CORE_UI_VERSION = '1.1.0';
+
     public array $info = [];
     public bool $canManageInstaller = false;
+    public bool $coreUiActive = false;
 
     public function display($tpl = null): void
     {
@@ -36,7 +39,16 @@ class HtmlView extends BaseHtmlView
         $wa = $document->getWebAssetManager();
 
         $wa->getRegistry()->addExtensionRegistryFile('com_decarocourses');
+
+        $this->coreUiActive = $this->enableCoreUi($wa);
+
         $wa->useStyle('com_decarocourses.design');
+
+        if ($this->coreUiActive) {
+            $wa->useStyle('com_decarocourses.core-bridge');
+            $this->setLayout('core');
+        }
+
         $wa->useStyle('com_decarocourses.information');
         $wa->useScript('com_decarocourses.information');
 
@@ -52,5 +64,23 @@ class HtmlView extends BaseHtmlView
         $this->canManageInstaller = $user->authorise('core.manage', 'com_installer');
 
         parent::display($tpl);
+    }
+
+    private function enableCoreUi(object $webAssets): bool
+    {
+        if (!class_exists(\Xdecaro\Core\Version::class)
+            || version_compare(\Xdecaro\Core\Version::VERSION, self::MINIMUM_CORE_UI_VERSION, '<')
+            || !class_exists(\Xdecaro\Core\Asset\AssetService::class)) {
+            return false;
+        }
+
+        try {
+            $assetService = new \Xdecaro\Core\Asset\AssetService();
+
+            return $assetService->useComponents($webAssets);
+        } catch (\Throwable $exception) {
+            // Core remains optional: a UI integration failure must not block Courses.
+            return false;
+        }
     }
 }
