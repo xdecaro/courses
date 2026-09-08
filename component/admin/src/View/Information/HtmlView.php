@@ -7,6 +7,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\WebAsset\WebAssetManager;
 use Xdecaro\Component\Decarocourses\Administrator\Helper\InformationHelper;
 
 class HtmlView extends BaseHtmlView
@@ -66,7 +67,7 @@ class HtmlView extends BaseHtmlView
         parent::display($tpl);
     }
 
-    private function enableCoreUi(object $webAssets): bool
+    private function enableCoreUi(WebAssetManager $webAssets): bool
     {
         if (!class_exists(\Xdecaro\Core\Version::class)
             || version_compare(\Xdecaro\Core\Version::VERSION, self::MINIMUM_CORE_UI_VERSION, '<')
