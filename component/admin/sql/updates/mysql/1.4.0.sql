@@ -1,0 +1,1 @@
+-- Courses 1.4.0 shared integration release. No schema changes are required.
