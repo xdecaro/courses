@@ -6,9 +6,9 @@ on:
     paths:
       - "component/**"
       - "package/**"
+      - "plugins/**"
       - "tools/build.php"
       - "tools/publish-update.php"
-      - ".github/workflows/build.yml"
   workflow_dispatch:
 
 permissions:
@@ -33,10 +33,10 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          find component tools -type f -name '*.php' -print0 | xargs -0 -n1 php -l
+          find component plugins tools -type f -name '*.php' -print0 | xargs -0 -n1 php -l
           while IFS= read -r -d '' FILE; do
             php -r 'libxml_use_internal_errors(true); if (simplexml_load_file($argv[1]) === false) { fwrite(STDERR, "XML non valido: {$argv[1]}\n"); exit(1); }' "$FILE"
-          done < <(find component package -type f -name '*.xml' -print0)
+          done < <(find component package plugins -type f -name '*.xml' -print0)
           php -r '$data=json_decode(file_get_contents("component/media/joomla.asset.json"), true); if (!is_array($data) || json_last_error() !== JSON_ERROR_NONE) { fwrite(STDERR, "joomla.asset.json non valido\n"); exit(1); }'
           VERSION="${{ steps.version.outputs.version }}"
           test -f "component/admin/sql/updates/mysql/${VERSION}.sql"
@@ -89,10 +89,47 @@ jobs:
           git add "releases/${VERSION}" updates/pkg_decarocourses.xml
           if git diff --cached --quiet; then
             echo "Release ${VERSION} already published with identical files."
+          else
+            git commit -m "Publish Courses ${VERSION} update package"
+            git push
+          fi
+
+      - name: Create immutable GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          VERSION="${{ steps.version.outputs.version }}"
+          if gh release view "v${VERSION}" >/dev/null 2>&1; then
+            echo "GitHub Release v${VERSION} already exists; refusing to replace immutable artifacts."
             exit 0
           fi
-          git commit -m "Publish Courses ${VERSION} update package"
-          git push
+
+          RELEASE_DIR="releases/${VERSION}"
+          PACKAGE="${RELEASE_DIR}/pkg_decarocourses_${VERSION}.zip"
+          ANALYTICS="plg_xdecaroanalytics_decarocourses_${VERSION}.zip"
+          TASK="plg_task_decarocourses_${VERSION}.zip"
+          unzip -p "$PACKAGE" "packages/${ANALYTICS}" > "/tmp/${ANALYTICS}"
+          unzip -p "$PACKAGE" "packages/${TASK}" > "/tmp/${TASK}"
+          unzip -t "/tmp/${ANALYTICS}" >/dev/null
+          unzip -t "/tmp/${TASK}" >/dev/null
+          {
+            sha256sum "${RELEASE_DIR}/com_decarocourses_${VERSION}.zip"
+            sha256sum "${RELEASE_DIR}/pkg_decarocourses_${VERSION}.zip"
+            sha256sum "/tmp/${ANALYTICS}"
+            sha256sum "/tmp/${TASK}"
+          } | sed -E 's#(  )(.*/)?#\1#' > /tmp/SHA256SUMS.txt
+
+          gh release create "v${VERSION}" \
+            "${RELEASE_DIR}/com_decarocourses_${VERSION}.zip" \
+            "${RELEASE_DIR}/pkg_decarocourses_${VERSION}.zip" \
+            "/tmp/${ANALYTICS}" \
+            "/tmp/${TASK}" \
+            "/tmp/SHA256SUMS.txt" \
+            --target main \
+            --title "Courses by xdecaro ${VERSION}" \
+            --notes "Courses ${VERSION}. Joomla packages are published from the immutable repository update channel; SHA-256 checksums are attached. See CHANGELOG.md for version details."
 
       - name: Upload Joomla packages
         uses: actions/upload-artifact@v4
@@ -101,5 +138,3 @@ jobs:
           path: |
             dist/com_decarocourses_${{ steps.version.outputs.version }}.zip
             dist/pkg_decarocourses_${{ steps.version.outputs.version }}.zip
-
-# Trigger 1.0.41 schema marker fix build
