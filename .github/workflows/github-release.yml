@@ -1,0 +1,86 @@
+name: Courses GitHub Release
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/github-release.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Read published version
+        id: version
+        shell: bash
+        run: |
+          set -euo pipefail
+          VERSION="$(php -r '$x=simplexml_load_file("package/pkg_decarocourses.xml"); echo trim((string)$x->version);')"
+          test -n "$VERSION"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Verify immutable repository artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+          VERSION="${{ steps.version.outputs.version }}"
+          RELEASE_DIR="releases/${VERSION}"
+          COMPONENT="${RELEASE_DIR}/com_decarocourses_${VERSION}.zip"
+          PACKAGE="${RELEASE_DIR}/pkg_decarocourses_${VERSION}.zip"
+          SUMS="${RELEASE_DIR}/SHA256SUMS.txt"
+          test -f "$COMPONENT"
+          test -f "$PACKAGE"
+          test -f "$SUMS"
+          (cd "$RELEASE_DIR" && sha256sum --check --strict SHA256SUMS.txt)
+          unzip -t "$COMPONENT"
+          unzip -t "$PACKAGE"
+          unzip -p "$PACKAGE" pkg_decarocourses.xml | grep -F "<version>${VERSION}</version>"
+
+      - name: Extract bundled integration plugins without rebuilding
+        shell: bash
+        run: |
+          set -euo pipefail
+          VERSION="${{ steps.version.outputs.version }}"
+          PACKAGE="releases/${VERSION}/pkg_decarocourses_${VERSION}.zip"
+          ANALYTICS="plg_xdecaroanalytics_decarocourses_${VERSION}.zip"
+          TASK="plg_task_decarocourses_${VERSION}.zip"
+          unzip -p "$PACKAGE" "packages/${ANALYTICS}" > "/tmp/${ANALYTICS}"
+          unzip -p "$PACKAGE" "packages/${TASK}" > "/tmp/${TASK}"
+          unzip -t "/tmp/${ANALYTICS}"
+          unzip -t "/tmp/${TASK}"
+
+          {
+            sha256sum "releases/${VERSION}/com_decarocourses_${VERSION}.zip"
+            sha256sum "releases/${VERSION}/pkg_decarocourses_${VERSION}.zip"
+            sha256sum "/tmp/${ANALYTICS}"
+            sha256sum "/tmp/${TASK}"
+          } | sed -E 's#(  )(.*/)?#\1#' > /tmp/SHA256SUMS.txt
+          cat /tmp/SHA256SUMS.txt
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          VERSION="${{ steps.version.outputs.version }}"
+          if gh release view "v${VERSION}" >/dev/null 2>&1; then
+            echo "GitHub Release v${VERSION} already exists; refusing to replace immutable artifacts."
+            exit 0
+          fi
+
+          gh release create "v${VERSION}" \
+            "releases/${VERSION}/com_decarocourses_${VERSION}.zip" \
+            "releases/${VERSION}/pkg_decarocourses_${VERSION}.zip" \
+            "/tmp/plg_xdecaroanalytics_decarocourses_${VERSION}.zip" \
+            "/tmp/plg_task_decarocourses_${VERSION}.zip" \
+            "/tmp/SHA256SUMS.txt" \
+            --target main \
+            --title "Courses by xdecaro ${VERSION}" \
+            --notes "Courses ${VERSION}: optional Notifications and Tasks bridges, ACL-protected Analytics provider and scheduled edition reminders. GitHub Release assets are taken from the already published immutable repository package; no Joomla ZIP is rebuilt or replaced."
