@@ -1,10 +1,10 @@
-name: Courses GitHub Release
+name: Courses GitHub Release Recovery
 
 on:
   push:
     branches: [main]
     paths:
-      - 'releases/**'
+      - '.github/workflows/github-release.yml'
   workflow_dispatch:
 
 permissions:
@@ -15,6 +15,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
 
       - name: Read published version
         id: version
@@ -38,8 +40,8 @@ jobs:
           test -f "$PACKAGE"
           test -f "$SUMS"
           (cd "$RELEASE_DIR" && sha256sum --check --strict SHA256SUMS.txt)
-          unzip -t "$COMPONENT"
-          unzip -t "$PACKAGE"
+          unzip -t "$COMPONENT" >/dev/null
+          unzip -t "$PACKAGE" >/dev/null
           unzip -p "$PACKAGE" pkg_decarocourses.xml | grep -F "<version>${VERSION}</version>"
 
       - name: Extract bundled integration plugins without rebuilding
@@ -52,18 +54,16 @@ jobs:
           TASK="plg_task_decarocourses_${VERSION}.zip"
           unzip -p "$PACKAGE" "packages/${ANALYTICS}" > "/tmp/${ANALYTICS}"
           unzip -p "$PACKAGE" "packages/${TASK}" > "/tmp/${TASK}"
-          unzip -t "/tmp/${ANALYTICS}"
-          unzip -t "/tmp/${TASK}"
-
+          unzip -t "/tmp/${ANALYTICS}" >/dev/null
+          unzip -t "/tmp/${TASK}" >/dev/null
           {
             sha256sum "releases/${VERSION}/com_decarocourses_${VERSION}.zip"
             sha256sum "releases/${VERSION}/pkg_decarocourses_${VERSION}.zip"
             sha256sum "/tmp/${ANALYTICS}"
             sha256sum "/tmp/${TASK}"
           } | sed -E 's#(  )(.*/)?#\1#' > /tmp/SHA256SUMS.txt
-          cat /tmp/SHA256SUMS.txt
 
-      - name: Create GitHub Release
+      - name: Create GitHub Release if missing
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         shell: bash
@@ -71,10 +71,9 @@ jobs:
           set -euo pipefail
           VERSION="${{ steps.version.outputs.version }}"
           if gh release view "v${VERSION}" >/dev/null 2>&1; then
-            echo "GitHub Release v${VERSION} already exists; refusing to replace immutable artifacts."
+            echo "GitHub Release v${VERSION} already exists; immutable release left unchanged."
             exit 0
           fi
-
           gh release create "v${VERSION}" \
             "releases/${VERSION}/com_decarocourses_${VERSION}.zip" \
             "releases/${VERSION}/pkg_decarocourses_${VERSION}.zip" \
@@ -83,4 +82,4 @@ jobs:
             "/tmp/SHA256SUMS.txt" \
             --target main \
             --title "Courses by xdecaro ${VERSION}" \
-            --notes "Courses ${VERSION}: optional Editor by xdecaro support for course descriptions through Joomla's native editor form field with the built-in none editor as fallback. Existing Notifications, Tasks and Analytics integrations remain unchanged. Release assets come from the immutable repository package and are not rebuilt or replaced."
+            --notes "Courses ${VERSION}. Recovery publication from the already committed immutable repository artifacts; no Joomla ZIP is rebuilt or replaced. See CHANGELOG.md for version details."
