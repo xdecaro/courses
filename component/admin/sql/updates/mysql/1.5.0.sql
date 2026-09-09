@@ -1,0 +1,1 @@
+-- Courses 1.5.0 optional Editor integration release. No schema changes are required.
