@@ -1,0 +1,80 @@
+name: Courses 1.5.0 Editor runtime
+on:
+  pull_request:
+    paths:
+      - 'component/admin/forms/course.xml'
+      - 'component/decarocourses.xml'
+      - 'package/pkg_decarocourses.xml'
+      - '.github/workflows/editor-runtime-1.5.0.yml'
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  editor-runtime:
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.0
+        env: {MYSQL_ALLOW_EMPTY_PASSWORD: 'yes', MYSQL_DATABASE: joomla}
+        ports: ['3306:3306']
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost" --health-interval=10s --health-timeout=5s --health-retries=10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with: {php-version: '8.3', extensions: 'mysqli,zip,simplexml', coverage: none}
+      - name: Build Courses
+        run: php tools/build.php
+      - name: Install Joomla and Courses without Editor
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fL --retry 3 https://github.com/joomla/joomla-cms/releases/download/6.1.3/Joomla_6.1.3-Stable-Full_Package.zip -o /tmp/j.zip
+          echo 'a49305652503f9344d046d55471f324a07882996132ed967c3b0fe34707ae4a1  /tmp/j.zip' | sha256sum -c -
+          mkdir joomla && unzip -q /tmp/j.zip -d joomla
+          cd joomla
+          php installation/joomla.php install --site-name='Courses Editor Runtime' --admin-user='Admin' --admin-username=admin --admin-password="Courses-${GITHUB_RUN_ID}!" --admin-email=admin@example.invalid --db-type=mysqli --db-host=127.0.0.1 --db-user=root --db-pass='' --db-name=joomla --db-prefix=crs_ --db-encryption=0 --no-interaction
+          php cli/joomla.php extension:install --path="$GITHUB_WORKSPACE/dist/pkg_decarocourses_1.5.0.zip"
+          grep -Fq 'type="editor" editor="decaroeditor|none"' administrator/components/com_decarocourses/forms/course.xml
+      - name: Prove Joomla fallback selection
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(mysql --protocol=TCP -h127.0.0.1 -uroot --batch --skip-column-names joomla -e "SELECT COUNT(*) FROM crs_extensions WHERE type='plugin' AND folder='editors' AND element='decaroeditor' AND enabled=1;")" = 0
+          test "$(mysql --protocol=TCP -h127.0.0.1 -uroot --batch --skip-column-names joomla -e "SELECT element FROM crs_extensions WHERE type='plugin' AND folder='editors' AND enabled=1 AND element IN ('decaroeditor','none') ORDER BY FIELD(element,'decaroeditor','none') LIMIT 1;")" = none
+      - name: Install and enable Editor alpha6
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 8 --retry-all-errors --retry-delay 2 'https://github.com/xdecaro/editor/releases/download/v0.1.0-alpha6/pkg_decaroeditor_0.1.0-alpha6.zip' --output /tmp/editor.zip
+          echo '6ece2b5330321e0e2dbc2ac7c388d0cc2e24d977cd415dccc9cc0a922dece616  /tmp/editor.zip' | sha256sum --check --strict
+          cd joomla
+          php cli/joomla.php extension:install --path=/tmp/editor.zip
+          mysql --protocol=TCP -h127.0.0.1 -uroot joomla -e "UPDATE crs_extensions SET enabled=1 WHERE type='plugin' AND folder='editors' AND element='decaroeditor';"
+          test "$(mysql --protocol=TCP -h127.0.0.1 -uroot --batch --skip-column-names joomla -e "SELECT element FROM crs_extensions WHERE type='plugin' AND folder='editors' AND enabled=1 AND element IN ('decaroeditor','none') ORDER BY FIELD(element,'decaroeditor','none') LIMIT 1;")" = decaroeditor
+      - name: Prove Joomla Editor provider registration
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd joomla
+          cat > /tmp/provider.php <<'PHP'
+          <?php
+          define('_JEXEC', 1);
+          define('JPATH_BASE', getcwd());
+          require JPATH_BASE . '/includes/defines.php';
+          require JPATH_BASE . '/includes/framework.php';
+          $container = \Joomla\CMS\Factory::getContainer();
+          $container->alias('session', 'session.cli')
+              ->alias('JSession', 'session.cli')
+              ->alias(\Joomla\CMS\Session\Session::class, 'session.cli')
+              ->alias(\Joomla\Session\Session::class, 'session.cli')
+              ->alias(\Joomla\Session\SessionInterface::class, 'session.cli');
+          $app = $container->get(\Joomla\Console\Application::class);
+          \Joomla\CMS\Factory::$application = $app;
+          $app->createExtensionNamespaceMap();
+          $registry = $container->get(\Joomla\CMS\Editor\EditorsRegistry::class);
+          if (!$registry->has('decaroeditor')) { exit(1); }
+          $provider = $registry->get('decaroeditor');
+          if (!$provider instanceof \Joomla\CMS\Editor\EditorProviderInterface || $provider->getName() !== 'decaroeditor') { exit(1); }
+          echo "Courses Editor runtime OK\n";
+          PHP
+          php /tmp/provider.php

@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
     paths:
-      - .github/workflows/github-release.yml
+      - 'releases/**'
   workflow_dispatch:
 
 permissions:
@@ -83,4 +83,4 @@ jobs:
             "/tmp/SHA256SUMS.txt" \
             --target main \
             --title "Courses by xdecaro ${VERSION}" \
-            --notes "Courses ${VERSION}: optional Notifications and Tasks bridges, ACL-protected Analytics provider and scheduled edition reminders. GitHub Release assets are taken from the already published immutable repository package; no Joomla ZIP is rebuilt or replaced."
+            --notes "Courses ${VERSION}: optional Editor by xdecaro support for course descriptions through Joomla's native editor form field with the built-in none editor as fallback. Existing Notifications, Tasks and Analytics integrations remain unchanged. Release assets come from the immutable repository package and are not rebuilt or replaced."

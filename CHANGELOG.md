@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.5.0 — 2026-09-09
+
+### Added
+- Optional Editor by xdecaro support for the public course description through Joomla's standard `editor` form field.
+- The preferred editor is `decaroeditor`; Joomla's built-in `none` editor remains the fallback when Editor by xdecaro is absent or disabled.
+
+### Compatibility
+- Editor remains optional and Courses does not import Editor private PHP classes or access Editor private storage.
+- The existing `safehtml` filter, course save flow, ACL and CSRF behavior are unchanged.
+- Edition notes remain a normal textarea and no Courses database schema changes are required.
+- `com_decarocourses`, `pkg_decarocourses` and the historical `Xdecaro\Component\Decarocourses` namespace remain unchanged.
+
 ## 1.4.0 — 2026-09-09
 
 ### Added
