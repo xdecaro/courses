@@ -1,5 +1,22 @@
 # Changelog
 
+## 1.4.0 — 2026-09-09
+
+### Added
+- Optional bridges to Notifications and Tasks using only their documented component services.
+- ACL-protected Analytics provider for Courses metrics and datasets.
+- Joomla Scheduled Tasks reminders for edition registration closure and edition start, only when a manager Joomla user is explicitly configured.
+- Core capability declarations for Analytics, Notifications, Tasks and reminder processing.
+
+### Changed
+- Corrected Joomla SQL manifest charset metadata to `utf8`; table definitions remain `utf8mb4`.
+- Package now contains the Analytics provider and Scheduler plugin; fresh installs enable them, updates preserve administrator plugin state.
+
+### Compatibility
+- No Courses or Editions table changes.
+- Core, Notifications, Tasks and Analytics remain optional for the relevant integration surface.
+- `com_decarocourses`, `pkg_decarocourses` and the historical `Xdecaro\Component\Decarocourses` namespace remain unchanged.
+
 ## 1.3.0 — 2026-09-09
 
 ### Changed

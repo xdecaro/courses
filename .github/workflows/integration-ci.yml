@@ -1,0 +1,55 @@
+name: Courses Integration CI
+on:
+  pull_request:
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with: {php-version: '8.3', extensions: 'zip,simplexml,mysqli', coverage: none}
+      - name: Syntax and metadata
+        run: |
+          set -euo pipefail
+          find component plugins package tools -type f -name '*.php' -print0 | xargs -0 -n1 php -l
+          php -r '$c=simplexml_load_file("component/decarocourses.xml");$p=simplexml_load_file("package/pkg_decarocourses.xml");if((string)$c->version!=="1.4.0"||(string)$p->version!=="1.4.0")exit(1);foreach($c->install->sql->file as $f){if((string)$f["charset"]!=="utf8")exit(1);}'
+          test -f component/admin/sql/updates/mysql/1.4.0.sql
+          ! grep -R -nE --include='*.php' '#__xdecaro(notifications|tasks)_' component plugins
+          grep -q 'implements AnalyticsProviderInterface' plugins/xdecaroanalytics/decarocourses/src/Provider/CoursesProvider.php
+      - name: Build
+        run: |
+          php tools/build.php
+          VERSION=1.4.0
+          for f in dist/com_decarocourses_${VERSION}.zip dist/plg_xdecaroanalytics_decarocourses_${VERSION}.zip dist/plg_task_decarocourses_${VERSION}.zip dist/pkg_decarocourses_${VERSION}.zip; do unzip -t "$f" >/dev/null; done
+          unzip -l dist/pkg_decarocourses_${VERSION}.zip | grep -F 'packages/plg_xdecaroanalytics_decarocourses_1.4.0.zip'
+          unzip -l dist/pkg_decarocourses_${VERSION}.zip | grep -F 'packages/plg_task_decarocourses_1.4.0.zip'
+  joomla-install:
+    runs-on: ubuntu-latest
+    needs: validate
+    services:
+      mysql:
+        image: mysql:8.0
+        env: {MYSQL_ALLOW_EMPTY_PASSWORD: 'yes', MYSQL_DATABASE: joomla}
+        ports: ['3306:3306']
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost" --health-interval=10s --health-timeout=5s --health-retries=10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with: {php-version: '8.3', extensions: 'mysqli,zip,simplexml', coverage: none}
+      - run: php tools/build.php
+      - name: Clean Joomla 6 install
+        run: |
+          curl -fL --retry 3 https://github.com/joomla/joomla-cms/releases/download/6.1.3/Joomla_6.1.3-Stable-Full_Package.zip -o /tmp/j.zip
+          echo 'a49305652503f9344d046d55471f324a07882996132ed967c3b0fe34707ae4a1  /tmp/j.zip' | sha256sum -c -
+          mkdir joomla && unzip -q /tmp/j.zip -d joomla
+          cd joomla && php installation/joomla.php install --site-name='Courses CI' --admin-user='Admin' --admin-username=admin --admin-password="Courses-${GITHUB_RUN_ID}!" --admin-email=admin@example.invalid --db-type=mysqli --db-host=127.0.0.1 --db-user=root --db-pass='' --db-name=joomla --db-prefix=crs_ --db-encryption=0 --no-interaction
+          php cli/joomla.php extension:install --path="$GITHUB_WORKSPACE/dist/pkg_decarocourses_1.4.0.zip" -vvv
+      - name: Verify package
+        run: |
+          mysql --protocol=TCP -h127.0.0.1 -uroot --batch --skip-column-names joomla -e "SELECT element,folder,enabled FROM crs_extensions WHERE element IN ('com_decarocourses','decarocourses') ORDER BY type,folder;"
+          test "$(mysql --protocol=TCP -h127.0.0.1 -uroot --batch --skip-column-names joomla -e "SELECT COUNT(*) FROM crs_extensions WHERE type='plugin' AND folder='xdecaroanalytics' AND element='decarocourses' AND enabled=1;")" = 1
+          test "$(mysql --protocol=TCP -h127.0.0.1 -uroot --batch --skip-column-names joomla -e "SELECT COUNT(*) FROM crs_extensions WHERE type='plugin' AND folder='task' AND element='decarocourses' AND enabled=1;")" = 1
+          test "$(mysql --protocol=TCP -h127.0.0.1 -uroot --batch --skip-column-names joomla -e "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema='joomla' AND table_name='crs_decarocourses_editions';")" = 1
